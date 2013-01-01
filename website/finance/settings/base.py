@@ -67,17 +67,6 @@ INSTALLED_APPS = (
     'core',
 )
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'finance',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': ''
-    }
-}
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
