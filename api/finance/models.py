@@ -63,7 +63,15 @@ accounts = Table(
     Column('description', String(250)),
 )
 
-mapper(Account, accounts)
+mapper(
+    Account,
+    accounts,
+    properties={
+        'debits': relationship(Account, backref='account_debit'),
+        'credits': relationship(Account, backref='account_credit'),
+    }
+
+)
 
 class Transaction(object):
     """Transaction
@@ -101,19 +109,12 @@ transactions = Table(
     'transactions',
     metadata,
     Column('transaction_id', Integer, primary_key=True),
-    Column('account_debit', Integer, ForeignKey('account.account_id')),
-    Column('account_credit', Integer, ForeignKey('account.account_id')),
+    Column('account_debit_id', Integer, ForeignKey('accounts.account_id')),
+    Column('account_credit_id', Integer, ForeignKey('accounts.account_id')),
     Column('amount', Float(precision=2)),
     Column('summary', String(50)),
     Column('description', String(250)),
     Column('date', Date),
 )
 
-mapper(
-    Transaction,
-    transactions,
-    properties={
-        'account_debit': relationship(Account, backref='debit'),
-        'account_credit': relationship(Account, backref='credit'),
-    }
-)
+mapper(Transaction, transactions)
