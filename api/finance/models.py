@@ -1,5 +1,5 @@
-from sqlalchemy import Table, Column, Integer, String
-from sqlalchemy.orm import mapper
+from sqlalchemy import Table, Column, Date, Float, ForeignKey, Integer, String
+from sqlalchemy.orm import mapper, relationship
 from finance.database import metadata, db_session
 
 class User(object):
@@ -54,6 +54,16 @@ class Account(object):
         # transaction recorded for account
         return 0
 
+accounts = Table(
+    'accounts',
+    metadata,
+    Column('account_id', Integer, primary_key=True),
+    Column('name', String(50), unique=True),
+    Column('account_type', String(20)),
+    Column('description', String(250)),
+)
+
+mapper(Account, accounts)
 
 class Transaction(object):
     """Transaction
@@ -69,13 +79,15 @@ class Transaction(object):
         account_credit=None,
         amount=None,
         summary=None,
-        description=None
+        description=None,
+        date=None
     ):
         self.account_debit = account_debit
         self.account_credit = account_credit
         self.amount = amount
         self.summary = summary
         self.description = description
+        self.date = date
 
     def __repr__(self):
         #TODO determine account debit and then show amount in negative or positive
@@ -84,3 +96,24 @@ class Transaction(object):
             summary=self.summary,
             amount=self.amount
         )
+
+transactions = Table(
+    'transactions',
+    metadata,
+    Column('transaction_id', Integer, primary_key=True),
+    Column('account_debit', Integer, ForeignKey('account.account_id')),
+    Column('account_credit', Integer, ForeignKey('account.account_id')),
+    Column('amount', Float(precision=2)),
+    Column('summary', String(50)),
+    Column('description', String(250)),
+    Column('date', Date),
+)
+
+mapper(
+    Transaction,
+    transactions,
+    properties={
+        'account_debit': relationship(Account, backref='debit'),
+        'account_credit': relationship(Account, backref='credit'),
+    }
+)
