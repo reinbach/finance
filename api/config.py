@@ -5,5 +5,6 @@ DATABASE = dict(
     DB_USER='webuser',
     DB_PASS='webpass',
     DB_HOST='localhost',
-    DB_NAME='finance'
+    DB_NAME='finance',
+    DB_NAME_TESTING='finance_test',
 )

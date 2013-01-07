@@ -1,22 +1,37 @@
-import os
 import unittest
-import tempfile
 
 import finance
+
+from finance.models import User
+from finance.database import get_db_session
 
 class UserModelTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.db_fd, finance.app.config['DATABASE']['DB_NAME'] = tempfile.mkstemp()
         self.app = finance.app.test_client()
-        finance.database.init_db()
+        self.db_session = get_db_session()
 
     def tearDown(self):
-        os.close(self.db_fd)
-        os.unlink(finance.app.config['DATABASE']['DB_NAME'])
+        pass
 
-    def test_sample(self):
-        assert True
+    def test_user_add(self):
+        """Test adding a user normally"""
+        u = User(name='Test', email='test@example.com')
+        self.db_session.add(u)
+        self.db_session.commit()
+
+    def test_user_id(self):
+        """Test adding sets id correctly"""
+        self.skipTest('holder')
+
+    def test_user_name_unique(self):
+        """Test user name uniqueness is maintained"""
+        self.skipTest('holder')
+
+    def test_user_email_unique(self):
+        """Test user email uniqueness is maintained"""
+        self.skipTest('holder')
+
 
 test_cases = [
     UserModelTestCase

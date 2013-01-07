@@ -2,6 +2,9 @@ import os
 import sys
 import unittest
 
+import finance
+import config
+
 sys.path.append(os.path.abspath(__file__))
 
 test_modules = [
@@ -20,4 +23,7 @@ alltests = unittest.TestSuite(suites)
 runner = unittest.TextTestRunner()
 
 if __name__ == "__main__":
+    config.TESTING = True
+    finance.database.init_db()
     runner.run(alltests)
+    finance.database.drop_db()

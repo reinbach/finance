@@ -4,10 +4,11 @@ from flask import Flask
 
 import config, utils
 
-from finance.database import db_session
+from finance.database import get_db_session
 
 app = Flask(__name__)
 app.config.from_object(config)
+db_session = get_db_session()
 
 from finance.views import UserAPI
 
