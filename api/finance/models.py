@@ -1,8 +1,8 @@
 from sqlalchemy import Table, Column, Date, Float, ForeignKey, Integer, String
-from sqlalchemy.orm import mapper, relationship
-from finance.database import metadata, get_db_session
+from sqlalchemy.orm import mapper#, relationship
 
-db_session = get_db_session()
+from finance import db_session
+from finance.database import metadata
 
 class User(object):
     """User
@@ -68,10 +68,10 @@ accounts = Table(
 mapper(
     Account,
     accounts,
-    properties={
-        'debits': relationship(Account, backref='account_debit', foreign_keys="[transactions.account_debit_id]"),
-        'credits': relationship(Account, backref='account_credit', foreign_keys="[transactions.account_credit_id]"),
-    }
+    # properties={
+    #     'debits': relationship(Account, backref='account_debit', foreign_keys="[transactions.account_debit_id]"),
+    #     'credits': relationship(Account, backref='account_credit', foreign_keys="[transactions.account_credit_id]"),
+    # }
 )
 
 class Transaction(object):

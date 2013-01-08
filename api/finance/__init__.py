@@ -5,12 +5,12 @@ from flask import Flask
 import config, utils
 
 from finance.database import get_db_session
+from finance.views import UserAPI
 
 app = Flask(__name__)
 app.config.from_object(config)
-db_session = get_db_session()
 
-from finance.views import UserAPI
+db_session = get_db_session()
 
 utils.register_api(app, UserAPI, 'user_api', '/users/', pk='user_id')
 

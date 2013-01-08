@@ -20,20 +20,21 @@ def get_conn_param():
     return conn_param
 
 def get_engine():
-    return create_engine(
+    engine =  create_engine(
         get_conn_param(),
         convert_unicode=True
     )
+    return engine
 
 def get_db_session():
     """Get db session object"""
     db_session = scoped_session(
-        sessionmaker(
-            autocommit=False,
-            autoflush=False,
-            bind=get_engine()
+            sessionmaker(
+                autocommit=False,
+                autoflush=False,
+                bind=get_engine()
+            )
         )
-    )
     return db_session
 
 def init_db():

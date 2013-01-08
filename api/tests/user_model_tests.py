@@ -1,36 +1,53 @@
 import unittest
 
+from sqlalchemy.exc import IntegrityError
+
 import finance
 
-from finance.models import User
-from finance.database import get_db_session
+from finance.models import User, db_session
 
 class UserModelTestCase(unittest.TestCase):
 
     def setUp(self):
         self.app = finance.app.test_client()
-        self.db_session = get_db_session()
 
     def tearDown(self):
-        pass
+        db_session.remove()
 
     def test_user_add(self):
         """Test adding a user normally"""
         u = User(name='Test', email='test@example.com')
-        self.db_session.add(u)
-        self.db_session.commit()
+        self.assertEqual(u.name, "Test")
 
-    def test_user_id(self):
-        """Test adding sets id correctly"""
-        self.skipTest('holder')
+        db_session.add(u)
+        db_session.commit()
+
+        u2 = User.query.filter(User.name == "Test").first()
+        self.assertEqual(u2.name, "Test")
+        self.assertEqual(u2.email, "test@example.com")
+        self.assertTrue(u2.user_id)
 
     def test_user_name_unique(self):
         """Test user name uniqueness is maintained"""
-        self.skipTest('holder')
+        u = User(name='Test_Unique', email='test1@example.com')
+        db_session.add(u)
+        db_session.commit()
+
+        with self.assertRaisesRegexp(IntegrityError, 'violates unique constraint "users_name_key"'):
+            u2 = User(name='Test_Unique', email='test1_@example.com')
+            db_session.add(u2)
+            db_session.commit()
 
     def test_user_email_unique(self):
         """Test user email uniqueness is maintained"""
-        self.skipTest('holder')
+        u = User(name='Test2', email='test_unique@example.com')
+        db_session.add(u)
+        db_session.commit()
+
+        with self.assertRaisesRegexp(IntegrityError, 'violates unique constraint "users_email_key"'):
+            u2 = User(name='Test2_', email='test_unique@example.com')
+            db_session.add(u2)
+            db_session.commit()
 
 
 test_cases = [
