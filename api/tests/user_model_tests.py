@@ -2,14 +2,13 @@ import unittest
 
 from sqlalchemy.exc import IntegrityError
 
-import finance
-
 from finance.models import User, db_session
 
 class UserModelTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.app = finance.app.test_client()
+        #self.app = finance.app.test_client()
+        pass
 
     def tearDown(self):
         db_session.remove()
@@ -22,9 +21,9 @@ class UserModelTestCase(unittest.TestCase):
         db_session.add(u)
         db_session.commit()
 
-        u2 = User.query.filter(User.name == "Test").first()
-        self.assertEqual(u2.name, "Test")
-        self.assertEqual(u2.email, "test@example.com")
+        u2 = User.query.filter(User.name == u.name).first()
+        self.assertEqual(u2.name, u.name)
+        self.assertEqual(u2.email, u.email)
         self.assertTrue(u2.user_id)
 
     def test_user_name_unique(self):
@@ -33,7 +32,10 @@ class UserModelTestCase(unittest.TestCase):
         db_session.add(u)
         db_session.commit()
 
-        with self.assertRaisesRegexp(IntegrityError, 'violates unique constraint "users_name_key"'):
+        with self.assertRaisesRegexp(
+            IntegrityError,
+            'violates unique constraint "users_name_key"'
+        ):
             u2 = User(name='Test_Unique', email='test1_@example.com')
             db_session.add(u2)
             db_session.commit()
@@ -44,7 +46,10 @@ class UserModelTestCase(unittest.TestCase):
         db_session.add(u)
         db_session.commit()
 
-        with self.assertRaisesRegexp(IntegrityError, 'violates unique constraint "users_email_key"'):
+        with self.assertRaisesRegexp(
+            IntegrityError,
+            'violates unique constraint "users_email_key"'
+        ):
             u2 = User(name='Test2_', email='test_unique@example.com')
             db_session.add(u2)
             db_session.commit()

@@ -8,6 +8,8 @@ sys.path.append(os.path.abspath(__file__))
 
 test_modules = [
     'tests.user_model_tests',
+    'tests.account_model_tests',
+    'tests.transaction_model_tests',
 ]
 
 suites = []
