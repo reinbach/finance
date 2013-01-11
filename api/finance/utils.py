@@ -1,10 +1,27 @@
-from flask import abort, g
+from functools import wraps
 
-def user_required(f):
+from flask import jsonify, request
+
+def check_auth(username, password):
+    """Check is username password combination is valid"""
+    #TODO change this to be more practical
+    return username == "admin" and password == "secret"
+
+def authenticate():
+    """Sends 401 response that enables basic auth"""
+    message = {'message': 'Authenticate.'}
+    res = jsonify(message)
+    res.status_code = 401
+    res.headers['WWW-Authenticate'] = 'Basic realm="Login Required"'
+    return res
+
+def requires_auth(f):
     """Checks whether user is logged in or raises error 401"""
+    @wraps(f)
     def decorator(*args, **kwargs):
-        if not hasattr(g, 'user') or not g.user:
-            abort(401)
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
         return f(*args, **kwargs)
     return decorator
 
