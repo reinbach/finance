@@ -1,5 +1,5 @@
 from sqlalchemy import Table, Column, Date, Float, ForeignKey, Integer, String
-from sqlalchemy.orm import mapper#, relationship
+from sqlalchemy.orm import mapper, relationship
 
 from finance import db_session
 from finance.database import metadata
@@ -26,8 +26,6 @@ users = Table(
     Column('email', String(120), unique=True)
 )
 
-mapper(User, users)
-
 
 class Account(object):
     """Account
@@ -49,12 +47,17 @@ class Account(object):
             account_type=self.account_type
         )
 
-    def balance(self):
+    def get_total(self, trx_list):
+        """Get the sum of the relevant transactions"""
+        total = 0
+        for trx in trx_list:
+            total += trx.amount
+        return total
+
+    def get_balance(self):
         """Current balance of account"""
-        # get a list of transactions and calculate it
-        #TODO cache balance, and reset cache when new
-        # transaction recorded for account
-        return 0
+        balance = self.get_total(self.debits) - self.get_total(self.credits)
+        return balance
 
 accounts = Table(
     'accounts',
@@ -65,14 +68,6 @@ accounts = Table(
     Column('description', String(250)),
 )
 
-mapper(
-    Account,
-    accounts,
-    # properties={
-    #     'debits': relationship(Account, backref='account_debit', foreign_keys="[transactions.account_debit_id]"),
-    #     'credits': relationship(Account, backref='account_credit', foreign_keys="[transactions.account_credit_id]"),
-    # }
-)
 
 class Transaction(object):
     """Transaction
@@ -91,8 +86,8 @@ class Transaction(object):
         description=None,
         date=None
     ):
-        self.account_debit = account_debit
-        self.account_credit = account_credit
+        self.account_debit_id = account_debit.account_id
+        self.account_credit_id = account_credit.account_id
         self.amount = amount
         self.summary = summary
         self.description = description
@@ -116,6 +111,17 @@ transactions = Table(
     Column('summary', String(50)),
     Column('description', String(250)),
     Column('date', Date),
+)
+
+mapper(User, users)
+
+mapper(
+    Account,
+    accounts,
+    properties={
+        'debits': relationship(Transaction, backref='debit', foreign_keys=[transactions.c.account_debit_id]),
+        'credits': relationship(Transaction, backref='credit', foreign_keys=[transactions.c.account_credit_id]),
+    }
 )
 
 mapper(Transaction, transactions)
