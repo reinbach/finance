@@ -4,8 +4,11 @@ from flask import jsonify, request
 
 def check_auth(username, password):
     """Check is username password combination is valid"""
-    #TODO change this to be more practical
-    return username == "admin" and password == "secret"
+    from models import User
+    u = User(username, password)
+    if User.query.filter(User.username == u.username, User.password == u.password_hash).count():
+        return True
+    return False
 
 def authenticate():
     """Sends 401 response that enables basic auth"""

@@ -15,45 +15,38 @@ class UserModelTestCase(unittest.TestCase):
 
     def test_user_add(self):
         """Test adding a user normally"""
-        u = User(name='Test', email='test@example.com')
-        self.assertEqual(u.name, "Test")
+        u = User('test', 'secret')
+        self.assertEqual(u.username, "test")
 
         db_session.add(u)
         db_session.commit()
 
-        u2 = User.query.filter(User.name == u.name).first()
-        self.assertEqual(u2.name, u.name)
-        self.assertEqual(u2.email, u.email)
+        u2 = User.query.filter(User.username == u.username).first()
+        self.assertEqual(u2.username, u.username)
         self.assertTrue(u2.user_id)
 
     def test_user_name_unique(self):
         """Test user name uniqueness is maintained"""
-        u = User(name='Test_Unique', email='test1@example.com')
+        u = User('test_unique', 'secret')
         db_session.add(u)
         db_session.commit()
 
         with self.assertRaisesRegexp(
             IntegrityError,
-            'violates unique constraint "users_name_key"'
+            'violates unique constraint "users_username_key"'
         ):
-            u2 = User(name='Test_Unique', email='test1_@example.com')
+            u2 = User('test_unique', 'secret')
             db_session.add(u2)
             db_session.commit()
 
-    def test_user_email_unique(self):
-        """Test user email uniqueness is maintained"""
-        u = User(name='Test2', email='test_unique@example.com')
-        db_session.add(u)
-        db_session.commit()
+    def test_user_password(self):
+        """Test user password is hashed"""
+        password = 'secret'
+        u = User('test2', password)
 
-        with self.assertRaisesRegexp(
-            IntegrityError,
-            'violates unique constraint "users_email_key"'
-        ):
-            u2 = User(name='Test2_', email='test_unique@example.com')
-            db_session.add(u2)
-            db_session.commit()
-
+        self.assertIsNone(u.password)
+        self.assertTrue(u.password_hash)
+        self.assertNotEqual(u.password_hash, password)
 
 test_cases = [
     UserModelTestCase
