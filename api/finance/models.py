@@ -30,7 +30,7 @@ users = Table(
     metadata,
     Column('user_id', Integer, primary_key=True),
     Column('username', String(50), unique=True),
-    Column('password', String(100))
+    Column('password_hash', String(100))
 )
 
 
