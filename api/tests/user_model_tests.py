@@ -29,6 +29,7 @@ class UserModelTestCase(unittest.TestCase):
         u2 = User.query.filter(User.username == u.username).first()
         self.assertEqual(u2.username, u.username)
         self.assertTrue(u2.user_id)
+        self.assertEqual(u2.password_hash, u.password_hash)
 
     def test_user_name_unique(self):
         """Test user name uniqueness is maintained"""
@@ -49,7 +50,8 @@ class UserModelTestCase(unittest.TestCase):
         password = 'secret'
         u = User('test2', password)
 
-        self.assertIsNone(u.password)
+        with self.assertRaises(AttributeError):
+            u.password
         self.assertTrue(u.password_hash)
         self.assertNotEqual(u.password_hash, password)
 
