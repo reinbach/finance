@@ -18,6 +18,18 @@ class TransactionModelTestCase(unittest.TestCase):
         db_session.commit()
         db_session.remove()
 
+    def test_user_repr(self):
+        """Ensure __repr__ function works"""
+        t = Transaction(
+            self.account1,
+            self.account2,
+            1,
+            "ACME, Inc.",
+            "January's Salary",
+            datetime.date.today()
+        )
+        self.assertTrue(t)
+
     def test_transaction_add(self):
         """Test adding a transaction normaly"""
         t = Transaction(

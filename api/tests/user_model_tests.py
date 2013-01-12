@@ -13,6 +13,11 @@ class UserModelTestCase(unittest.TestCase):
     def tearDown(self):
         db_session.remove()
 
+    def test_user_repr(self):
+        """Ensure __repr__ function works"""
+        u = User('test', 'secret')
+        self.assertTrue(u)
+
     def test_user_add(self):
         """Test adding a user normally"""
         u = User('test', 'secret')

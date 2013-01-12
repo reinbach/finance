@@ -12,6 +12,11 @@ class AccountModelTestCase(unittest.TestCase):
     def tearDown(self):
         db_session.remove()
 
+    def test_user_repr(self):
+        """Ensure __repr__ function works"""
+        a = Account('Salary', 'Income', "Show me the money")
+        self.assertTrue(a)
+
     def test_account_add(self):
         """Test adding an account normaly"""
         a = Account("Salary", "Income", "Show me the money")
