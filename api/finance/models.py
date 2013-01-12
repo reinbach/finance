@@ -23,7 +23,7 @@ class User(object):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return '<User: {0}>'.format(self.name)
+        return '<User: {0}>'.format(self.username)
 
 users = Table(
     'users',
