@@ -5,8 +5,8 @@ from flask import jsonify, request
 def check_auth(username, password):
     """Check is username password combination is valid"""
     from models import User
-    u = User(username, password)
-    if User.query.filter(User.username == u.username, User.password == u.password_hash).count():
+    u = User.query.filter(User.username == username).first()
+    if u is not None and u.check_password(password):
         return True
     return False
 
