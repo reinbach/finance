@@ -22,24 +22,24 @@ class TransactionModelTestCase(unittest.TestCase):
     def test_user_repr(self):
         """Ensure __repr__ function works"""
         t = Transaction(
-            self.account1,
-            self.account2,
+            self.account1.account_id,
+            self.account2.account_id,
             1,
             "ACME, Inc.",
-            "January's Salary",
-            datetime.date.today()
+            datetime.date.today(),
+            "January's Salary"
         )
         self.assertTrue(t)
 
     def test_transaction_add(self):
         """Test adding a transaction normaly"""
         t = Transaction(
-            self.account1,
-            self.account2,
+            self.account1.account_id,
+            self.account2.account_id,
             1,
             "ACME, Inc.",
-            "January's Salary",
-            datetime.date.today()
+            datetime.date.today(),
+            "January's Salary"
         )
 
         db_session.add(t)
@@ -57,23 +57,23 @@ class TransactionModelTestCase(unittest.TestCase):
     def test_account_balance(self):
         """Test that balance on account calculates correctly"""
         t1 = Transaction(
-            self.account1,
-            self.account2,
+            self.account1.account_id,
+            self.account2.account_id,
             10,
             'ACME, Inc.',
-            "January's Salary'",
-            datetime.date.today()
+            datetime.date.today(),
+            "January's Salary'"
         )
 
         db_session.add(t1)
 
         t2 = Transaction(
-            self.account2,
-            self.account1,
+            self.account2.account_id,
+            self.account1.account_id,
             5,
             'IRS',
-            "Taxes for January'",
-            datetime.date.today()
+            datetime.date.today(),
+            "Taxes for January'"
         )
 
         db_session.add(t2)
@@ -85,23 +85,23 @@ class TransactionModelTestCase(unittest.TestCase):
     def test_account_balance_onesided(self):
         """Test that balance on account calculates correctly"""
         t1 = Transaction(
-            self.account1,
-            self.account2,
+            self.account1.account_id,
+            self.account2.account_id,
             10,
             'ACME, Inc.',
-            "January's Salary'",
-            datetime.date.today()
+            datetime.date.today(),
+            "January's Salary'"
         )
 
         db_session.add(t1)
 
         t2 = Transaction(
-            self.account1,
-            self.account2,
+            self.account1.account_id,
+            self.account2.account_id,
             10,
             'ACME, Inc.',
-            "February's Salary'",
-            datetime.date.today()
+            datetime.date.today(),
+            "February's Salary'"
         )
 
         db_session.add(t2)
@@ -113,12 +113,12 @@ class TransactionModelTestCase(unittest.TestCase):
     def test_transaction_jsonify(self):
         """Test the jsonify method"""
         t = Transaction(
-            self.account1,
-            self.account2,
+            self.account1.account_id,
+            self.account2.account_id,
             10,
             'ACME, Inc.',
-            "January's Salary'",
-            datetime.date.today()
+            datetime.date.today(),
+            "January's Salary'"
         )
         self.assertEqual(dict, type(t.jsonify()))
         self.assertTrue(json.dumps(t.jsonify()))

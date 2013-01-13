@@ -94,19 +94,19 @@ class Transaction(object):
 
     def __init__(
         self,
-        account_debit=None,
-        account_credit=None,
-        amount=None,
-        summary=None,
-        description=None,
-        date=None
+        account_debit_id,
+        account_credit_id,
+        amount,
+        summary,
+        date,
+        description=None
     ):
-        self.account_debit_id = account_debit.account_id
-        self.account_credit_id = account_credit.account_id
+        self.account_debit_id = account_debit_id
+        self.account_credit_id = account_credit_id
         self.amount = amount
         self.summary = summary
-        self.description = description
         self.date = date
+        self.description = description
 
     def __repr__(self):
         #TODO determine account debit and then show amount in negative or positive
