@@ -54,6 +54,14 @@ class Account(object):
             account_type=self.account_type
         )
 
+    def jsonify(self):
+        return {
+            'account_id': self.account_id,
+            'name': self.name,
+            'account_type': self.account_type,
+            'description': self.description
+        }
+
     def get_total(self, trx_list):
         """Get the sum of the relevant transactions"""
         total = 0
@@ -107,6 +115,16 @@ class Transaction(object):
             summary=self.summary,
             amount=self.amount
         )
+
+    def jsonify(self):
+        return {
+            'debit': self.account_debit_id,
+            'credit': self.account_credit_id,
+            'amount': self.amount,
+            'summary': self.summary,
+            'description': self.description,
+            'date': self.date.strftime("%Y-%m-%d")
+        }
 
 transactions = Table(
     'transactions',
