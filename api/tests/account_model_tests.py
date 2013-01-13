@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from sqlalchemy.exc import IntegrityError
@@ -44,6 +45,12 @@ class AccountModelTestCase(unittest.TestCase):
             a2 = Account("Interest", "Expense", "No, don't charge me'")
             db_session.add(a2)
             db_session.commit()
+
+    def test_account_jsonify(self):
+        """Test the jsonify method"""
+        a = Account("Interest", "Income", "Compound it baby")
+        self.assertEqual(dict, type(a.jsonify()))
+        self.assertTrue(json.dumps(a.jsonify()))
 
 test_cases = [
     AccountModelTestCase
