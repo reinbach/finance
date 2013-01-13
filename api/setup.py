@@ -6,6 +6,7 @@ requires = [
     'WTForms==1.0.2',
     'SQLAlchemy==0.8.0b2',
     'psycopg2==2.4.5',
+    'scales==1.0.3',
     'Fabric==1.5.1',
 ]
 
