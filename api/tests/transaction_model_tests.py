@@ -1,4 +1,5 @@
 import datetime
+import json
 import unittest
 
 from finance.models import Account, Transaction, db_session
@@ -109,6 +110,18 @@ class TransactionModelTestCase(unittest.TestCase):
         self.assertEqual(self.account1.get_balance(), t1.amount + t2.amount)
         self.assertEqual(self.account2.get_balance(), -t1.amount - t2.amount)
 
+    def test_transaction_jsonify(self):
+        """Test the jsonify method"""
+        t = Transaction(
+            self.account1,
+            self.account2,
+            10,
+            'ACME, Inc.',
+            "January's Salary'",
+            datetime.date.today()
+        )
+        self.assertEqual(dict, type(t.jsonify()))
+        self.assertTrue(json.dumps(t.jsonify()))
 
 test_cases = [
     TransactionModelTestCase
