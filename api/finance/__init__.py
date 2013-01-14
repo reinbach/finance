@@ -9,8 +9,11 @@ app.config.from_object(config)
 
 db_session = get_db_session()
 
-from finance.views import AccountAPI
+from finance.views.account import AccountAPI
 utils.register_api(app, AccountAPI, 'account_api', '/accounts/', pk='account_id')
+
+from finance.views.transaction import TransactionAPI
+utils.register_api(app, TransactionAPI, 'transaction_api', '/transactions/', pk='transaction_id')
 
 @app.route("/")
 def version():

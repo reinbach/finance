@@ -11,6 +11,7 @@ test_modules = [
     'tests.account_model_tests',
     'tests.transaction_model_tests',
     'tests.account_view_tests',
+    'tests.transaction_view_tests',
 ]
 
 suites = []

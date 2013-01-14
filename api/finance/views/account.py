@@ -1,12 +1,10 @@
 from flask import abort, jsonify, request
 from flask.views import MethodView
 
-import utils
-
-from finance import db_session
-from forms import AccountForm
-from models import Account
-from stats import STATS
+from finance import db_session, utils
+from finance.forms import AccountForm
+from finance.models import Account
+from finance.stats import STATS
 
 class AccountAPI(MethodView):
     """Account Views"""
