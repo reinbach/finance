@@ -123,6 +123,15 @@ class TransactionModelTestCase(unittest.TestCase):
         self.assertEqual(dict, type(t.jsonify()))
         self.assertTrue(json.dumps(t.jsonify()))
 
+        db_session.add(t)
+        db_session.commit()
+
+        t_json = t.jsonify()
+        self.assertEqual(dict, type(t_json))
+        self.assertTrue(json.dumps(t_json))
+        self.assertEqual(self.account1.jsonify(), t_json.get('debit'))
+        self.assertEqual(self.account2.jsonify(), t_json.get('credit'))
+
 test_cases = [
     TransactionModelTestCase
 ]

@@ -117,14 +117,23 @@ class Transaction(object):
         )
 
     def jsonify(self):
-        return {
-            'debit': self.account_debit_id,
-            'credit': self.account_credit_id,
+        res = {
+            'account_debit_id': self.account_debit_id,
+            'account_credit_id': self.account_credit_id,
             'amount': self.amount,
             'summary': self.summary,
             'description': self.description,
             'date': self.date.strftime("%Y-%m-%d")
         }
+
+        if self.debit is not None:
+            res['debit'] = self.debit.jsonify()
+
+        if self.credit is not None:
+            res['credit'] = self.credit.jsonify()
+
+        return res
+
 
 transactions = Table(
     'transactions',
