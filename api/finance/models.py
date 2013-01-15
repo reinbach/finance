@@ -118,6 +118,7 @@ class Transaction(object):
 
     def jsonify(self):
         res = {
+            'transaction_id': self.transaction_id,
             'account_debit_id': self.account_debit_id,
             'account_credit_id': self.account_credit_id,
             'amount': self.amount,

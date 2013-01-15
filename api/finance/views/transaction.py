@@ -2,7 +2,7 @@ from flask import abort, jsonify, request
 from flask.views import MethodView
 
 from finance import db_session, utils
-from finance.forms import AccountForm
+from finance.forms import TransactionForm
 from finance.models import Transaction
 from finance.stats import STATS
 
@@ -31,7 +31,28 @@ class TransactionAPI(MethodView):
                 return jsonify(trx.jsonify())
 
     def post(self):
-        # add transaction
+        with STATS.add_transaction.time():
+            # create a new trasnsaction
+            form = TransactionForm(request.form)
+            if form.validate():
+                trx = Transaction(
+                    form.debit.data,
+                    form.credit.data,
+                    form.amount.data,
+                    form.summary.data,
+                    form.date.data,
+                    form.description.data
+                )
+                db_session.add(trx)
+                db_session.commit()
+                STATS.success += 1
+                return jsonify({
+                    'message': 'Successfully added Transaction',
+                    'transaction_id': trx.transaction_id
+                })
+            STATS.validation += 1
+            return jsonify({"errors": form.errors})
+
         pass
 
     def delete(self, transaction_id):
