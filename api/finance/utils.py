@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import jsonify, request
+from flask import jsonify, request, session
 
 def check_auth(username, password):
     """Check is username password combination is valid"""
@@ -19,11 +19,15 @@ def authenticate():
     return res
 
 def requires_auth(f):
-    """Checks whether user is logged in or raises error 401"""
+    """Checks whether user is logged in or raises error 401
+
+    User able to have been logged in already and have session variable
+    Or user is passing in authorization information
+    """
     @wraps(f)
     def decorator(*args, **kwargs):
         auth = request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
+        if (not auth or not check_auth(auth.username, auth.password)) and 'logged_in' not in session:
             return authenticate()
         return f(*args, **kwargs)
     return decorator

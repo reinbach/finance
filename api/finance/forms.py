@@ -1,5 +1,9 @@
 from wtforms import Form, DateField, DecimalField, IntegerField, TextField, validators
 
+class UserForm(Form):
+    username = TextField('Username', [validators.Required()])
+    password = TextField('Password', [validators.Required()])
+
 class AccountForm(Form):
     name = TextField(
         'Name',

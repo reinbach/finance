@@ -1,8 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, session
 
 import config, utils
 
 from finance.database import get_db_session
+from finance.forms import UserForm
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -18,6 +19,23 @@ utils.register_api(app, TransactionAPI, 'transaction_api', '/transactions/', pk=
 @app.route("/")
 def version():
     return jsonify({"version": "0.1"})
+
+@app.route("/login", methods=['POST'])
+def login():
+    """Log user in"""
+    form = UserForm(request.form)
+    if form.validate():
+        if utils.check_auth(form.username.data, form.password.data):
+            session['logged_in'] = True
+            return jsonify({'message': 'Successfully logged in.'})
+        else:
+            return jsonify({'message': 'Invalid username/password.'})
+    return jsonify(form.errors)
+
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    return jsonify({'message': 'Successfully logged out.'})
 
 @app.teardown_request
 def shutdown_session(exception=None):

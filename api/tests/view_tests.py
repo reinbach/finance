@@ -1,4 +1,5 @@
 import base64
+import json
 import unittest
 
 import finance
@@ -32,3 +33,36 @@ class BaseViewTestCase(unittest.TestCase):
             data=data,
             follow_redirects=True
         )
+
+    def login(self, username, password):
+        return self.app.post("/login", data=dict(
+            username=username,
+            password=password
+        ), follow_redirects=True)
+
+    def logout(self):
+        return self.app.get("/logout", follow_redirects=True)
+
+class GeneralViewTestCase(BaseViewTestCase):
+
+    def test_login(self):
+        """Test logging in """
+        rv = self.login(self.username, self.password)
+        self.assertEqual(200, rv.status_code)
+        self.assertIn("Success", json.loads(rv.data).get('message'))
+
+        rv = self.app.get("/accounts/")
+        self.assertEqual(200, rv.status_code)
+
+    def test_logout(self):
+        """Test logging out"""
+        rv = self.logout()
+        self.assertEqual(200, rv.status_code)
+        self.assertIn('Success', json.loads(rv.data).get('message'))
+
+        rv = self.app.get("/accounts/")
+        self.assertEqual(401, rv.status_code)
+
+test_cases = [
+    GeneralViewTestCase
+]
