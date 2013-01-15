@@ -10,6 +10,9 @@ class TransactionViewTestCase(BaseViewTestCase):
         super(TransactionViewTestCase, self).setUp()
         self.account1 = Account('TRX_Salary', 'Income', "Show me the money")
         self.account2 = Account('TRX_Checking', 'Assets', "Mine mine mine")
+        db_session.add(self.account1)
+        db_session.add(self.account2)
+        db_session.commit()
         self.transaction = Transaction(
             self.account1.account_id,
             self.account2.account_id,
@@ -18,8 +21,6 @@ class TransactionViewTestCase(BaseViewTestCase):
             datetime.date.today(),
             'January'
         )
-        db_session.add(self.account1)
-        db_session.add(self.account2)
         db_session.add(self.transaction)
         db_session.commit()
 
@@ -114,6 +115,101 @@ class TransactionViewTestCase(BaseViewTestCase):
         self.assertEqual(date.strftime("%Y-%m-%d"), trx_get.get('date'))
         self.assertEqual(description, trx_get.get('description'))
         self.assertEqual(trx.get('transaction_id'), trx_get.get('transaction_id'))
+
+    def test_view_add_fail(self):
+        """Test adding an invalid transaction"""
+        summary = 'Supplies'
+        amount = -100.00
+        date = datetime.date.today()
+        description = 'Getting things done'
+        debit_json = self.account1.jsonify()
+        credit_json = self.account2.jsonify()
+        rv = self.open_with_auth(
+            "/transactions/",
+            "POST",
+            self.username,
+            self.password,
+            data=dict(
+                debit=debit_json.get('account_id'),
+                credit=credit_json.get('account_id'),
+                amount=amount,
+                summary=summary,
+                date=date,
+                description=description
+            )
+        )
+        self.assertEqual(200, rv.status_code)
+        self.assertIn('errors', rv.data)
+
+    def test_view_delete(self):
+        """Test deleting transaction"""
+        transaction1 = Transaction(
+            self.account1.account_id,
+            self.account2.account_id,
+            100.00,
+            'Bonus',
+            datetime.date.today()
+        )
+        db_session.add(transaction1)
+        db_session.commit()
+        rv = self.open_with_auth(
+            "/transactions/%s" % transaction1.transaction_id,
+            "DELETE",
+            self.username,
+            self.password
+        )
+        self.assertEqual(200, rv.status_code)
+
+        # attempt to get the transaction
+        rv = self.open_with_auth(
+            "/transactions/%s" % transaction1.transaction_id,
+            "GET",
+            self.username,
+            self.password
+        )
+        self.assertEqual(404, rv.status_code)
+
+    def test_view_delete_fail(self):
+        """Test deleting a non existant transaction"""
+        rv = self.open_with_auth(
+            "/transactions/999",
+            "DELETE",
+            self.username,
+            self.password
+        )
+        self.assertEqual(404, rv.status_code)
+
+    def test_view_update(self):
+        """Test updating an transaction"""
+        description = 'Something witty here'
+        transaction_id = self.transaction.transaction_id
+        rv = self.open_with_auth(
+            "/transactions/%s" % transaction_id,
+            "PUT",
+            self.username,
+            self.password,
+            data=dict(
+                debit=self.transaction.account_debit_id,
+                credit=self.transaction.account_credit_id,
+                amount=self.transaction.amount,
+                summary=self.transaction.summary,
+                date=self.transaction.date,
+                description=description,
+            )
+        )
+        self.assertEqual(200, rv.status_code)
+        self.assertIn('Success', rv.data)
+
+        rv = self.open_with_auth(
+            "/transactions/%s" % transaction_id,
+            "GET",
+            self.username,
+            self.password,
+        )
+
+        self.assertEqual(200, rv.status_code)
+        trx_get = json.loads(rv.data)
+        self.assertEqual(description, trx_get.get('description'))
 
 
 test_cases = [

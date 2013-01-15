@@ -130,6 +130,16 @@ class AccountViewTestCase(BaseViewTestCase):
         )
         self.assertEqual(404, rv.status_code)
 
+    def test_view_delete_fail(self):
+        """Test deleting a non existant account"""
+        rv = self.open_with_auth(
+            "/accounts/999",
+            "DELETE",
+            self.username,
+            self.password
+        )
+        self.assertEqual(404, rv.status_code)
+
     def test_view_update(self):
         """Test updating an account"""
         name = 'Entertainment'

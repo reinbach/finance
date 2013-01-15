@@ -53,12 +53,35 @@ class TransactionAPI(MethodView):
             STATS.validation += 1
             return jsonify({"errors": form.errors})
 
-        pass
-
     def delete(self, transaction_id):
-        # delete Transaction
-        pass
+        with STATS.delete_transaction.time():
+            # delete a single transaction
+            trx = Transaction.query.get(transaction_id)
+            if trx is None:
+                STATS.notfound += 1
+                return abort(404)
+            db_session.delete(trx)
+            db_session.commit()
+            STATS.success += 1
+            return jsonify({"message": "Successfully deleted transaction"})
 
-    def put(self, Transaction_id):
-        # update transaction
-        pass
+    def put(self, transaction_id):
+        with STATS.update_transaction.time():
+            # update a single transaction
+            form = TransactionForm(request.form)
+            if form.validate():
+                trx = Transaction.query.get(transaction_id)
+                trx.account_debit_id = form.debit.data
+                trx.account_credit_id = form.credit.data
+                trx.amount = form.amount.data
+                trx.summary_id = form.summary.data
+                trx.date = form.date.data
+                trx.description = form.description.data
+                db_session.add(trx)
+                db_session.commit()
+                STATS.success += 1
+                return jsonify({
+                    'message': 'Successfully updated Transaction'
+                })
+            STATS.validation += 1
+            return jsonify({'errors': form.errors})
