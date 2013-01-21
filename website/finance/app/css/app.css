@@ -5,12 +5,7 @@ body {
     background-color: #F5F5F5;
 }
 
-.navbar .brand {
-    color: #fff;
-    text-shadow: 0 1px 0 #777;
-}
-
-.footer, .navbar div {
+.footer, .navbar.navbar-inverse div {
     background-image: url("../img/concrete_wall.png");
 }
 
