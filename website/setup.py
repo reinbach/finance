@@ -2,15 +2,12 @@
 from setuptools import setup
 
 requires = [
-    'Django==1.4.3',
-    'psycopg2==2.4.5',
-    'Jinja2==2.6',
-    'Coffin==0.3.7',
+    'Werkzeug==0.8.3',
     'Fabric==1.5.1',
 ]
 
 setup(
-    name='Finance',
+    name='Finance Web Application',
     version='1.0',
     description='Website tracking accounts',
     author='Greg Reinbach',
