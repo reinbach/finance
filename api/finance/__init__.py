@@ -29,7 +29,9 @@ def login():
             session['logged_in'] = True
             return jsonify({'message': 'Successfully logged in.'})
         else:
-            return jsonify({'message': 'Invalid username/password.'})
+            resp = jsonify({'message': 'Invalid username/password.'})
+            resp.status_code = 401
+            return resp
     return jsonify(form.errors)
 
 @app.route("/logout")

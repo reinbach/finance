@@ -54,6 +54,12 @@ class GeneralViewTestCase(BaseViewTestCase):
         rv = self.app.get("/accounts/")
         self.assertEqual(200, rv.status_code)
 
+    def test_login_fail(self):
+        """Test logging in with invalid credentials"""
+        rv = self.login('boo', 'hoo')
+        self.assertEqual(401, rv.status_code)
+        self.assertIn('Invalid', json.loads(rv.data).get('message'))
+
     def test_logout(self):
         """Test logging out"""
         rv = self.logout()
