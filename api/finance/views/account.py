@@ -46,7 +46,9 @@ class AccountAPI(MethodView):
                     'account_id': acct.account_id
                 })
             STATS.validation += 1
-            return jsonify({"errors": form.errors})
+            resp = jsonify({"errors": form.errors})
+            resp.status_code = 400
+            return resp
 
     def delete(self, account_id):
         with STATS.delete_account.time():
@@ -76,4 +78,6 @@ class AccountAPI(MethodView):
                     'message': 'Successfully updated Account'
                 })
             STATS.validation += 1
-            return jsonify({'errors': form.errors})
+            resp = jsonify({'errors': form.errors})
+            resp.status_code = 400
+            return resp

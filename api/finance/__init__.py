@@ -31,9 +31,11 @@ def login():
             return jsonify({'message': 'Successfully logged in.'})
         else:
             resp = jsonify({'message': 'Invalid username/password.'})
-            resp.status_code = 401
+            resp.status_code = 400
             return resp
-    return jsonify(form.errors)
+    resp = jsonify(form.errors)
+    resp.status_code = 400
+    return resp
 
 @app.route("/logout")
 @utils.crossdomain(origin='*', headers='origin, x-requested-with, content-type, accept')

@@ -51,7 +51,9 @@ class TransactionAPI(MethodView):
                     'transaction_id': trx.transaction_id
                 })
             STATS.validation += 1
-            return jsonify({"errors": form.errors})
+            resp = jsonify({"errors": form.errors})
+            resp.status_code = 400
+            return resp
 
     def delete(self, transaction_id):
         with STATS.delete_transaction.time():
@@ -84,4 +86,6 @@ class TransactionAPI(MethodView):
                     'message': 'Successfully updated Transaction'
                 })
             STATS.validation += 1
-            return jsonify({'errors': form.errors})
+            resp = jsonify({'errors': form.errors})
+            resp.status_code = 400
+            return resp

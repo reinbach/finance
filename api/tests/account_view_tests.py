@@ -105,7 +105,7 @@ class AccountViewTestCase(BaseViewTestCase):
                 description=description
             )
         )
-        self.assertEqual(200, rv.status_code)
+        self.assertEqual(400, rv.status_code)
         self.assertIn('errors', rv.data)
 
     def test_view_delete(self):
