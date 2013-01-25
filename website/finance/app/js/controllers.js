@@ -3,21 +3,21 @@
 /* Controllers */
 
 
-function FinanceCtrlLogin($scope, $http, $location) {
-    $scope.response = "";
-    $scope.login = function() {
-        $scope.response = "";
-        $http.post('http://localhost:5000/login', $scope.user).
+function FinanceCtrlLogin(scope, http, location, api_url) {
+    scope.response = "";
+    scope.login = function() {
+        scope.response = "";
+        http.post(api_url + '/login', scope.user).
             success(function(data){
                 // redirect to accounts page
-                $location.path("/accounts");
+                location.path("/accounts");
             }).
             error(function(data){
-                $scope.response = data.message;
+                scope.response = data.message;
             });
     }
 }
-//FinanceCtrlLogin.$inject = ['$scope', '$http'];
+FinanceCtrlLogin.$inject = ['$scope', '$http', '$location', 'api_url'];
 
 
 function FinanceCtrlAccounts() {
