@@ -74,7 +74,7 @@ class TransactionViewTestCase(BaseViewTestCase):
         """Test adding a transaction"""
         summary = 'Supplies'
         amount = 100.00
-        date = datetime.date.today()
+        date = datetime.date.today().strftime("%Y-%m-%d")
         description = 'Getting things done'
         debit_json = self.account1.jsonify()
         credit_json = self.account2.jsonify()
@@ -112,7 +112,7 @@ class TransactionViewTestCase(BaseViewTestCase):
         self.assertEqual(credit_json.get('account_id'), trx_get.get('account_credit_id'))
         self.assertEqual(summary, trx_get.get('summary'))
         self.assertEqual(amount, trx_get.get('amount'))
-        self.assertEqual(date.strftime("%Y-%m-%d"), trx_get.get('date'))
+        self.assertEqual(date, trx_get.get('date'))
         self.assertEqual(description, trx_get.get('description'))
         self.assertEqual(trx.get('transaction_id'), trx_get.get('transaction_id'))
 
@@ -120,7 +120,7 @@ class TransactionViewTestCase(BaseViewTestCase):
         """Test adding an invalid transaction"""
         summary = 'Supplies'
         amount = -100.00
-        date = datetime.date.today()
+        date = datetime.date.today().strftime("%Y-%m-%d")
         description = 'Getting things done'
         debit_json = self.account1.jsonify()
         credit_json = self.account2.jsonify()
@@ -148,7 +148,7 @@ class TransactionViewTestCase(BaseViewTestCase):
             self.account2.account_id,
             100.00,
             'Bonus',
-            datetime.date.today()
+            datetime.date.today().strftime("%Y-%m-%d")
         )
         db_session.add(transaction1)
         db_session.commit()
@@ -193,7 +193,7 @@ class TransactionViewTestCase(BaseViewTestCase):
                 credit=self.transaction.account_credit_id,
                 amount=self.transaction.amount,
                 summary=self.transaction.summary,
-                date=self.transaction.date,
+                date=self.transaction.date.strftime("%Y-%m-%d"),
                 description=description,
             )
         )

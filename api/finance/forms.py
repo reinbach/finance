@@ -1,10 +1,26 @@
-from wtforms import Form, DateField, DecimalField, IntegerField, TextField, validators
+import json
 
-class UserForm(Form):
+from wtforms import Form, DateField, DecimalField, IntegerField, TextField, validators
+from werkzeug.datastructures import MultiDict
+
+class BaseForm(Form):
+    """Base Form Class
+
+    We are not expecting to make use of request.form, but
+    rather the request.data and we need to massage the data
+    into a MultiDict format for things to work nicely
+
+    We are only expecting a data param
+    """
+    def __init__(self, data):
+        data = MultiDict(json.loads(data))
+        super(BaseForm, self).__init__(data)
+
+class UserForm(BaseForm):
     username = TextField('Username', [validators.Required()])
     password = TextField('Password', [validators.Required()])
 
-class AccountForm(Form):
+class AccountForm(BaseForm):
     name = TextField(
         'Name',
         [validators.Length(min=4, max=50), validators.Required()]
@@ -15,7 +31,7 @@ class AccountForm(Form):
     )
     description = TextField('Description', [validators.Length(min=0, max=250)])
 
-class TransactionForm(Form):
+class TransactionForm(BaseForm):
     debit = IntegerField('Debit', [validators.Required()])
     credit = IntegerField('Credit', [validators.Required()])
     amount = DecimalField(

@@ -21,9 +21,10 @@ def version():
     return jsonify({"version": "0.1"})
 
 @app.route("/login", methods=['POST'])
+@utils.crossdomain(origin='*', headers='origin, x-requested-with, content-type, accept')
 def login():
     """Log user in"""
-    form = UserForm(request.form)
+    form = UserForm(request.data)
     if form.validate():
         if utils.check_auth(form.username.data, form.password.data):
             session['logged_in'] = True
@@ -35,6 +36,7 @@ def login():
     return jsonify(form.errors)
 
 @app.route("/logout")
+@utils.crossdomain(origin='*', headers='origin, x-requested-with, content-type, accept')
 def logout():
     session.pop("username", None)
     return jsonify({'message': 'Successfully logged out.'})

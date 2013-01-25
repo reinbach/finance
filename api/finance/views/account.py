@@ -31,7 +31,7 @@ class AccountAPI(MethodView):
     def post(self):
         with STATS.add_account.time():
             # create a new account
-            form = AccountForm(request.form)
+            form = AccountForm(request.data)
             if form.validate():
                 acct = Account(
                     form.name.data,
@@ -63,7 +63,7 @@ class AccountAPI(MethodView):
     def put(self, account_id):
         with STATS.update_account.time():
             # update a single account
-            form = AccountForm(request.form)
+            form = AccountForm(request.data)
             if form.validate():
                 acct = Account.query.get(account_id)
                 acct.name = form.name.data

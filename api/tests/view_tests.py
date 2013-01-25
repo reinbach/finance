@@ -30,15 +30,22 @@ class BaseViewTestCase(unittest.TestCase):
                     username + ":" + password
                 )
             },
-            data=data,
-            follow_redirects=True
+            data=json.dumps(data),
+            follow_redirects=True,
+            content_type='application/json'
         )
 
     def login(self, username, password):
-        return self.app.post("/login", data=dict(
-            username=username,
-            password=password
-        ), follow_redirects=True)
+        data = {
+            'username': username,
+            'password': password
+        }
+        return self.app.post(
+            "/login",
+            data=json.dumps(data),
+            follow_redirects=True,
+            content_type='application/json'
+        )
 
     def logout(self):
         return self.app.get("/logout", follow_redirects=True)

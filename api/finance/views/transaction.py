@@ -33,7 +33,7 @@ class TransactionAPI(MethodView):
     def post(self):
         with STATS.add_transaction.time():
             # create a new trasnsaction
-            form = TransactionForm(request.form)
+            form = TransactionForm(request.data)
             if form.validate():
                 trx = Transaction(
                     form.debit.data,
@@ -68,7 +68,7 @@ class TransactionAPI(MethodView):
     def put(self, transaction_id):
         with STATS.update_transaction.time():
             # update a single transaction
-            form = TransactionForm(request.form)
+            form = TransactionForm(request.data)
             if form.validate():
                 trx = Transaction.query.get(transaction_id)
                 trx.account_debit_id = form.debit.data
