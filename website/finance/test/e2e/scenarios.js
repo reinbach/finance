@@ -27,6 +27,13 @@ describe('Finance App', function() {
                 toBe('disabled');
         });
 
+        it('should focus on the username input field initially', function() {
+            expect(element('[ng-view] input:text').attr('focus')).
+                toBe("");
+            expect(element('[ng-view] input:password').attr('focus')).
+                toBe(undefined);
+        });
+
         it('should enable submit button once username and password fields have values', function() {
             input('user.username').enter('admin');
             expect(element('[ng-view] button').attr('disabled')).

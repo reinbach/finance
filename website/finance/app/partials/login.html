@@ -6,7 +6,7 @@
       <span ng-model="response">{{ response }}</span>
     </div>
     <form name="loginForm" novalidate accept-charset="utf-8">
-      <input type="text" ng-model="user.username" class="span4" required placeholder="Username">
+      <input type="text" ng-model="user.username" focus class="span4" required placeholder="Username">
       <input type="password" ng-model="user.password" class="span4" required placeholder="Password">
       <button ng-click="login()" ng-disabled="loginForm.$invalid" class="btn btn-info btn-block">Sign in</button>
     </form>
