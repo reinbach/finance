@@ -27,6 +27,25 @@ describe('Finance App', function() {
                 toBe('disabled');
         });
 
+        it('should enable submit button once username and password fields have values', function() {
+            input('user.username').enter('admin');
+            expect(element('[ng-view] button').attr('disabled')).
+                toBe('disabled');
+            input('user.password').enter('secret');
+            expect(element('[ng-view] button').attr('disabled')).
+                toBe(undefined);
+            input('user.username').enter('');
+            expect(element('[ng-view] button').attr('disabled')).
+                toBe('disabled');
+        });
+
+        it('should redirect to accounts view on successful login', function() {
+            input('user.username').enter('admin');
+            input('user.password').enter('secret');
+            element('[ng-view] button').click();
+            expect(browser().location().url()).toBe('/accounts');
+        });
+
     });
 
 
