@@ -9,7 +9,13 @@ from finance.stats import STATS
 class AccountAPI(MethodView):
     """Account Views"""
 
-    decorators = [utils.requires_auth]
+    decorators = [
+        utils.requires_auth,
+        utils.crossdomain(
+            origin='*',
+            headers='origin, x-requested-with, content-type, accept'
+        ),
+    ]
 
     def get(self, account_id):
         if account_id is None:

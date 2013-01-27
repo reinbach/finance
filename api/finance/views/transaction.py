@@ -9,7 +9,13 @@ from finance.stats import STATS
 class TransactionAPI(MethodView):
     """Transaction Views"""
 
-    decorators = [utils.requires_auth]
+    decorators = [
+        utils.requires_auth,
+        utils.crossdomain(
+            origin='*',
+            headers='origin, x-requested-with, content-type, accept'
+        ),
+    ]
 
     def get(self, transaction_id):
         if transaction_id is None:

@@ -27,9 +27,10 @@ def requires_auth(f):
     """
     @wraps(f)
     def decorator(*args, **kwargs):
-        auth = request.authorization
-        if (not auth or not check_auth(auth.username, auth.password)) and 'logged_in' not in session:
-            return authenticate()
+        if request.method != 'OPTIONS':
+            auth = request.authorization
+            if (not auth or not check_auth(auth.username, auth.password)) and 'logged_in' not in session:
+                return authenticate()
         return f(*args, **kwargs)
     return decorator
 
@@ -48,7 +49,7 @@ def register_api(app, view, endpoint, url, pk='id', pk_type='int'):
         methods=['POST',]
     )
     app.add_url_rule(
-        "{url}<{pk_type}:{pk}>".format(url=url, pk_type=pk_type, pk=pk),
+        "{url}/<{pk_type}:{pk}>".format(url=url, pk_type=pk_type, pk=pk),
         view_func=view_func,
         methods=['GET', 'PUT', 'DELETE']
     )
