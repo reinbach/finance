@@ -1,5 +1,7 @@
 <div class="row">
   <div class="span12">
-    <p>List of accounts goes here...</p>
+    <ul class="accounts">
+      <li ng-repeat="account in accounts | filter:query">{{ account }}</li>
+    </ul>
   </div>
 </div>

@@ -7,7 +7,7 @@ function FinanceCtrlLogin(scope, http, location, api_url) {
     scope.response = "";
     scope.login = function() {
         scope.response = "";
-        http.post(api_url + '/login', scope.user).
+        http.post(api_url.replace('\\', '') + '/login', scope.user).
             success(function(data){
                 // redirect to accounts page
                 location.path("/accounts");
@@ -20,6 +20,7 @@ function FinanceCtrlLogin(scope, http, location, api_url) {
 FinanceCtrlLogin.$inject = ['$scope', '$http', '$location', 'api_url'];
 
 
-function FinanceCtrlAccounts() {
+function FinanceCtrlAccounts(scope, AccountService) {
+    scope.accounts = AccountService.query();
 }
-FinanceCtrlAccounts.$inject = [];
+FinanceCtrlAccounts.$inject = ['$scope', 'Account'];
