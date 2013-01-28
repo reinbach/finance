@@ -32,13 +32,13 @@ class TransactionViewTestCase(BaseViewTestCase):
 
     def test_view_auth_required(self):
         """Test that authentication is required"""
-        rv = self.app.get("/transactions/")
+        rv = self.app.get("/transactions")
         self.assertEqual(401, rv.status_code)
 
     def test_view_all(self):
         """Test viewing all transactions"""
         rv = self.open_with_auth(
-            "/transactions/",
+            "/transactions",
             'GET',
             self.username,
             self.password
@@ -79,7 +79,7 @@ class TransactionViewTestCase(BaseViewTestCase):
         debit_json = self.account1.jsonify()
         credit_json = self.account2.jsonify()
         rv = self.open_with_auth(
-            "/transactions/",
+            "/transactions",
             "POST",
             self.username,
             self.password,
@@ -125,7 +125,7 @@ class TransactionViewTestCase(BaseViewTestCase):
         debit_json = self.account1.jsonify()
         credit_json = self.account2.jsonify()
         rv = self.open_with_auth(
-            "/transactions/",
+            "/transactions",
             "POST",
             self.username,
             self.password,

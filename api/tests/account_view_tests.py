@@ -17,13 +17,13 @@ class AccountViewTestCase(BaseViewTestCase):
 
     def test_view_auth_required(self):
         """Test that authentication is required"""
-        rv = self.app.get("/accounts/")
+        rv = self.app.get("/accounts")
         self.assertEqual(401, rv.status_code)
 
     def test_view_all(self):
         """Test viewing all accounts"""
         rv = self.open_with_auth(
-            "/accounts/",
+            "/accounts",
             'GET',
             self.username,
             self.password
@@ -61,7 +61,7 @@ class AccountViewTestCase(BaseViewTestCase):
         account_type = 'Expense'
         description = 'Getting things done'
         rv = self.open_with_auth(
-            "/accounts/",
+            "/accounts",
             "POST",
             self.username,
             self.password,
@@ -95,7 +95,7 @@ class AccountViewTestCase(BaseViewTestCase):
         account_type = 'Exp'
         description = 'Getting things done'
         rv = self.open_with_auth(
-            "/accounts/",
+            "/accounts",
             "POST",
             self.username,
             self.password,

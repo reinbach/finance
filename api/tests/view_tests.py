@@ -58,7 +58,7 @@ class GeneralViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         self.assertIn("Success", json.loads(rv.data).get('message'))
 
-        rv = self.app.get("/accounts/")
+        rv = self.app.get("/accounts")
         self.assertEqual(200, rv.status_code)
 
     def test_login_fail(self):
@@ -73,7 +73,7 @@ class GeneralViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         self.assertIn('Success', json.loads(rv.data).get('message'))
 
-        rv = self.app.get("/accounts/")
+        rv = self.app.get("/accounts")
         self.assertEqual(401, rv.status_code)
 
 test_cases = [
