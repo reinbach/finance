@@ -4,9 +4,11 @@ import config, utils
 
 from finance.database import get_db_session
 from finance.forms import UserForm
+from finance.utils import Auth
 
 app = Flask(__name__)
 app.config.from_object(config)
+app.auth = Auth()
 
 db_session = get_db_session()
 
@@ -27,8 +29,10 @@ def login():
     form = UserForm(request.data)
     if form.validate():
         if utils.check_auth(form.username.data, form.password.data):
-            session['logged_in'] = True
-            return jsonify({'message': 'Successfully logged in.'})
+            return jsonify({
+                'auth_token': app.auth.set_token(),
+                'message': 'Successfully logged in.'
+            })
         else:
             resp = jsonify({'message': 'Invalid username/password.'})
             resp.status_code = 400
@@ -40,7 +44,7 @@ def login():
 @app.route("/logout")
 @utils.crossdomain(origin='*', headers='origin, x-requested-with, content-type, accept')
 def logout():
-    session.pop("username", None)
+    app.auth.remove_token(request.headers.get('Auth-Token'))
     return jsonify({'message': 'Successfully logged out.'})
 
 @app.teardown_request

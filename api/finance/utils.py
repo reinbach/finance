@@ -1,7 +1,49 @@
+import datetime
+import uuid
+
 from datetime import timedelta
 from functools import wraps, update_wrapper
 
-from flask import current_app, jsonify, make_response, request, session
+from flask import current_app, jsonify, make_response, request
+
+class Auth(object):
+    """Simple handler for auth tokens"""
+    auth_tokens = {}
+
+    def generate_token(self):
+        return str(uuid.uuid4())
+
+    def generate_expiration(self):
+        return datetime.datetime.now() + datetime.timedelta(minutes=30)
+
+    def set_token(self, token=None):
+        if token is None:
+            token = self.generate_token()
+        self.auth_tokens[token] = self.generate_expiration()
+        return token
+
+    def valid_token(self, token):
+        """Check is token is still valid
+
+        If token is still live, update expiration
+        otherwise remove it
+        """
+        if token in self.auth_tokens:
+            if datetime.datetime.now() < self.auth_tokens[token]:
+                self.auth_tokens[token] = self.generate_expiration()
+                return True
+            self.remove_token(token)
+        return False
+
+    def remove_token(self, token):
+        if self.valid_token(token):
+            self.auth_tokens.pop(token)
+        # need to periodically clean out auth tokens that
+        # have expired
+        for token, expiration in self.auth_tokens.iteritems():
+            if expiration < datetime.datetime.now():
+                self.auth_tokens.pop(token)
+
 
 def check_auth(username, password):
     """Check is username password combination is valid"""
@@ -25,11 +67,19 @@ def requires_auth(f):
     User able to have been logged in already and have session variable
     Or user is passing in authorization information
     """
+    def valid_auth(request):
+        auth = request.authorization
+        if auth and check_auth(auth.username, auth.password):
+            return True
+        if 'Auth-Token' in request.headers:
+            if current_app.auth.valid_token(request.headers.get('Auth-Token')):
+                return True
+        return False
+
     @wraps(f)
     def decorator(*args, **kwargs):
         if request.method != 'OPTIONS':
-            auth = request.authorization
-            if (not auth or not check_auth(auth.username, auth.password)) and 'logged_in' not in session:
+            if not valid_auth(request):
                 return authenticate()
         return f(*args, **kwargs)
     return decorator

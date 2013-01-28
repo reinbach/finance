@@ -47,8 +47,15 @@ class BaseViewTestCase(unittest.TestCase):
             content_type='application/json'
         )
 
-    def logout(self):
-        return self.app.get("/logout", follow_redirects=True)
+    def logout(self, auth_token=None):
+        return self.app.open(
+            "/logout",
+            'GET',
+            headers={
+                'Auth-Token': auth_token
+            },
+            follow_redirects=True
+        )
 
 class GeneralViewTestCase(BaseViewTestCase):
 
@@ -56,10 +63,27 @@ class GeneralViewTestCase(BaseViewTestCase):
         """Test logging in """
         rv = self.login(self.username, self.password)
         self.assertEqual(200, rv.status_code)
-        self.assertIn("Success", json.loads(rv.data).get('message'))
+        res = json.loads(rv.data)
+        self.assertIn("Success", res.get('message'))
+        self.assertTrue('auth_token' in res)
 
-        rv = self.app.get("/accounts")
+        rv = self.app.open(
+            "/accounts",
+            'GET',
+            headers={
+                'Auth-Token': res.get('auth_token')
+            }
+        )
         self.assertEqual(200, rv.status_code)
+
+        rv = self.app.open(
+            "/accounts",
+            'GET',
+            headers={
+                'Auth-Token': 'random'
+            }
+        )
+        self.assertEqual(401, rv.status_code)
 
     def test_login_fail(self):
         """Test logging in with invalid credentials"""
@@ -69,11 +93,21 @@ class GeneralViewTestCase(BaseViewTestCase):
 
     def test_logout(self):
         """Test logging out"""
-        rv = self.logout()
+        rv = self.login(self.username, self.password)
+        self.assertEqual(200, rv.status_code)
+        auth_token = json.loads(rv.data).get('auth_token')
+
+        rv = self.logout(auth_token)
         self.assertEqual(200, rv.status_code)
         self.assertIn('Success', json.loads(rv.data).get('message'))
 
-        rv = self.app.get("/accounts")
+        rv = self.app.open(
+            "/accounts",
+            'GET',
+            headers={
+                'Auth-Token': auth_token
+            }
+        )
         self.assertEqual(401, rv.status_code)
 
 test_cases = [
