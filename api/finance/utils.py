@@ -71,8 +71,8 @@ def requires_auth(f):
         auth = request.authorization
         if auth and check_auth(auth.username, auth.password):
             return True
-        if 'Auth-Token' in request.headers:
-            if current_app.auth.valid_token(request.headers.get('Auth-Token')):
+        if 'AuthToken' in request.headers:
+            if current_app.auth.valid_token(request.headers.get('AuthToken')):
                 return True
         return False
 

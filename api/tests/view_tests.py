@@ -52,7 +52,7 @@ class BaseViewTestCase(unittest.TestCase):
             "/logout",
             'GET',
             headers={
-                'Auth-Token': auth_token
+                'AuthToken': auth_token
             },
             follow_redirects=True
         )
@@ -71,7 +71,7 @@ class GeneralViewTestCase(BaseViewTestCase):
             "/accounts",
             'GET',
             headers={
-                'Auth-Token': res.get('auth_token')
+                'AuthToken': res.get('auth_token')
             }
         )
         self.assertEqual(200, rv.status_code)
@@ -80,7 +80,7 @@ class GeneralViewTestCase(BaseViewTestCase):
             "/accounts",
             'GET',
             headers={
-                'Auth-Token': 'random'
+                'AuthToken': 'random'
             }
         )
         self.assertEqual(401, rv.status_code)
@@ -105,7 +105,7 @@ class GeneralViewTestCase(BaseViewTestCase):
             "/accounts",
             'GET',
             headers={
-                'Auth-Token': auth_token
+                'AuthToken': auth_token
             }
         )
         self.assertEqual(401, rv.status_code)

@@ -13,7 +13,7 @@ class AccountAPI(MethodView):
         utils.requires_auth,
         utils.crossdomain(
             origin='*',
-            headers='origin, x-requested-with, content-type, accept'
+            headers='origin, x-requested-with, content-type, accept, authtoken'
         ),
     ]
 
