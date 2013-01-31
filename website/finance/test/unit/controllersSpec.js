@@ -3,17 +3,19 @@
 /* jasmine specs for controllers go here */
 
 describe('FinanceCtrlLogin controllers', function(){
-    var ctrl, scope, $httpBackend;
+    var ctrl, scope, $httpBackend, tokenHandler;
     var api_url = "";
 
     beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
+        tokenHandler = {set: jasmine.createSpy()};
+
         $httpBackend = _$httpBackend_;
         $httpBackend.whenPOST('/login', {username:'admin', password:'wrong'}).
             respond(400, {'message': 'Invalid username/password.'});
         $httpBackend.whenPOST('/login', {username:'admin', password:'correct'}).
             respond(200, {'message': 'Invalid username/password.'});
         scope = $rootScope.$new();
-        ctrl = $controller(FinanceCtrlLogin, {$scope: scope, api_url: api_url});
+        ctrl = $controller(FinanceCtrlLogin, {$scope: scope, tokenHandler: tokenHandler, api_url: api_url});
     }));
 
 
