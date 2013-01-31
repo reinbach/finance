@@ -5,7 +5,7 @@
 angular.module('financeApp', ['financeApp.filters', 'financeApp.services', 'financeApp.directives']).
     constant('api_url', 'http://localhost\\:5000').
     config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: FinanceCtrlLogin});
+        $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: FinanceCtrlLogin, secure: true});
         $routeProvider.when('/accounts', {templateUrl: 'partials/accounts.html', controller: FinanceCtrlAccounts});
         $routeProvider.otherwise({redirectTo: '/login'});
     }]).

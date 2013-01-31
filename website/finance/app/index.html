@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="financeApp">
+<html lang="en" ng-app="financeApp" ng-controller="financeCtrl">
 <head>
   <meta charset="utf-8">
   <title>Finance App</title>
@@ -12,9 +12,13 @@
     <div class="navbar-inner">
       <div class="container">
 	<a class="brand" href="/">Finance App</a>
-        <ul class="nav">
+        <ul class="nav" ng-hide="secure">
           <li><a href="#/accounts">Accounts</a></li>
         </ul>
+        <ul class="nav pull-right" ng-hide="secure">
+          <li><a href="#/logout">Logout</a></li>
+        </ul>
+        <div ng-model="secure"></div>
       </div>
     </div>
   </div>
