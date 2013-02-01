@@ -41,15 +41,18 @@ describe('FinanceCtrlLogin controllers', function(){
 
 
 describe('FinanceCtrlAccounts', function(){
-  var financeCtrlAccounts;
+    var financeCtrlAccounts, scope;
+    var AccountService;
+
+    beforeEach(inject(function($rootScope){
+      AccountService = {query: jasmine.createSpy()};
+        scope = $rootScope.$new();
+
+      financeCtrlAccounts = new FinanceCtrlAccounts(scope, AccountService);
+    }));
 
 
-  beforeEach(function(){
-    financeCtrlAccounts = new FinanceCtrlAccounts();
-  });
-
-
-  it('should ....', function() {
-    //spec body
-  });
+    it('should ....', function() {
+        //spec body
+    });
 });
