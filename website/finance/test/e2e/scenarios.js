@@ -59,13 +59,20 @@ describe('Finance App', function() {
     describe('accounts', function() {
 
         beforeEach(function() {
+            browser().navigateTo('#/login');
+            input('user.username').enter('admin');
+            input('user.password').enter('secret');
+            element('[ng-view] button').click();
             browser().navigateTo('#/accounts');
         });
 
+        it('should be at accounts view', function() {
+            expect(browser().location().url()).toBe('/accounts');
+        });
 
         it('should render accounts when user navigates to /accounts', function() {
-            expect(element('[ng-view] p:first').text()).
-                toMatch(/List of accounts goes here.../);
+            expect(element('[ng-view] h1').text()).
+                toBe('Accounts');
         });
 
     });
