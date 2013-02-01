@@ -2,12 +2,17 @@
 
 /* Controllers */
 
-function financeCtrl($scope, $rootScope, $location) {
+function financeCtrl($scope, $rootScope, $http, tokenHandler, api_url) {
     $rootScope.$on('$routeChangeSuccess', function(event, routeData) {
         if (routeData.$route) {
             $scope.secure = routeData.$route.secure;
         }
     });
+
+    $scope.logout = function() {
+        tokenHandler.token = "none";
+        $http.get(api_url.replace('\\', '') + '/logout');
+    }
 }
 
 function FinanceCtrlLogin(scope, http, location, tokenHandler, api_url) {
