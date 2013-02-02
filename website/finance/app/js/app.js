@@ -7,6 +7,7 @@ angular.module('financeApp', ['financeApp.filters', 'financeApp.services', 'fina
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: FinanceCtrlLogin, secure: true});
         $routeProvider.when('/accounts', {templateUrl: 'partials/accounts.html', controller: FinanceCtrlAccounts});
+        $routeProvider.when('/accounts/add', {templateUrl: 'partials/accounts_add.html', controller: FinanceCtrlAccountsAdd});
         $routeProvider.otherwise({redirectTo: '/login'});
     }]).
     config(function($httpProvider) {

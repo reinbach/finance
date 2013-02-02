@@ -13,7 +13,13 @@
       <div class="container">
 	<a class="brand" href="/">Finance App</a>
         <ul class="nav" ng-hide="secure">
-          <li><a href="#/accounts">Accounts</a></li>
+          <li>
+            <a class="dropdown-toggle" href="#/accounts">Accounts <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#/accounts">Summary</a></li>
+              <li><a href="#/accounts/add">Add Account</a></li>
+            </ul>
+          </li>
         </ul>
         <ul class="nav pull-right" ng-hide="secure">
           <li><a href="#/logout" ng-click="logout()">Logout</a></li>

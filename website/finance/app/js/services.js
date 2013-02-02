@@ -19,6 +19,7 @@ angular.module('financeApp.services', ['ngResource']).
     }]).
     factory('Account', ['$resource', 'api_url',  function($resource, api_url) {
         return $resource(api_url + '/accounts/:accountId', {}, {
-            query: {method: 'GET', params: {accountId: ''}, isArray: true}
+            query: {method: 'GET', isArray: true},
+            save: {method: 'POST'}
         });
     }]);

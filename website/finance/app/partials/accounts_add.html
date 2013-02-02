@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="span12">
+    <div class="page-header">
+      <h1>Add Account</h1>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span4">
+    <div class="alert alert-error" ng-show="response">
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <span ng-model="response">{{ response }}</span>
+    </div>
+    <form name="accountAddForm" novalidate accept-charset="utf-8">
+      <input type="text" ng-model="account.name" focus class="span4" required placeholder="Name">
+      <select ng-model="account.account_type" required>
+        <option ng-repeat="type in account_types" value="{{ type }}">{{ type }}</option>
+      </select>
+      <textarea ng-model="account.description" placeholder="Description about the account"></textarea>
+      <button ng-click="add()" ng-disabled="accountAddForm.$invalid" class="btn btn-info btn-block">Save Account</button>
+    </form>
+  </div>
+</div>

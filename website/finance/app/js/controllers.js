@@ -14,6 +14,7 @@ function financeCtrl($scope, $rootScope, $http, tokenHandler, api_url) {
         $http.get(api_url.replace('\\', '') + '/logout');
     }
 }
+financeCtrl.$inject = ['$scope', '$rootScope', '$http', 'tokenHandler', 'api_url'];
 
 function FinanceCtrlLogin(scope, http, location, tokenHandler, api_url) {
     scope.response = "";
@@ -38,3 +39,14 @@ function FinanceCtrlAccounts(scope, AccountService) {
     scope.accounts = AccountService.query();
 }
 FinanceCtrlAccounts.$inject = ['$scope', 'Account'];
+
+
+function FinanceCtrlAccountsAdd(scope, AccountService) {
+    scope.account_types = [];
+    scope.add = function() {
+        newAccount = new AccountService({
+        });
+        newAccount.$save();
+    }
+}
+FinanceCtrlAccountsAdd.$inject = ['$scope', 'Account'];
