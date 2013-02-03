@@ -4,6 +4,13 @@
 
 describe('Finance App', function() {
 
+    var login = function() {
+        browser().navigateTo('#/login');
+        input('user.username').enter('admin');
+        input('user.password').enter('secret');
+        element('[ng-view] button').click();
+    }
+
     beforeEach(function() {
         browser().navigateTo('../../index.html');
     });
@@ -47,27 +54,22 @@ describe('Finance App', function() {
         });
 
         it('should redirect to accounts view on successful login', function() {
-            input('user.username').enter('admin');
-            input('user.password').enter('secret');
-            element('[ng-view] button').click();
+            login();
             expect(browser().location().url()).toBe('/accounts');
         });
 
     });
 
-
     describe('accounts', function() {
 
         beforeEach(function() {
-            browser().navigateTo('#/login');
-            input('user.username').enter('admin');
-            input('user.password').enter('secret');
-            element('[ng-view] button').click();
+            login();
             browser().navigateTo('#/accounts');
         });
 
         it('should be at accounts view', function() {
-            expect(browser().location().url()).toBe('/accounts');
+            expect(browser().location().url()).
+                toBe('/accounts');
         });
 
         it('should render accounts when user navigates to /accounts', function() {
@@ -75,5 +77,20 @@ describe('Finance App', function() {
                 toBe('Accounts');
         });
 
+    });
+
+    describe('accounts add', function() {
+        beforeEach(function() {
+            login();
+            browser().navigateTo('#/accounts');
+            browser().navigateTo('#/accounts/add');
+        });
+
+        it('should be at the accounts add view', function() {
+            expect(browser().location().url()).
+                toBe('/accounts/add');
+            expect(element('[ng-view] h1').text()).
+                toBe('Add Account');
+        });
     });
 });
