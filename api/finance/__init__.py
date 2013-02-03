@@ -12,6 +12,9 @@ app.auth = Auth()
 
 db_session = get_db_session()
 
+from finance.views.account_type import AccountTypeAPI
+utils.register_api(app, AccountTypeAPI, 'account_type_api', '/account/types', pk='account_type_id')
+
 from finance.views.account import AccountAPI
 utils.register_api(app, AccountAPI, 'account_api', '/accounts', pk='account_id')
 

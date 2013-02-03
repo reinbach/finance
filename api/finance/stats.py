@@ -7,6 +7,13 @@ STATS = scales.collection(
     scales.IntStat('errors'),
     scales.IntStat('success'),
 
+    # account types
+    scales.PmfStat('get_account_type'),
+    scales.PmfStat('all_account_types'),
+    scales.PmfStat('add_account_type'),
+    scales.PmfStat('delete_account_type'),
+    scales.PmfStat('update_account_type'),
+
     # accounts
     scales.PmfStat('get_account'),
     scales.PmfStat('all_accounts'),

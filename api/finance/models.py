@@ -34,6 +34,32 @@ users = Table(
 )
 
 
+class AccountType(object):
+    """Account Type"""
+
+    query = db_session.query_property()
+
+    def __init__(self, name=None):
+        self.name = name
+
+    def __repr__(self):
+        return '<AccountType: {name}>'.format(
+            name=self.name
+        )
+
+    def jsonify(self):
+        return {
+            'account_type_id': self.account_type_id,
+            'name': self.name,
+        }
+
+account_types = Table(
+    'account_types',
+    metadata,
+    Column('account_type_id', Integer, primary_key=True),
+    Column('name', String(20), unique=True),
+)
+
 class Account(object):
     """Account
 
@@ -43,24 +69,29 @@ class Account(object):
 
     query = db_session.query_property()
 
-    def __init__(self, name=None, account_type=None, description=None):
+    def __init__(self, name=None, account_type_id=None, description=None):
         self.name = name
-        self.account_type = account_type
+        self.account_type_id = account_type_id
         self.description = description
 
     def __repr__(self):
         return '<Account: {name} [{account_type}]>'.format(
             name=self.name,
-            account_type=self.account_type
+            account_type=self.account_type.name
         )
 
     def jsonify(self):
-        return {
+        res = {
             'account_id': self.account_id,
             'name': self.name,
-            'account_type': self.account_type,
+            'account_type_id': self.account_type_id,
             'description': self.description
         }
+
+        if self.account_type is not None:
+            res['account_type'] = self.account_type.jsonify()
+
+        return res
 
     def get_total(self, trx_list):
         """Get the sum of the relevant transactions"""
@@ -79,7 +110,7 @@ accounts = Table(
     metadata,
     Column('account_id', Integer, primary_key=True),
     Column('name', String(50), unique=True),
-    Column('account_type', String(20)),
+    Column('account_type_id', Integer, ForeignKey('account_types.account_type_id')),
     Column('description', String(250)),
 )
 
@@ -149,6 +180,14 @@ transactions = Table(
 )
 
 mapper(User, users)
+
+mapper(
+    AccountType,
+    account_types,
+    properties={
+        'accounts': relationship(Account, backref='account_type')
+    }
+)
 
 mapper(
     Account,

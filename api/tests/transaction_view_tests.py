@@ -1,15 +1,17 @@
 import datetime
 import json
 
-from finance.models import Account, Transaction, db_session
+from finance.models import Account, AccountType, Transaction, db_session
 from view_tests import BaseViewTestCase
 
 class TransactionViewTestCase(BaseViewTestCase):
 
     def setUp(self):
         super(TransactionViewTestCase, self).setUp()
-        self.account1 = Account('TRX_Salary', 'Income', "Show me the money")
-        self.account2 = Account('TRX_Checking', 'Assets', "Mine mine mine")
+        self.account_type = AccountType('Income')
+        db_session.add(self.account_type)
+        self.account1 = Account('TRX_Salary', self.account_type.account_type_id, "Show me the money")
+        self.account2 = Account('TRX_Checking', self.account_type.account_type_id, "Mine mine mine")
         db_session.add(self.account1)
         db_session.add(self.account2)
         db_session.commit()
@@ -25,6 +27,7 @@ class TransactionViewTestCase(BaseViewTestCase):
         db_session.commit()
 
     def tearDown(self):
+        db_session.delete(self.account_type)
         db_session.delete(self.account1)
         db_session.delete(self.account2)
         db_session.delete(self.transaction)

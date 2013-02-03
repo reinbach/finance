@@ -3,24 +3,29 @@ import unittest
 
 from sqlalchemy.exc import IntegrityError
 
-from finance.models import Account, db_session
+from finance.models import Account, AccountType, db_session
 
 class AccountModelTestCase(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.account_type = AccountType('Income')
+        db_session.add(self.account_type)
+        db_session.commit()
 
     def tearDown(self):
+        db_session.rollback()
+        db_session.delete(self.account_type)
+        db_session.commit()
         db_session.remove()
 
-    def test_user_repr(self):
+    def test_account_repr(self):
         """Ensure __repr__ function works"""
-        a = Account('Salary', 'Income', "Show me the money")
+        a = Account('Bonus', self.account_type.account_type_id, "Show me the money")
         self.assertTrue(a)
 
     def test_account_add(self):
         """Test adding an account normaly"""
-        a = Account("Salary", "Income", "Show me the money")
+        a = Account("Salary", self.account_type.account_type_id, "Show me the money")
         self.assertEqual(a.name, "Salary")
 
         db_session.add(a)
@@ -34,7 +39,7 @@ class AccountModelTestCase(unittest.TestCase):
 
     def test_account_name_unique(self):
         """Test that account name uniqueness is maintained"""
-        a = Account("Interest", "Income", "Compound it baby")
+        a = Account("Interest", self.account_type.account_type_id, "Compound it baby")
         db_session.add(a)
         db_session.commit()
 
@@ -42,16 +47,16 @@ class AccountModelTestCase(unittest.TestCase):
             IntegrityError,
             'violates unique constraint "accounts_name_key"'
         ):
-            a2 = Account("Interest", "Expense", "No, don't charge me'")
+            a2 = Account("Interest", self.account_type.account_type_id, "No, don't charge me'")
             db_session.add(a2)
             db_session.commit()
 
     def test_account_jsonify(self):
         """Test the jsonify method"""
-        a = Account("Interest", "Income", "Compound it baby")
+        a = Account("Interest", self.account_type.account_type_id, "Compound it baby")
         self.assertEqual(dict, type(a.jsonify()))
         self.assertTrue(json.dumps(a.jsonify()))
 
 test_cases = [
-    AccountModelTestCase
+    AccountModelTestCase,
 ]

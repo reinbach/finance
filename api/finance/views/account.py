@@ -41,7 +41,7 @@ class AccountAPI(MethodView):
             if form.validate():
                 acct = Account(
                     form.name.data,
-                    form.account_type.data,
+                    form.account_type_id.data,
                     form.description.data
                 )
                 db_session.add(acct)
@@ -66,7 +66,7 @@ class AccountAPI(MethodView):
             db_session.delete(acct)
             db_session.commit()
             STATS.success += 1
-            return jsonify({"message": "Successfully deleted account"})
+            return jsonify({"message": "Successfully deleted Account"})
 
     def put(self, account_id):
         with STATS.update_account.time():
@@ -75,7 +75,7 @@ class AccountAPI(MethodView):
             if form.validate():
                 acct = Account.query.get(account_id)
                 acct.name = form.name.data
-                acct.account_type = form.account_type.data
+                acct.account_type_id = form.account_type_id.data
                 acct.description = form.description.data
                 db_session.add(acct)
                 db_session.commit()

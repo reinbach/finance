@@ -1,17 +1,21 @@
 import json
 
-from finance.models import Account, db_session
+from finance.models import Account, AccountType, db_session
 from view_tests import BaseViewTestCase
 
 class AccountViewTestCase(BaseViewTestCase):
 
     def setUp(self):
         super(AccountViewTestCase, self).setUp()
-        self.account = Account('Insurance', 'Expense', "Safety Net")
+        self.account_type = AccountType('Expense')
+        db_session.add(self.account_type)
+        db_session.commit()
+        self.account = Account('Insurance', self.account_type.account_type_id, "Safety Net")
         db_session.add(self.account)
         db_session.commit()
 
     def tearDown(self):
+        db_session.delete(self.account_type)
         db_session.delete(self.account)
         super(AccountViewTestCase, self).tearDown()
 
@@ -58,7 +62,7 @@ class AccountViewTestCase(BaseViewTestCase):
     def test_view_add(self):
         """Test adding an account"""
         name = 'Supplies'
-        account_type = 'Expense'
+        account_type_json = self.account_type.jsonify()
         description = 'Getting things done'
         rv = self.open_with_auth(
             "/accounts",
@@ -67,7 +71,7 @@ class AccountViewTestCase(BaseViewTestCase):
             self.password,
             data=dict(
                 name=name,
-                account_type=account_type,
+                account_type_id=account_type_json.get('account_type_id'),
                 description=description
             )
         )
@@ -85,7 +89,8 @@ class AccountViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         acct_get = json.loads(rv.data)
         self.assertEqual(name, acct_get.get('name'))
-        self.assertEqual(account_type, acct_get.get('account_type'))
+        self.assertEqual(account_type_json, acct_get.get('account_type'))
+        self.assertEqual(account_type_json.get('account_type_id'), acct_get.get('account_type_id'))
         self.assertEqual(description, acct_get.get('description'))
         self.assertEqual(acct.get('account_id'), acct_get.get('account_id'))
 
@@ -110,7 +115,11 @@ class AccountViewTestCase(BaseViewTestCase):
 
     def test_view_delete(self):
         """Test deleting account"""
-        account1 = Account('Entertainment', 'Expense', "Party like it's 1999'")
+        account1 = Account(
+            'Entertainment',
+            self.account_type.account_type_id,
+            "Party like it's 1999'"
+        )
         db_session.add(account1)
         db_session.commit()
         rv = self.open_with_auth(
@@ -151,7 +160,7 @@ class AccountViewTestCase(BaseViewTestCase):
             self.password,
             data=dict(
                 name=name,
-                account_type=self.account.account_type,
+                account_type_id=self.account.account_type_id,
                 description=self.account.description
             )
         )

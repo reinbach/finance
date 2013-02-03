@@ -20,14 +20,20 @@ class UserForm(BaseForm):
     username = TextField('Username', [validators.Required()])
     password = TextField('Password', [validators.Required()])
 
+class AccountTypeForm(BaseForm):
+    name = TextField(
+        'Name',
+        [validators.Length(min=4, max=50), validators.Required()]
+    )
+
 class AccountForm(BaseForm):
     name = TextField(
         'Name',
         [validators.Length(min=4, max=50), validators.Required()]
     )
-    account_type = TextField(
+    account_type_id = IntegerField(
         'Account Type',
-        [validators.Length(min=4, max=20), validators.Required()]
+        [validators.Required()]
     )
     description = TextField('Description', [validators.Length(min=0, max=250)])
 
