@@ -21,6 +21,14 @@
             </ul>
           </li>
         </ul>
+        <ul class="nav" ng-hide="secure">
+          <li>
+            <a class="dropdown-toggle" href="#/admin">Admin <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#/account/types">Account Types</a></li>
+            </ul>
+          </li>
+        </ul>
         <ul class="nav pull-right" ng-hide="secure">
           <li><a href="#/logout" ng-click="logout()">Logout</a></li>
         </ul>

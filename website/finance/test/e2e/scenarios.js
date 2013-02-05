@@ -93,4 +93,25 @@ describe('Finance App', function() {
                 toBe('Add Account');
         });
     });
+
+    describe('account_types', function() {
+
+        beforeEach(function() {
+            login();
+            browser().navigateTo('#/accounts');
+            browser().navigateTo('#/account/types');
+        });
+
+        it('should be at account types view', function() {
+            expect(browser().location().url()).
+                toBe('/account/types');
+        });
+
+        it('should render account types when user navigates to /account/types', function() {
+            expect(element('[ng-view] h1').text()).
+                toBe('Account Types');
+        });
+
+    });
+
 });

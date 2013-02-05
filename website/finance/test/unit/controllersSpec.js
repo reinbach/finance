@@ -56,3 +56,20 @@ describe('FinanceCtrlAccounts', function(){
         //spec body
     });
 });
+
+describe('FinanceCtrlAccountTypes', function(){
+    var financeCtrlAccountTypes, scope;
+    var AccountTypeService;
+
+    beforeEach(inject(function($rootScope){
+      AccountTypeService = {query: jasmine.createSpy()};
+        scope = $rootScope.$new();
+
+      financeCtrlAccountTypes = new FinanceCtrlAccountTypes(scope, AccountTypeService);
+    }));
+
+
+    it('should ....', function() {
+        //spec body
+    });
+});

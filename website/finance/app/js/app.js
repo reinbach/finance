@@ -5,9 +5,22 @@
 angular.module('financeApp', ['financeApp.filters', 'financeApp.services', 'financeApp.directives']).
     constant('api_url', 'http://localhost\\:5000').
     config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: FinanceCtrlLogin, secure: true});
-        $routeProvider.when('/accounts', {templateUrl: 'partials/accounts.html', controller: FinanceCtrlAccounts});
-        $routeProvider.when('/accounts/add', {templateUrl: 'partials/accounts_add.html', controller: FinanceCtrlAccountsAdd});
+        $routeProvider.when(
+            '/login',
+            {templateUrl: 'partials/login.html', controller: FinanceCtrlLogin, secure: true}
+        );
+        $routeProvider.when(
+            '/accounts',
+            {templateUrl: 'partials/accounts.html', controller: FinanceCtrlAccounts}
+        );
+        $routeProvider.when(
+            '/accounts/add',
+            {templateUrl: 'partials/accounts_add.html', controller: FinanceCtrlAccountsAdd}
+        );
+        $routeProvider.when(
+            '/account/types',
+            {templateUrl: 'partials/account_types.html', controller: FinanceCtrlAccountTypes}
+        );
         $routeProvider.otherwise({redirectTo: '/login'});
     }]).
     config(function($httpProvider) {
