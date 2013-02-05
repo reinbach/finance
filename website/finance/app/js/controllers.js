@@ -10,7 +10,7 @@ function financeCtrl($scope, $rootScope, $http, tokenHandler, api_url) {
     });
 
     $scope.logout = function() {
-        tokenHandler.token = "none";
+        tokenHandler.set("none");
         $http.get(api_url.replace('\\', '') + '/logout');
     }
 }

@@ -5,15 +5,25 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('financeApp.services', ['ngResource']).
+angular.module('financeApp.services', ['ngResource', 'ngCookies']).
     value('version', '0.1').
-    factory('tokenHandler', ['$http', function($http) {
+    factory('tokenHandler', ['$http', '$cookies', function($http, $cookies) {
         var tokenHandler = {};
-        var token = "none";
+        var token = $cookies.authToken || "none";
 
         tokenHandler.set = function(newToken) {
+            token = newToken;
+            $cookies.authToken = newToken;
             $http.defaults.headers.common['AuthToken'] = newToken;
         };
+
+        tokenHandler.get = function() {
+            return token;
+        }
+
+        if (token != "none") {
+            tokenHandler.set(token);
+        }
 
         return tokenHandler;
     }]).
