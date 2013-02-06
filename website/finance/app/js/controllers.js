@@ -54,11 +54,11 @@ FinanceCtrlAccountsAdd.$inject = ['$scope', 'Account'];
 function FinanceCtrlAccountTypes($scope, AccountTypeService) {
     $scope.account_types = AccountTypeService.query();
 
-    $scope.open = function() {
+    $scope.openAccountTypeAddModal = function() {
         $scope.accountTypeAdd = true;
     };
 
-    $scope.close = function() {
+    $scope.closeAccountTypeAddModal = function() {
         $scope.accountTypeAdd = false;
     };
 }
