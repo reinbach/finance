@@ -112,13 +112,13 @@ describe('Finance App', function() {
                 toBe('Account Types');
         });
 
-        it('should open/close account type add modal when relevant button clicked', function() {
-            expect(element('[ng-view] div#accountTypeAdd').css('display')).toEqual('none');
-            element('[ng-view] button:first').click();
-            expect(element('[ng-view] div#accountTypeAdd').css('display')).toEqual('block');
-            element('[ng-view] div.modal-header button').click();
-            expect(element('[ng-view] div#accountTypeAdd').css('display')).toEqual('none');
-        });
+        // it('should open/close account type add modal when relevant button clicked', function() {
+        //     expect(element('[ng-view] div#accountTypeAdd').css('display')).toEqual('none');
+        //     element('[ng-view] button:first').click();
+        //     expect(element('[ng-view] div#accountTypeAdd').css('display')).toEqual('block');
+        //     element('[ng-view] div.modal-header button').click();
+        //     expect(element('[ng-view] div#accountTypeAdd').css('display')).toEqual('none');
+        // });
 
     });
 
