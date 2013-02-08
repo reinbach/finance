@@ -66,6 +66,8 @@ function FinanceCtrlAccountTypes($scope, AccountType) {
         var newAccountType = new AccountType();
         newAccountType.name = $scope.account_type.name;
         newAccountType.$save();
+        $scope.account_types = AccountType.query();
+        $scope.closeAccountTypeAddModal();
     };
 }
 FinanceCtrlAccountTypes.$inject = ['$scope', 'AccountType'];
