@@ -179,14 +179,15 @@ transactions = Table(
     Column('date', Date),
 )
 
-mapper(User, users)
+mapper(User, users, order_by='username')
 
 mapper(
     AccountType,
     account_types,
     properties={
-        'accounts': relationship(Account, backref='account_type')
-    }
+        'accounts': relationship(Account, backref='account_type'),
+    },
+    order_by='name'
 )
 
 mapper(
@@ -195,7 +196,8 @@ mapper(
     properties={
         'debits': relationship(Transaction, backref='debit', foreign_keys=[transactions.c.account_debit_id]),
         'credits': relationship(Transaction, backref='credit', foreign_keys=[transactions.c.account_credit_id]),
-    }
+    },
+    order_by='name'
 )
 
-mapper(Transaction, transactions)
+mapper(Transaction, transactions, order_by='date')
