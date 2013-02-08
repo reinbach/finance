@@ -35,7 +35,7 @@ class AccountViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         data = json.loads(rv.data)
         acct = self.account.jsonify()
-        self.assertIn(acct, data['accounts'])
+        self.assertIn(acct, data)
 
     def test_view_account(self):
         """Test viewing a single account"""

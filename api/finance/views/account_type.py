@@ -1,4 +1,6 @@
-from flask import abort, jsonify, request
+import json
+
+from flask import abort, jsonify, request, Response
 from flask.views import MethodView
 
 from finance import db_session, utils
@@ -21,11 +23,11 @@ class AccountTypeAPI(MethodView):
         if account_type_id is None:
             with STATS.all_account_types.time():
                 # return a list of account types
-                res = {'account_types': [
+                res = [
                     acct_type.jsonify() for acct_type in AccountType.query.all()
-                ]}
+                ]
                 STATS.success += 1
-                return jsonify(res)
+                return Response(json.dumps(res), mimetype='application/json')
         else:
             with STATS.get_account_type.time():
                 # expose a single account type

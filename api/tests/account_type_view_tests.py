@@ -31,9 +31,9 @@ class AccountTypeViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         data = json.loads(rv.data)
         acct_type = self.account_type.jsonify()
-        self.assertIn(acct_type, data['account_types'])
+        self.assertIn(acct_type, data)
 
-    def test_view_account(self):
+    def test_view_account_type(self):
         """Test viewing a single account type"""
         rv = self.open_with_auth(
             "/account/types/%s" % self.account_type.account_type_id,
@@ -44,7 +44,7 @@ class AccountTypeViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         self.assertEqual(self.account_type.jsonify(), json.loads(rv.data))
 
-    def test_view_account_404(self):
+    def test_view_account_type_404(self):
         """Test viewing a non-existant account type"""
         rv = self.open_with_auth(
             "/account/types/999",

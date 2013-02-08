@@ -1,4 +1,6 @@
-from flask import abort, jsonify, request
+import json
+
+from flask import abort, jsonify, request, Response
 from flask.views import MethodView
 
 from finance import db_session, utils
@@ -22,9 +24,9 @@ class TransactionAPI(MethodView):
             # return a list of transactions
             with STATS.all_transactions.time():
                 # return a list of accounts
-                res = {'transactions': [trx.jsonify() for trx in Transaction.query.all()]}
+                res = [trx.jsonify() for trx in Transaction.query.all()]
                 STATS.success += 1
-                return jsonify(res)
+                return Response(json.dumps(res), mimetype='application/json')
         else:
             # expose transaction
             with STATS.get_transaction.time():

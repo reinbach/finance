@@ -49,7 +49,7 @@ class TransactionViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         data = json.loads(rv.data)
         trx = self.transaction.jsonify()
-        self.assertIn(trx, data['transactions'])
+        self.assertIn(trx, data)
 
     def test_view_transaction(self):
         """Test viewing a single transaction"""
