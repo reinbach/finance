@@ -23,7 +23,7 @@ class UserForm(BaseForm):
 class AccountTypeForm(BaseForm):
     name = TextField(
         'Name',
-        [validators.Length(min=4, max=50), validators.Required()]
+        [validators.Length(min=4, max=20), validators.Required()]
     )
 
 class AccountForm(BaseForm):
