@@ -36,8 +36,7 @@ class Auth(object):
         return False
 
     def remove_token(self, token):
-        if self.valid_token(token):
-            self.auth_tokens.pop(token)
+        self.auth_tokens.pop(token)
         # need to periodically clean out auth tokens that
         # have expired
         for token, expiration in self.auth_tokens.iteritems():
