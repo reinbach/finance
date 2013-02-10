@@ -113,11 +113,33 @@ describe('Finance App', function() {
         });
 
         // it('should open/close account type add modal when relevant button clicked', function() {
-        //     expect(element('[ng-view] div#accountTypeAdd').css('display')).toEqual('none');
+        //     expect(element('[ng-view] name="accountTypeForm"').css('display')).toEqual('none');
         //     element('[ng-view] button:first').click();
-        //     expect(element('[ng-view] div#accountTypeAdd').css('display')).toEqual('block');
+        //     expect(element('[ng-view] name="accountTypeForm"').css('display')).toEqual('block');
         //     element('[ng-view] div.modal-header button').click();
-        //     expect(element('[ng-view] div#accountTypeAdd').css('display')).toEqual('none');
+        //     expect(element('[ng-view] name="accountTypeForm"').css('display')).toEqual('none');
+        // });
+
+        it('should enable submit button once name field is valid', function() {
+            element('[ng-view] button:first').click();
+            input('account_type.name').enter('Expenses');
+            expect(element('[ng-view] button.btn-primary').attr('disabled')).
+                toBe(undefined);
+            input('account_type.name').enter('Long Term Liabilities');
+            expect(element('[ng-view] button.btn-primary').attr('disabled')).
+                toBe('disabled');
+        });
+
+        it('should add/delete account type when valid name provided', function() {
+            element('[ng-view] button:first').click();
+            input('account_type.name').enter('Test Account Type');
+            element('[ng-view] button.btn-primary').click();
+            expect(element('[ng-view] table tbody tr:last').text()).toContain('Test Account Type');
+        });
+
+        // it('should not have previously deleted account type', function() {
+        //     element('[ng-view] table tbody tr:last td button').click();
+        //     expect(element('[ng-view] table tbody tr').text()).toContain('Test Account Type');
         // });
 
     });
