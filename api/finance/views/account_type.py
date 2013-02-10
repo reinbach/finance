@@ -4,7 +4,7 @@ from flask import abort, jsonify, request, Response
 from flask.views import MethodView
 
 from finance import db_session, utils
-from finance.forms import AccountTypeForm
+from finance.forms.account_type import AccountTypeForm
 from finance.models import AccountType
 from finance.stats import STATS
 

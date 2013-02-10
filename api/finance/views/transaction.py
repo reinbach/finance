@@ -4,7 +4,7 @@ from flask import abort, jsonify, request, Response
 from flask.views import MethodView
 
 from finance import db_session, utils
-from finance.forms import TransactionForm
+from finance.forms.transaction import TransactionForm
 from finance.models import Transaction
 from finance.stats import STATS
 
