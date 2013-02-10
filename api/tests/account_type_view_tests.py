@@ -83,9 +83,24 @@ class AccountTypeViewTestCase(BaseViewTestCase):
         self.assertEqual(name, acct_type_get.get('name'))
         self.assertEqual(acct_type.get('account_type_id'), acct_type_get.get('account_type_id'))
 
-    def test_view_add_fail(self):
+    def test_view_add_fail_invalid(self):
         """Test adding an invalid account type"""
         name = 'Sup'
+        rv = self.open_with_auth(
+            "/account/types",
+            "POST",
+            self.username,
+            self.password,
+            data=dict(
+                name=name,
+            )
+        )
+        self.assertEqual(400, rv.status_code)
+        self.assertIn('errors', rv.data)
+
+    def test_view_add_fail_unique(self):
+        """Test adding a duplicate account type"""
+        name = self.account_type.name
         rv = self.open_with_auth(
             "/account/types",
             "POST",
@@ -159,6 +174,34 @@ class AccountTypeViewTestCase(BaseViewTestCase):
         acct_type_get = json.loads(rv.data)
         self.assertEqual(name, acct_type_get.get('name'))
 
+    def test_view_update_nochange(self):
+        """Test updating an account type with same name value"""
+        account_type_id = self.account_type.account_type_id
+        rv = self.open_with_auth(
+            "/account/types/%s" % account_type_id,
+            "PUT",
+            self.username,
+            self.password,
+            data=dict(
+                name=self.account_type.name,
+            )
+        )
+        self.assertEqual(200, rv.status_code)
+        self.assertIn('Success', rv.data)
+
+    def test_view_update_fail_invalid_id(self):
+        """Test updating an account type with invalid id"""
+        account_type_id = '999'
+        rv = self.open_with_auth(
+            "/account/types/%s" % account_type_id,
+            "PUT",
+            self.username,
+            self.password,
+            data=dict(
+                name='Invalid',
+            )
+        )
+        self.assertEqual(404, rv.status_code)
 
 test_cases = [
     AccountTypeViewTestCase

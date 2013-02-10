@@ -73,7 +73,11 @@ class AccountTypeAPI(MethodView):
     def put(self, account_type_id):
         with STATS.update_account_type.time():
             # update a single account type
-            form = AccountTypeForm(request.data)
+            acct_type = AccountType.query.get(account_type_id)
+            if acct_type is None:
+                STATS.notfound += 1
+                return abort(404)
+            form = AccountTypeForm(request.data, account_type_id=account_type_id)
             if form.validate():
                 acct_type = AccountType.query.get(account_type_id)
                 acct_type.name = form.name.data

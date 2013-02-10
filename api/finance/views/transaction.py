@@ -78,6 +78,10 @@ class TransactionAPI(MethodView):
     def put(self, transaction_id):
         with STATS.update_transaction.time():
             # update a single transaction
+            trx = Transaction.query.get(transaction_id)
+            if trx is None:
+                STATS.notfound += 1
+                return abort(404)
             form = TransactionForm(request.data)
             if form.validate():
                 trx = Transaction.query.get(transaction_id)

@@ -73,6 +73,10 @@ class AccountAPI(MethodView):
     def put(self, account_id):
         with STATS.update_account.time():
             # update a single account
+            acct = Account.query.get(account_id)
+            if acct is None:
+                STATS.notfound += 1
+                return abort(404)
             form = AccountForm(request.data)
             if form.validate():
                 acct = Account.query.get(account_id)
