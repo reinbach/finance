@@ -130,7 +130,7 @@ describe('Finance App', function() {
                 toBe('disabled');
         });
 
-        it('should add/delete account type when valid name provided', function() {
+        it('should add account type when valid name provided', function() {
             element('[ng-view] button:first').click();
             input('account_type.name').enter('Test Account Type');
             element('[ng-view] button.btn-primary').click();
