@@ -14,12 +14,14 @@
       <span ng-model="response">{{ response }}</span>
     </div>
     <form name="accountAddForm" novalidate accept-charset="utf-8">
-      <input type="text" ng-model="account.name" focus class="span4" required placeholder="Name">
+      <input type="text" ng-model="account.name" focus class="span3" required placeholder="Name">
       <select ng-model="account.account_type" required>
-        <option ng-repeat="type in account_types" value="{{ type }}">{{ type }}</option>
+        <option value="">- select -</option>
+        <option ng-repeat="type in account_types | filter:query" value="{{ type.account_type_id }}">{{ type.name }}</option>
       </select>
-      <textarea ng-model="account.description" placeholder="Description about the account"></textarea>
-      <button ng-click="add()" ng-disabled="accountAddForm.$invalid" class="btn btn-info btn-block">Save Account</button>
+      <textarea ng-model="account.description" class="span5" placeholder="Description about the account"></textarea>
+      <a href="#/accounts"><button class="btn">Cancel</button></a>
+      <button ng-click="add()" ng-disabled="accountAddForm.$invalid" class="btn btn-primary">Save Account</button>
     </form>
   </div>
 </div>
