@@ -35,8 +35,18 @@ function FinanceCtrlLogin(scope, http, location, tokenHandler, api_url) {
 FinanceCtrlLogin.$inject = ['$scope', '$http', '$location', 'tokenHandler', 'api_url'];
 
 
-function FinanceCtrlAccounts(scope, AccountService) {
-    scope.accounts = AccountService.query();
+function FinanceCtrlAccounts($scope, Account) {
+    $scope.accounts = Account.query();
+
+    $scope.remove = function(account_id) {
+        var account = new Account();
+        account.$remove(
+            {accountId: account_id},
+            function() {
+                $scope.accounts = Account.query();
+            }
+        );
+    };
 }
 FinanceCtrlAccounts.$inject = ['$scope', 'Account'];
 
@@ -54,7 +64,7 @@ function FinanceCtrlAccountsAdd($scope, $location, Account, AccountType) {
                 console.log(e);
             }
         );
-    }
+    };
 }
 FinanceCtrlAccountsAdd.$inject = ['$scope', '$location', 'Account', 'AccountType'];
 
