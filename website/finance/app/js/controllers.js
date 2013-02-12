@@ -41,15 +41,22 @@ function FinanceCtrlAccounts(scope, AccountService) {
 FinanceCtrlAccounts.$inject = ['$scope', 'Account'];
 
 
-function FinanceCtrlAccountsAdd(scope, Account, AccountType) {
-    scope.account_types = AccountType.query();
-    scope.add = function() {
-        newAccount = new Account({
-        });
-        newAccount.$save();
+function FinanceCtrlAccountsAdd($scope, $location, Account, AccountType) {
+    $scope.account_types = AccountType.query();
+    $scope.add = function() {
+        var newAccount = new Account($scope.account);
+        newAccount.$save(
+            {},
+            function() {
+                $location.path("/accounts");
+            },
+            function(e) {
+                console.log(e);
+            }
+        );
     }
 }
-FinanceCtrlAccountsAdd.$inject = ['$scope', 'Account', 'AccountType'];
+FinanceCtrlAccountsAdd.$inject = ['$scope', '$location', 'Account', 'AccountType'];
 
 function FinanceCtrlAccountTypes($scope, AccountType) {
     $scope.account_types = AccountType.query();
