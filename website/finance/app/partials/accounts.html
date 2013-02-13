@@ -15,6 +15,7 @@
           <th>#</th>
           <th>Name</th>
           <th>Description</th>
+          <th>Account Type</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -23,7 +24,11 @@
           <td>{{ $index + 1 }}</td>
           <td>{{ account.name }}</td>
           <td>{{ account.description }}</td>
+          <td>{{ account.account_type.name }}</td>
           <td>
+            <a href="#/accounts/{{ account.account_id }}"><button class="btn btn-mini btn-info">
+              <i class="icon-pencil icon-white"></i>
+            </button></a>
             <button class="btn btn-mini btn-danger" ng-click="remove(account.account_id)">
               <i class="icon-remove icon-white"></i>
             </button>

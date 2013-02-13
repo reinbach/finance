@@ -1,7 +1,7 @@
 <div class="row">
   <div class="span12">
     <div class="page-header">
-      <h1>Add Account</h1>
+      <h1>{{ action }} Account</h1>
     </div>
     </div>
   </div>
@@ -15,13 +15,12 @@
     </div>
     <form name="accountAddForm" novalidate accept-charset="utf-8">
       <input type="text" ng-model="account.name" focus class="span3" required placeholder="Name">
-      <select ng-model="account.account_type_id" required>
+      <select ng-model="account.account_type_id" required ng-options="type.name for type in account_types | filter:query">
         <option value="">- select -</option>
-        <option ng-repeat="type in account_types | filter:query" value="{{ type.account_type_id }}">{{ type.name }}</option>
       </select>
       <textarea ng-model="account.description" class="span4" rows="5" placeholder="Description about the account"></textarea>
       <a href="#/accounts"><button class="btn">Cancel</button></a>
-      <button ng-click="add()" ng-disabled="accountAddForm.$invalid" class="btn btn-primary">Save Account</button>
+      <button ng-click="save()" ng-disabled="accountAddForm.$invalid" class="btn btn-primary">Save Account</button>
     </form>
   </div>
 </div>

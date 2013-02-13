@@ -52,8 +52,9 @@ FinanceCtrlAccounts.$inject = ['$scope', 'Account'];
 
 
 function FinanceCtrlAccountsAdd($scope, $location, Account, AccountType) {
+    $scope.action = 'Edit'
     $scope.account_types = AccountType.query();
-    $scope.add = function() {
+    $scope.save = function() {
         var newAccount = new Account($scope.account);
         newAccount.$save(
             {},
@@ -67,6 +68,31 @@ function FinanceCtrlAccountsAdd($scope, $location, Account, AccountType) {
     };
 }
 FinanceCtrlAccountsAdd.$inject = ['$scope', '$location', 'Account', 'AccountType'];
+
+function FinanceCtrlAccountsEdit($scope, $location, $routeParams, Account, AccountType) {
+    $scope.action = 'Edit'
+    $scope.account_types = AccountType.query();
+    var newAccount = new Account();
+    newAccount.$get(
+        {accountId: $routeParams.accountId},
+        function(data) {
+            $scope.account = data;
+        }
+    )
+    $scope.save = function() {
+        $scope.account.$update(
+            {accountId: $routeParams.accountId},
+            function() {
+                $location.path("/accounts");
+            },
+            function(e) {
+                console.log(e);
+            }
+        );
+    };
+}
+FinanceCtrlAccountsEdit.$inject = ['$scope', '$location', '$routeParams', 'Account', 'AccountType'];
+
 
 function FinanceCtrlAccountTypes($scope, AccountType) {
     $scope.account_types = AccountType.query();

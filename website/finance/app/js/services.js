@@ -28,7 +28,13 @@ angular.module('financeApp.services', ['ngResource', 'ngCookies']).
         return tokenHandler;
     }]).
     factory('Account', ['$resource', 'api_url',  function($resource, api_url) {
-        return $resource(api_url + '/accounts/:accountId', {}, {});
+        return $resource(api_url + '/accounts/:accountId', {}, {
+            'get': { method: 'GET'},
+            'save': { method: 'POST'},
+            'update': { method: 'PUT'},
+            'query': { method: 'GET', isArray: true},
+            'remove': { method: 'DELETE'},
+        });
     }]).
     factory('AccountType', ['$resource', 'api_url',  function($resource, api_url) {
         return $resource(api_url + '/account/types/:accountTypeId', {});
