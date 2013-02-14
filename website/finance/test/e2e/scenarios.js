@@ -134,13 +134,15 @@ describe('Finance App', function() {
             element('[ng-view] button:first').click();
             input('account_type.name').enter('Test Account Type');
             element('[ng-view] button.btn-primary').click();
-            expect(element('[ng-view] table tbody tr:last').text()).toContain('Test Account Type');
+            expect(element('[ng-view] table tbody tr:last').text()).
+                toContain('Test Account Type');
         });
 
-        // it('should not have previously deleted account type', function() {
-        //     element('[ng-view] table tbody tr:last td button').click();
-        //     expect(element('[ng-view] table tbody tr').text()).toContain('Test Account Type');
-        // });
+        it('should not have previously deleted account type', function() {
+            element('[ng-view] table tbody tr:last td button').click();
+            expect(element('[ng-view] table tbody tr').text()).
+                toContain('Test Account Type');
+        });
 
     });
 
