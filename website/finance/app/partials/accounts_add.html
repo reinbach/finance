@@ -15,7 +15,7 @@
     </div>
     <form name="accountAddForm" novalidate accept-charset="utf-8">
       <input type="text" ng-model="account.name" focus class="span3" required placeholder="Name">
-      <select ng-model="account.account_type_id" required ng-options="type.name for type in account_types | filter:query">
+      <select ng-model="account.account_type_id" required ng-options="type.account_type_id as type.name for (key, type) in account_types | filter:query">
         <option value="">- select -</option>
       </select>
       <textarea ng-model="account.description" class="span4" rows="5" placeholder="Description about the account"></textarea>
