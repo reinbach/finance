@@ -16,6 +16,7 @@ function financeCtrl($scope, $rootScope, $http, tokenHandler, api_url) {
 }
 financeCtrl.$inject = ['$scope', '$rootScope', '$http', 'tokenHandler', 'api_url'];
 
+
 function FinanceCtrlLogin(scope, http, location, tokenHandler, api_url) {
     scope.response = "";
     scope.login = function() {
@@ -52,7 +53,7 @@ FinanceCtrlAccounts.$inject = ['$scope', 'Account'];
 
 
 function FinanceCtrlAccountsAdd($scope, $location, Account, AccountType) {
-    $scope.action = 'Edit'
+    $scope.action = 'Add'
     $scope.account_types = AccountType.query();
     $scope.save = function() {
         var newAccount = new Account($scope.account);
@@ -68,6 +69,7 @@ function FinanceCtrlAccountsAdd($scope, $location, Account, AccountType) {
     };
 }
 FinanceCtrlAccountsAdd.$inject = ['$scope', '$location', 'Account', 'AccountType'];
+
 
 function FinanceCtrlAccountsEdit($scope, $location, $routeParams, Account, AccountType) {
     $scope.action = 'Edit'
