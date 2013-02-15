@@ -16,6 +16,7 @@
           <th>Name</th>
           <th>Description</th>
           <th>Account Type</th>
+          <th>Balance</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -24,6 +25,7 @@
           <td>{{ $index + 1 }}</td>
           <td>{{ account.name }}</td>
           <td>{{ account.description }}</td>
+          <td>{{ account.balance|currency }}</td>
           <td>{{ account.account_type.name }}</td>
           <td>
             <a href="#/accounts/{{ account.account_id }}"><button class="btn btn-mini btn-info">
