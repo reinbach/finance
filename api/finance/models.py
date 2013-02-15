@@ -85,7 +85,8 @@ class Account(object):
             'account_id': self.account_id,
             'name': self.name,
             'account_type_id': self.account_type_id,
-            'description': self.description
+            'description': self.description,
+            'balance': self.get_balance(),
         }
 
         if self.account_type is not None:

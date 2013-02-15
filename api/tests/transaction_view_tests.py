@@ -109,6 +109,9 @@ class TransactionViewTestCase(BaseViewTestCase):
 
         self.assertEqual(200, rv.status_code)
         trx_get = json.loads(rv.data)
+        # need to update account balances with this trx
+        debit_json['balance'] += amount;
+        credit_json['balance'] -= amount;
         self.assertEqual(debit_json, trx_get.get('debit'))
         self.assertEqual(debit_json.get('account_id'), trx_get.get('account_debit_id'))
         self.assertEqual(credit_json, trx_get.get('credit'))
