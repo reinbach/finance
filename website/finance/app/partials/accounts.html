@@ -25,8 +25,8 @@
           <td>{{ $index + 1 }}</td>
           <td>{{ account.name }}</td>
           <td>{{ account.description }}</td>
-          <td>{{ account.balance|currency }}</td>
           <td>{{ account.account_type.name }}</td>
+          <td><p class="text-right">{{ account.balance|currency }}</p></td>
           <td>
             <a href="#/accounts/{{ account.account_id }}"><button class="btn btn-mini btn-info">
               <i class="icon-pencil icon-white"></i>
