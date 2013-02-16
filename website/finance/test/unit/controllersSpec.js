@@ -41,31 +41,37 @@ describe('FinanceCtrlLogin controllers', function(){
 
 
 describe('FinanceCtrlAccounts', function(){
-    var financeCtrlAccounts, scope;
-    var AccountService;
+    var financeCtrlAccounts, $scope, AccountStub;
 
-    beforeEach(inject(function($rootScope){
-      AccountService = {query: jasmine.createSpy()};
-        scope = $rootScope.$new();
+    beforeEach(inject(function($rootScope) {
+        AccountStub = function AccountServiceStub() {
+            this.$remove = jasmine.createSpy();
+        }
+        AccountStub.query = jasmine.createSpy();
 
-      financeCtrlAccounts = new FinanceCtrlAccounts(scope, AccountService);
+        $scope = $rootScope.$new();
+        financeCtrlAccounts = new FinanceCtrlAccounts($scope, AccountStub);
     }));
 
-
-    it('should ....', function() {
-        //spec body
+    it('should call query on account service init', function() {
+        expect(AccountStub.query).toHaveBeenCalled();
     });
+
+    // it('should call remove on account service when remove function called', function() {
+    //     expect(AccountStub.query.calls.length).toBe(1);
+    //     $scope.remove('1');
+    // });
 });
 
 describe('FinanceCtrlAccountTypes', function(){
     var financeCtrlAccountTypes, scope;
     var AccountTypeService;
 
-    beforeEach(inject(function($rootScope){
-      AccountTypeService = {query: jasmine.createSpy()};
+    beforeEach(inject(function($rootScope) {
+        AccountTypeService = {query: jasmine.createSpy()};
         scope = $rootScope.$new();
 
-      financeCtrlAccountTypes = new FinanceCtrlAccountTypes(scope, AccountTypeService);
+        financeCtrlAccountTypes = new FinanceCtrlAccountTypes(scope, AccountTypeService);
     }));
 
 
