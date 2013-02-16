@@ -63,19 +63,79 @@ describe('FinanceCtrlAccounts', function(){
     // });
 });
 
-describe('FinanceCtrlAccountTypes', function(){
-    var financeCtrlAccountTypes, scope;
-    var AccountTypeService;
+
+describe('FinanceCtrlAccountsAdd', function(){
+    var financeCtrlAccountsAdd, $scope, AccountStub, AccountTypeStub;
 
     beforeEach(inject(function($rootScope) {
-        AccountTypeService = {query: jasmine.createSpy()};
-        scope = $rootScope.$new();
+        AccountStub = function AccountServiceStub() {
+            this.$save = jasmine.createSpy();
+        }
+        AccountStub.save = jasmine.createSpy();
 
-        financeCtrlAccountTypes = new FinanceCtrlAccountTypes(scope, AccountTypeService);
+        AccountTypeStub = function AccountTypeServiceStub() {
+            this.stub = true;
+        }
+        AccountTypeStub.query = jasmine.createSpy();
+
+        $scope = $rootScope.$new();
+        financeCtrlAccountsAdd = new FinanceCtrlAccountsAdd($scope, {}, AccountStub, AccountTypeStub);
+    }));
+
+    it('should set action to "Add"', function() {
+        expect($scope.action).toBe('Add');
+    });
+
+    it('should call query on account service init', function() {
+        expect(AccountTypeStub.query).toHaveBeenCalled();
+    });
+});
+
+
+describe('FinanceCtrlAccountsEdit', function(){
+    var financeCtrlAccountsEdit, $scope, AccountStub, AccountTypeStub;
+
+    beforeEach(inject(function($rootScope) {
+        AccountStub = function AccountServiceStub() {
+            this.$get = jasmine.createSpy();
+        }
+        AccountStub.save = jasmine.createSpy();
+
+        AccountTypeStub = function AccountTypeServiceStub() {
+            this.stub = true;
+        }
+        AccountTypeStub.query = jasmine.createSpy();
+
+        $scope = $rootScope.$new();
+        financeCtrlAccountsEdit = new FinanceCtrlAccountsEdit($scope, {}, {}, AccountStub, AccountTypeStub);
+    }));
+
+    it('should set action to "Edit"', function() {
+        expect($scope.action).toBe('Edit');
+    });
+
+    it('should call query on account service init', function() {
+        expect(AccountTypeStub.query).toHaveBeenCalled();
+    });
+});
+
+
+describe('FinanceCtrlAccountTypes', function(){
+    var financeCtrlAccountTypes, $scope, AccountTypeStub;
+
+    beforeEach(inject(function($rootScope) {
+        AccountTypeStub = function AccountTypeServiceStub() {
+            this.$save = jasmine.createSpy();
+            this.$remove = jasmine.createSpy();
+        }
+        AccountTypeStub.query = jasmine.createSpy();
+
+        $scope = $rootScope.$new();
+        financeCtrlAccountTypes = new FinanceCtrlAccountTypes($scope, AccountTypeStub);
     }));
 
 
-    it('should ....', function() {
-        //spec body
+    it('should get a list of account types on init', function() {
+        expect(AccountTypeStub.query).toHaveBeenCalled();
     });
 });
