@@ -139,3 +139,31 @@ describe('FinanceCtrlAccountTypes', function(){
         expect(AccountTypeStub.query).toHaveBeenCalled();
     });
 });
+
+
+describe('FinanceCtrlTransactionsAdd', function(){
+    var financeCtrlTransactionsAdd, $scope, TransactionStub, AccountStub;
+
+    beforeEach(inject(function($rootScope) {
+        AccountStub = function AccountServiceStub() {
+            this.stub = true;
+        }
+        AccountStub.query = jasmine.createSpy();
+
+        TransactionStub = function TransactionServiceStub() {
+            this.$save = jasmine.createSpy();
+        }
+        TransactionStub.query = jasmine.createSpy();
+
+        $scope = $rootScope.$new();
+        financeCtrlTransactionsAdd = new FinanceCtrlTransactionsAdd($scope, {}, TransactionStub, AccountStub);
+    }));
+
+    it('should set action to "Add"', function() {
+        expect($scope.action).toBe('Add');
+    });
+
+    it('should call query on transaction service init', function() {
+        expect(AccountStub.query).toHaveBeenCalled();
+    });
+});
