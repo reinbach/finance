@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="span12">
+    <div class="page-header">
+      <h1>{{ action }} Transaction</h1>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span4">
+    <div class="alert alert-error" ng-show="response">
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <span ng-model="response">{{ response }}</span>
+    </div>
+    <form name="transactionAddForm" novalidate accept-charset="utf-8">
+      <label>Summary</label>
+      <input type="text" ng-model="transaction.summary" focus class="span3" required placeholder="Summary">
+
+      <label>Amount</label>
+      <input type="text" ng-model="transaction.amount" class="span3" required placeholder="0.00">
+
+      <label>Date</label>
+      <input type="text" ng-model="transaction.date" ui-date class="span3" required placeholder="Click to select date">
+
+      <label>Debit</label>
+      <select ng-model="transaction.debit" required ng-options="account.account_id as account.name for (key, account) in accounts | filter:query">
+        <option value="">- select account to debit -</option>
+      </select>
+
+      <label>Credit</label>
+      <select ng-model="transaction.credit" required ng-options="account.account_id as account.name for (key, account) in accounts | filter:query">
+        <option value="">- select account to credit -</option>
+      </select>
+
+      <label>Description</label>
+      <textarea ng-model="transaction.description" class="span4" rows="5" placeholder="Description about the transaction"></textarea>
+      <a href="#/accounts"><button class="btn">Cancel</button></a>
+      <button ng-click="save()" ng-disabled="transactionAddForm.$invalid" class="btn btn-primary">Save Transaction</button>
+    </form>
+  </div>
+</div>

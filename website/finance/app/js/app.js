@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('financeApp', ['financeApp.filters', 'financeApp.services', 'financeApp.directives']).
+angular.module('financeApp', ['ui', 'financeApp.filters', 'financeApp.services', 'financeApp.directives']).
     constant('api_url', 'http://localhost\\:5000').
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.when(
@@ -18,12 +18,16 @@ angular.module('financeApp', ['financeApp.filters', 'financeApp.services', 'fina
             {templateUrl: 'partials/accounts_add.html', controller: FinanceCtrlAccountsAdd}
         );
         $routeProvider.when(
-            '/accounts/:accountId',
+            '/accounts/edit/:accountId',
             {templateUrl: 'partials/accounts_add.html', controller: FinanceCtrlAccountsEdit}
         );
         $routeProvider.when(
             '/account/types',
             {templateUrl: 'partials/account_types.html', controller: FinanceCtrlAccountTypes}
+        );
+        $routeProvider.when(
+            '/transactions/add',
+            {templateUrl: 'partials/transactions_add.html', controller: FinanceCtrlTransactionsAdd}
         );
         $routeProvider.otherwise({redirectTo: '/login'});
     }]).

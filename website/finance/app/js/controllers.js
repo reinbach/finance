@@ -130,3 +130,22 @@ function FinanceCtrlAccountTypes($scope, AccountType) {
     };
 }
 FinanceCtrlAccountTypes.$inject = ['$scope', 'AccountType'];
+
+
+function FinanceCtrlTransactionsAdd($scope, $location, Transaction, Account) {
+    $scope.action = 'Add'
+    $scope.accounts = Account.query();
+    $scope.save = function() {
+        var newTransaction = new Transaction($scope.transaction);
+        newTransaction.$save(
+            {},
+            function() {
+                $location.path("/accounts");
+            },
+            function(e) {
+                console.log(e);
+            }
+        );
+    };
+}
+FinanceCtrlTransactionsAdd.$inject = ['$scope', '$location', 'Transaction', 'Account'];

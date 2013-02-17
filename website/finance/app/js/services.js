@@ -34,5 +34,10 @@ angular.module('financeApp.services', ['ngResource', 'ngCookies']).
     }]).
     factory('AccountType', ['$resource', 'api_url',  function($resource, api_url) {
         return $resource(api_url + '/account/types/:accountTypeId', {});
+    }]).
+    factory('Transaction', ['$resource', 'api_url',  function($resource, api_url) {
+        return $resource(api_url + '/transactions/:transactionId', {}, {
+            'update': { method: 'PUT'},
+        });
     }]);
 
