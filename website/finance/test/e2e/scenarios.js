@@ -94,6 +94,21 @@ describe('Finance App', function() {
         });
     });
 
+    describe('accounts edit', function() {
+        beforeEach(function() {
+            login();
+            browser().navigateTo('#/accounts');
+        });
+
+        it('should be at the accounts edit view after clicking edit link on account', function() {
+            element('[ng-view] button.btn-info:first').click();
+            expect(browser().location().url()).
+                toContain('/accounts/edit/');
+            expect(element('[ng-view] h1').text()).
+                toBe('Edit Account');
+        });
+    });
+
     describe('account_types', function() {
 
         beforeEach(function() {
