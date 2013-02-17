@@ -122,6 +122,54 @@ class TransactionViewTestCase(BaseViewTestCase):
         self.assertEqual(description, trx_get.get('description'))
         self.assertEqual(trx.get('transaction_id'), trx_get.get('transaction_id'))
 
+    def test_view_add_locale_date(self):
+        """Test adding a transaction using a locale date value"""
+        summary = 'Supplies'
+        amount = 200.00
+        date = '2013-01-15T05:00:00.000Z'
+        description = 'Getting things done'
+        debit_json = self.account1.jsonify()
+        credit_json = self.account2.jsonify()
+        rv = self.open_with_auth(
+            "/transactions",
+            "POST",
+            self.username,
+            self.password,
+            data=dict(
+                debit=debit_json.get('account_id'),
+                credit=credit_json.get('account_id'),
+                amount=amount,
+                summary=summary,
+                date=date,
+                description=description
+            )
+        )
+        self.assertEqual(200, rv.status_code)
+        self.assertIn('Success', rv.data)
+
+        trx = json.loads(rv.data)
+        rv = self.open_with_auth(
+            "/transactions/%s" % trx.get('transaction_id'),
+            "GET",
+            self.username,
+            self.password,
+        )
+
+        self.assertEqual(200, rv.status_code)
+        trx_get = json.loads(rv.data)
+        # need to update account balances with this trx
+        debit_json['balance'] += amount;
+        credit_json['balance'] -= amount;
+        self.assertEqual(debit_json, trx_get.get('debit'))
+        self.assertEqual(debit_json.get('account_id'), trx_get.get('account_debit_id'))
+        self.assertEqual(credit_json, trx_get.get('credit'))
+        self.assertEqual(credit_json.get('account_id'), trx_get.get('account_credit_id'))
+        self.assertEqual(summary, trx_get.get('summary'))
+        self.assertEqual(amount, trx_get.get('amount'))
+        self.assertEqual(date[:10], trx_get.get('date'))
+        self.assertEqual(description, trx_get.get('description'))
+        self.assertEqual(trx.get('transaction_id'), trx_get.get('transaction_id'))
+
     def test_view_add_fail(self):
         """Test adding an invalid transaction"""
         summary = 'Supplies'
