@@ -114,6 +114,40 @@ class TransactionModelTestCase(unittest.TestCase):
         self.assertEqual(self.account1.get_balance(), t1.amount + t2.amount)
         self.assertEqual(self.account2.get_balance(), -t1.amount - t2.amount)
 
+    def test_account_transactions(self):
+        """Test getting a list of transactions for an account"""
+        acct1_trx_count = len(self.account1.transactions())
+        acct2_trx_count = len(self.account2.transactions())
+        t1 = Transaction(
+            self.account1.account_id,
+            self.account2.account_id,
+            10,
+            'ACME, Inc.',
+            datetime.date.today(),
+            "January's Salary'"
+        )
+
+        db_session.add(t1)
+
+        t2 = Transaction(
+            self.account2.account_id,
+            self.account1.account_id,
+            5,
+            'IRS',
+            datetime.date.today(),
+            "Taxes for January'"
+        )
+
+        db_session.add(t2)
+        db_session.commit()
+
+        self.assertIn(t1, self.account1.transactions())
+        self.assertIn(t2, self.account1.transactions())
+        self.assertEqual(acct1_trx_count + 2, len(self.account1.transactions()))
+        self.assertIn(t1, self.account2.transactions())
+        self.assertIn(t2, self.account2.transactions())
+        self.assertEqual(acct2_trx_count + 2, len(self.account2.transactions()))
+
     def test_transaction_jsonify(self):
         """Test the jsonify method"""
         t = Transaction(

@@ -20,6 +20,7 @@ STATS = scales.collection(
     scales.PmfStat('add_account'),
     scales.PmfStat('delete_account'),
     scales.PmfStat('update_account'),
+    scales.PmfStat('get_account_transactions'),
 
     # transactions
     scales.PmfStat('get_transaction'),

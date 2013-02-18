@@ -95,3 +95,16 @@ class AccountAPI(MethodView):
             resp = jsonify({'errors': form.errors})
             resp.status_code = 400
             return resp
+
+@utils.requires_auth
+@utils.crossdomain(origin='*', headers=config.HEADERS_ALLOWED)
+def transactions(account_id):
+    """Get transactions for account"""
+    with STATS.get_account_transactions.time():
+        acct = Account.query.get(account_id)
+        if acct is None:
+            STATS.notfound += 1
+            return abort(404)
+        res = [trx.jsonify() for trx in acct.transactions]
+        STATS.success += 1
+        return Response(json.dumps(res), mimetype='application/json')

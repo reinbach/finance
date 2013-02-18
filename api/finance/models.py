@@ -106,6 +106,10 @@ class Account(object):
         balance = self.get_total(self.debits) - self.get_total(self.credits)
         return balance
 
+    def transactions(self):
+        """Get all transactions associated with this account"""
+        return self.debits + self.credits
+
 accounts = Table(
     'accounts',
     metadata,
