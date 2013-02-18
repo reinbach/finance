@@ -8,3 +8,5 @@ DATABASE = dict(
     DB_NAME='finance',
     DB_NAME_TESTING='finance_test',
 )
+
+HEADERS_ALLOWED = 'origin, x-requested-with, content-type, accept, authtoken'

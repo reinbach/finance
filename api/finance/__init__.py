@@ -26,7 +26,7 @@ def version():
     return jsonify({"version": "0.1"})
 
 @app.route("/login", methods=['POST'])
-@utils.crossdomain(origin='*', headers='origin, x-requested-with, content-type, accept, authtoken')
+@utils.crossdomain(origin='*', headers=config.HEADERS_ALLOWED)
 def login():
     """Log user in"""
     form = UserForm(request.data)
@@ -45,7 +45,7 @@ def login():
     return resp
 
 @app.route("/logout")
-@utils.crossdomain(origin='*', headers='origin, x-requested-with, content-type, accept, authtoken')
+@utils.crossdomain(origin='*', headers=config.HEADERS_ALLOWED)
 def logout():
     app.auth.remove_token(request.headers.get('AuthToken'))
     return jsonify({'message': 'Successfully logged out.'})

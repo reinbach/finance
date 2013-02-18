@@ -3,6 +3,8 @@ import json
 from flask import abort, jsonify, request, Response
 from flask.views import MethodView
 
+import config
+
 from finance import db_session, utils
 from finance.forms.transaction import TransactionForm
 from finance.models import Transaction
@@ -15,7 +17,7 @@ class TransactionAPI(MethodView):
         utils.requires_auth,
         utils.crossdomain(
             origin='*',
-            headers='origin, x-requested-with, content-type, accept, authtoken'
+            headers=config.HEADERS_ALLOWED
         ),
     ]
 

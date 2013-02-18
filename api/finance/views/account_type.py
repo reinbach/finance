@@ -3,6 +3,8 @@ import json
 from flask import abort, jsonify, request, Response
 from flask.views import MethodView
 
+import config
+
 from finance import db_session, utils
 from finance.forms.account_type import AccountTypeForm
 from finance.models import AccountType
@@ -15,7 +17,7 @@ class AccountTypeAPI(MethodView):
         utils.requires_auth,
         utils.crossdomain(
             origin='*',
-            headers='origin, x-requested-with, content-type, accept, authtoken'
+            headers=config.HEADERS_ALLOWED
         ),
     ]
 
