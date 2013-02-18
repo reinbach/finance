@@ -22,6 +22,10 @@ angular.module('financeApp', ['ui', 'financeApp.filters', 'financeApp.services',
             {templateUrl: 'partials/accounts_add.html', controller: FinanceCtrlAccountsEdit}
         );
         $routeProvider.when(
+            '/accounts/view/:accountId',
+            {templateUrl: 'partials/accounts_view.html', controller: FinanceCtrlAccountsView}
+        );
+        $routeProvider.when(
             '/account/types',
             {templateUrl: 'partials/account_types.html', controller: FinanceCtrlAccountTypes}
         );

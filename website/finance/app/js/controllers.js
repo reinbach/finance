@@ -93,7 +93,19 @@ function FinanceCtrlAccountsEdit($scope, $location, $routeParams, Account, Accou
         );
     };
 }
-FinanceCtrlAccountsEdit.$inject = ['$scope', '$location', '$routeParams', 'Account', 'AccountType'];
+FinanceCtrlAccountsEdit.$inject = ['$scope', '$routeParams', 'Account', 'AccountType'];
+
+
+function FinanceCtrlAccountsView($scope, $routeParams, Account) {
+    var account = new Account();
+    account.$get(
+        {accountId: $routeParams.accountId},
+        function(data) {
+            $scope.account = data;
+        }
+    );
+}
+FinanceCtrlAccountsView.$inject = ['$scope', '$routeParams', 'Account'];
 
 
 function FinanceCtrlAccountTypes($scope, AccountType) {

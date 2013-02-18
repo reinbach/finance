@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="span12">
+    <div class="page-header">
+      <h1>{{ account.name }} <small>{{ account.balance|currency }}</small></h1>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Summary</th>
+          <th>Debit</th>
+          <th>Credit</th>
+          <th>Amount</th>
+          <th>Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="trx in transactions | filter:query">
+          <td>{{ trx.date }}</td>
+          <td>{{ trx.summary }}</td>
+          <td>{{ trx.debit }}</td>
+          <td>{{ trx.credit }}</td>
+          <td><p class="text-right">{{ trx.amount|currency }}</p></td>
+          <td><p class="text-right">{{ trx.balance|currency }}</p></td>
+          <td>
+            <a href="#/transactions/edit/{{ trx.transaction_id }}"><button class="btn btn-mini btn-info">
+              <i class="icon-pencil icon-white"></i>
+            </button></a>
+            <button class="btn btn-mini btn-danger" ng-click="remove(trx.transaction_id)">
+              <i class="icon-remove icon-white"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -28,9 +28,9 @@
           <td>{{ account.account_type.name }}</td>
           <td><p class="text-right">{{ account.balance|currency }}</p></td>
           <td>
-            <button class="btn btn-mini btn-warning">
+            <A href="#/accounts/view/{{ account.account_id }}"><button class="btn btn-mini btn-warning">
               <i class="icon-th-list icon-white"></i>
-            </button>
+            </button></a>
             <a href="#/accounts/edit/{{ account.account_id }}"><button class="btn btn-mini btn-info">
               <i class="icon-pencil icon-white"></i>
             </button></a>
