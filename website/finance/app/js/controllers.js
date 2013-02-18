@@ -96,16 +96,21 @@ function FinanceCtrlAccountsEdit($scope, $location, $routeParams, Account, Accou
 FinanceCtrlAccountsEdit.$inject = ['$scope', '$routeParams', 'Account', 'AccountType'];
 
 
-function FinanceCtrlAccountsView($scope, $routeParams, Account) {
+function FinanceCtrlAccountsView($scope, $routeParams, $http, Account, api_url) {
+    $scope.transactions = [];
     var account = new Account();
     account.$get(
         {accountId: $routeParams.accountId},
         function(data) {
             $scope.account = data;
+            $http.get(api_url.replace('\\', '') + '/accounts/transactions/' + account.account_id).
+                success(function(data){
+                    $scope.transactions = data;
+                });
         }
     );
 }
-FinanceCtrlAccountsView.$inject = ['$scope', '$routeParams', 'Account'];
+FinanceCtrlAccountsView.$inject = ['$scope', '$routeParams', '$http', 'Account', 'api_url'];
 
 
 function FinanceCtrlAccountTypes($scope, AccountType) {

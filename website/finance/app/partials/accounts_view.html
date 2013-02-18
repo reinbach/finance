@@ -17,17 +17,16 @@
           <th>Debit</th>
           <th>Credit</th>
           <th>Amount</th>
-          <th>Balance</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="trx in transactions | filter:query">
+        <tr ng-repeat="trx in transactions">
           <td>{{ trx.date }}</td>
           <td>{{ trx.summary }}</td>
-          <td>{{ trx.debit }}</td>
-          <td>{{ trx.credit }}</td>
+          <td>{{ trx.debit.name }}</td>
+          <td>{{ trx.credit.name }}</td>
           <td><p class="text-right">{{ trx.amount|currency }}</p></td>
-          <td><p class="text-right">{{ trx.balance|currency }}</p></td>
           <td>
             <a href="#/transactions/edit/{{ trx.transaction_id }}"><button class="btn btn-mini btn-info">
               <i class="icon-pencil icon-white"></i>
