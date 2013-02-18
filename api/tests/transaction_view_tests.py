@@ -195,6 +195,18 @@ class TransactionViewTestCase(BaseViewTestCase):
         self.assertEqual(400, rv.status_code)
         self.assertIn('errors', rv.data)
 
+    def test_view_account_transactions(self):
+        """Test viewing transactions for an account"""
+        rv = self.open_with_auth(
+            '/accounts/transactions/%s' % self.account1.account_id,
+            'GET',
+            self.username,
+            self.password
+        )
+        acct_trx_list = json.loads(rv.data)
+        self.assertEqual(len(acct_trx_list), 1)
+        self.assertIn(self.account1.transactions()[0].jsonify(), acct_trx_list)
+
     def test_view_delete(self):
         """Test deleting transaction"""
         transaction1 = Transaction(

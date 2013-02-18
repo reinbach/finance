@@ -105,6 +105,6 @@ def transactions(account_id):
         if acct is None:
             STATS.notfound += 1
             return abort(404)
-        res = [trx.jsonify() for trx in acct.transactions]
+        res = [trx.jsonify() for trx in acct.transactions()]
         STATS.success += 1
         return Response(json.dumps(res), mimetype='application/json')
