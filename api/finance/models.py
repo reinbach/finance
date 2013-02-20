@@ -107,8 +107,21 @@ class Account(object):
         return balance
 
     def transactions(self):
-        """Get all transactions associated with this account"""
-        return self.debits + self.credits
+        """Get all transactions associated with this account
+
+        We want to clearly indicate the opposite account
+        And maintain a running balance for each transaction
+        """
+        trx_list = self.debits + self.credits
+        balance = 0
+        for trx in trx_list:
+            # remove duplicate information
+            if self.account_id == trx.debit.account_id:
+                balance += trx.amount
+            else:
+                balance -= trx.amount
+            trx.balance = balance
+        return trx_list
 
 accounts = Table(
     'accounts',
@@ -168,6 +181,10 @@ class Transaction(object):
 
         if self.credit is not None:
             res['credit'] = self.credit.jsonify()
+
+        # balance may be set as a running total for an account
+        if hasattr(self, 'balance'):
+            res['balance'] = self.balance
 
         return res
 
