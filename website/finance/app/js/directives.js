@@ -14,6 +14,29 @@ angular.module('financeApp.directives', []).
             element[0].focus();
         };
     }).
+    directive('transferAccountName', function() {
+        return function($scope, element) {
+            if ($scope.account.account_id == $scope.trx.debit.account_id) {
+                element.text($scope.trx.credit.name);
+            } else {
+                element.text($scope.trx.debit.name);
+            }
+        };
+    }).
+    directive('debitAmount', ['$filter', function($filter) {
+        return function($scope, element) {
+            if ($scope.account.account_id == $scope.trx.debit.account_id) {
+                element.text($filter('currency')($scope.trx.amount));
+            }
+        };
+    }]).
+    directive('creditAmount', ['$filter', function($filter) {
+        return function($scope, element) {
+            if ($scope.account.account_id == $scope.trx.credit.account_id) {
+                element.text($filter('currency')($scope.trx.amount));
+            }
+        };
+    }]).
     directive('dropdownToggle', ['$document', '$location', '$window', function ($document, $location, $window) {
         var openElement = null, close;
         return {
