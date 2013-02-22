@@ -14,7 +14,7 @@ angular.module('financeApp.directives', []).
             element[0].focus();
         };
     }).
-    directive('transferAccountName', function() {
+    directive('trxTransferAccountName', function() {
         return function($scope, element) {
             if ($scope.account.account_id == $scope.trx.debit.account_id) {
                 element.text($scope.trx.credit.name);
@@ -23,14 +23,14 @@ angular.module('financeApp.directives', []).
             }
         };
     }).
-    directive('debitAmount', ['$filter', function($filter) {
+    directive('trxDebitAmount', ['$filter', function($filter) {
         return function($scope, element) {
             if ($scope.account.account_id == $scope.trx.debit.account_id) {
                 element.text($filter('currency')($scope.trx.amount));
             }
         };
     }]).
-    directive('creditAmount', ['$filter', function($filter) {
+    directive('trxCreditAmount', ['$filter', function($filter) {
         return function($scope, element) {
             if ($scope.account.account_id == $scope.trx.credit.account_id) {
                 element.text($filter('currency')($scope.trx.amount));

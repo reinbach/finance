@@ -31,9 +31,9 @@
               <small>{{ trx.description }}</small>
             </p>
           </td>
-          <td transfer-account-name></td>
-          <td><p class="text-right" debit-amount></p></td>
-          <td><p class="text-right" credit-amount></td>
+          <td trx-transfer-account-name></td>
+          <td><p class="text-right" trx-debit-amount></p></td>
+          <td><p class="text-right" trx-credit-amount></td>
           <td><p class="text-right">{{ trx.balance|currency }}</p></td>
           <td>
             <a href="#/transactions/edit/{{ trx.transaction_id }}"><button class="btn btn-mini btn-info">
