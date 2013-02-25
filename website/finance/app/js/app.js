@@ -33,6 +33,10 @@ angular.module('financeApp', ['ui', 'financeApp.filters', 'financeApp.services',
             '/transactions/add',
             {templateUrl: 'partials/transactions_add.html', controller: FinanceCtrlTransactionsAdd}
         );
+        $routeProvider.when(
+            '/transactions/edit/:transactionId',
+            {templateUrl: 'partials/transactions_add.html', controller: FinanceCtrlTransactionsEdit}
+        );
         $routeProvider.otherwise({redirectTo: '/login'});
     }]).
     config(function($httpProvider) {

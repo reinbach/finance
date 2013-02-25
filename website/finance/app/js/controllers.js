@@ -166,3 +166,30 @@ function FinanceCtrlTransactionsAdd($scope, $location, Transaction, Account) {
     };
 }
 FinanceCtrlTransactionsAdd.$inject = ['$scope', '$location', 'Transaction', 'Account'];
+
+
+function FinanceCtrlTransactionsEdit($scope, $location, $routeParams, Transaction, Account) {
+    $scope.action = 'Edit'
+    $scope.accounts = Account.query();
+    var newTransaction = new Transaction();
+    newTransaction.$get(
+        {transactionId: $routeParams.transactionId},
+        function(data) {
+            $scope.transaction = data;
+            $scope.transaction.debit = data.account_debit_id;
+            $scope.transaction.credit = data.account_credit_id;
+        }
+    );
+    $scope.save = function() {
+        $scope.transaction.$update(
+            {transactionId: $routeParams.transactionId},
+            function() {
+                $location.path("/accounts");
+            },
+            function(e) {
+                console.log(e);
+            }
+        );
+    };
+}
+FinanceCtrlTransactionsEdit.$inject = ['$scope', '$location', '$routeParams', 'Transaction', 'Account'];

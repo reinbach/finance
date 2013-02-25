@@ -21,7 +21,7 @@
       <input type="text" ng-model="transaction.amount" class="span3" required placeholder="0.00">
 
       <label>Date</label>
-      <input type="text" ng-model="transaction.date" ui-date class="span3" required placeholder="Click to select date">
+      <input type="text" ng-model="transaction.date" ui-date ui-date-format class="span3" required placeholder="Click to select date">
 
       <label>Debit</label>
       <select ng-model="transaction.debit" required ng-options="account.account_id as account.name for (key, account) in accounts | filter:query">
