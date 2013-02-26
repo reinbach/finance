@@ -93,7 +93,7 @@ function FinanceCtrlAccountsEdit($scope, $location, $routeParams, Account, Accou
         );
     };
 }
-FinanceCtrlAccountsEdit.$inject = ['$scope', '$routeParams', 'Account', 'AccountType'];
+FinanceCtrlAccountsEdit.$inject = ['$scope', '$location', '$routeParams', 'Account', 'AccountType'];
 
 
 function FinanceCtrlAccountsView($scope, $routeParams, $http, Account, api_url) {
