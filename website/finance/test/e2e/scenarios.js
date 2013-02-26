@@ -161,4 +161,18 @@ describe('Finance App', function() {
 
     });
 
+    describe('transactions add', function() {
+        beforeEach(function() {
+            login(); browser().navigateTo('#/accounts');
+            browser().navigateTo('#/transactions/add');
+        });
+
+        it('should be at the transactions add view', function() {
+            expect(browser().location().url()).
+                toBe('/transactions/add');
+            expect(element('[ng-view] h1').text()).
+                toBe('Add Transaction');
+        });
+    });
+
 });
