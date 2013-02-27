@@ -143,11 +143,11 @@ class Transaction(object):
 
     def __init__(
         self,
-        account_debit_id,
-        account_credit_id,
-        amount,
-        summary,
-        date,
+        account_debit_id=None,
+        account_credit_id=None,
+        amount=None,
+        summary=None,
+        date=None,
         description=None
     ):
         self.account_debit_id = account_debit_id
