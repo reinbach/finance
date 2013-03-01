@@ -21,8 +21,8 @@ class TransactionsImport():
      - mark as duplicate
     """
 
-    def __init__(self, main_account, filename, *args, **kwargs):
-        self.main_account = main_account
+    def __init__(self, main_account_id, filename, *args, **kwargs):
+        self.main_account_id = main_account_id
         self.filename = filename
         self.transactions = []
 
@@ -32,22 +32,29 @@ class TransactionsImport():
             filereader = csv.DictReader(fp, delimiter=',')
             for trx in filereader:
                 self.set_accounts(trx)
-                trx.duplicate = self.is_duplicate(trx)
+                trx['duplicate'] = self.is_duplicate(trx)
                 self.transactions.append(trx)
 
     def set_accounts(self, trx):
         """Set debit/credit accounts for transaction"""
-        other_account = self.get_account(trx['Description'])
-        if Decimal(trx.amount) < 0:
-            trx.credit = self.main_account
-            trx.debit = other_account
+        other_account_id = self.get_account(trx['Description'])
+        if Decimal(trx['Amount']) < 0:
+            trx['credit'] = self.main_account_id
+            trx['debit'] = other_account_id
         else:
-            trx.debit = self.main_account
-            trx.credit = other_account
+            trx['debit'] = self.main_account_id
+            trx['credit'] = other_account_id
 
     def get_account(self, summary):
         """Look for other side of transaction based on description"""
-        return Transaction().query.filter(Transaction.summary == summary).first()
+        res =  Transaction().query.filter(Transaction.summary == summary).first()
+
+        if res is None:
+            return None
+
+        if res.debit.account_id == self.main_account_id:
+            return res.credit.account_id
+        return res.debit.account_id
 
     def is_duplicate(self, trx):
         """Check whether transaction is a possible duplicate"""
