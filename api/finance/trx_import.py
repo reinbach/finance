@@ -30,20 +30,30 @@ class TransactionsImport():
         """Parse file and create transactions"""
         with open(self.filename, 'rb') as fp:
             filereader = csv.DictReader(fp, delimiter=',')
-            for trx in filereader:
+            for trx_import in filereader:
+                trx = self.map_fields(trx_import)
                 self.set_accounts(trx)
                 trx['duplicate'] = self.is_duplicate(trx)
                 self.transactions.append(trx)
 
+    def map_fields(self, trx_import):
+        """Map the respecitve fields"""
+        return {
+            'date': trx_import['Post Date'],
+            'summary': trx_import['Description'],
+            'amount': trx_import['Amount'],
+        }
+
     def set_accounts(self, trx):
         """Set debit/credit accounts for transaction"""
-        other_account_id = self.get_account(trx['Description'])
-        if Decimal(trx['Amount']) < 0:
+        other_account_id = self.get_account(trx['summary'])
+        if Decimal(trx['amount']) < 0:
             trx['credit'] = self.main_account_id
             trx['debit'] = other_account_id
         else:
             trx['debit'] = self.main_account_id
             trx['credit'] = other_account_id
+        trx['amount'] = str(abs(Decimal(trx['amount'])))
 
     def get_account(self, summary):
         """Look for other side of transaction based on description"""
@@ -59,7 +69,7 @@ class TransactionsImport():
     def is_duplicate(self, trx):
         """Check whether transaction is a possible duplicate"""
         return bool(Transaction().query.filter(
-            Transaction.summary == trx['Description'],
-            Transaction.amount == trx['Amount'],
-            Transaction.date == trx['Post Date']
+            Transaction.summary == trx['summary'],
+            Transaction.amount == trx['amount'],
+            Transaction.date == trx['date']
         ).first())
