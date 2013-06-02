@@ -59,6 +59,12 @@ class BaseViewTestCase(unittest.TestCase):
 
 class GeneralViewTestCase(BaseViewTestCase):
 
+    def test_version(self):
+        """Test version number"""
+        rv = self.app.get("/")
+        self.assertEqual(200, rv.status_code)
+        self.assertIn('version', json.loads(rv.data))
+
     def test_login(self):
         """Test logging in """
         rv = self.login(self.username, self.password)
@@ -90,6 +96,17 @@ class GeneralViewTestCase(BaseViewTestCase):
         rv = self.login('boo', 'hoo')
         self.assertEqual(400, rv.status_code)
         self.assertIn('Invalid', json.loads(rv.data).get('message'))
+
+    def test_login_invalid(self):
+        """Test logging in with invalid form post"""
+        rv = self.app.post(
+            "/login",
+            data=json.dumps({"username": "admin"}),
+            follow_redirects=True,
+            content_type='application/json'
+        )
+        self.assertEqual(400, rv.status_code)
+        self.assertEqual({u'password': [u'This field is required.']}, json.loads(rv.data))
 
     def test_logout(self):
         """Test logging out"""
