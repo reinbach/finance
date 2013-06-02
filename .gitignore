@@ -34,3 +34,6 @@ nosetests.xml
 
 # project specific files
 currentenv.py
+
+.coveragerc
+htmlcov
