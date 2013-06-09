@@ -11,7 +11,7 @@ test_modules = [
     'tests.models.account_type',
     'tests.models.account',
     'tests.models.transaction',
-    'tests.views.utils',
+    'tests.views.base',
     'tests.views.account_type',
     'tests.views.account',
     'tests.views.transaction',
