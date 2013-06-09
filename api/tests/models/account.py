@@ -3,7 +3,8 @@ import unittest
 
 from sqlalchemy.exc import IntegrityError
 
-from finance.models import Account, AccountType, db_session
+from finance.models.account import Account, db_session
+from finance.models.account_type import AccountType
 
 class AccountModelTestCase(unittest.TestCase):
 

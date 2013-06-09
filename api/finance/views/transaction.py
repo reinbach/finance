@@ -7,7 +7,7 @@ import config
 
 from finance import db_session, utils
 from finance.forms.transaction import TransactionForm
-from finance.models import Transaction
+from finance.models.transaction import Transaction
 from finance.stats import STATS
 
 class TransactionAPI(MethodView):

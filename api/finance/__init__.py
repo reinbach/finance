@@ -26,6 +26,9 @@ app.add_url_rule(
 from finance.views.transaction import TransactionAPI
 utils.register_api(app, TransactionAPI, 'transaction_api', '/transactions', pk='transaction_id')
 
+from finance.models.mapper import set_model_mapping
+set_model_mapping()
+
 @app.route("/")
 def version():
     return jsonify({"version": "0.1"})

@@ -2,7 +2,9 @@ import datetime
 import unittest
 
 from finance.trx_import import TransactionsImport
-from finance.models import Account, AccountType, Transaction, db_session
+from finance.models.account import Account, db_session
+from finance.models.account_type import AccountType
+from finance.models.transaction import Transaction
 
 class TrxImportTestCase(unittest.TestCase):
 

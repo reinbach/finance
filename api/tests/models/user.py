@@ -2,7 +2,7 @@ import unittest
 
 from sqlalchemy.exc import IntegrityError
 
-from finance.models import User, db_session
+from finance.models.user import User, db_session
 
 class UserModelTestCase(unittest.TestCase):
 

@@ -4,7 +4,7 @@ import unittest
 
 import finance
 
-from finance.models import User, db_session
+from finance.models.user import User, db_session
 
 class BaseViewTestCase(unittest.TestCase):
 

@@ -1,8 +1,10 @@
 import datetime
 import json
 
-from finance.models import Account, AccountType, Transaction, db_session
-from view_tests import BaseViewTestCase
+from finance.models.account import Account, db_session
+from finance.models.account_type import AccountType
+from finance.models.transaction import Transaction
+from utils import BaseViewTestCase
 
 class TransactionViewTestCase(BaseViewTestCase):
 

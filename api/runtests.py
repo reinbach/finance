@@ -7,14 +7,14 @@ import config
 sys.path.append(os.path.abspath(__file__))
 
 test_modules = [
-    'tests.user_model_tests',
-    'tests.account_type_model_tests',
-    'tests.account_model_tests',
-    'tests.transaction_model_tests',
-    'tests.view_tests',
-    'tests.account_type_view_tests',
-    'tests.account_view_tests',
-    'tests.transaction_view_tests',
+    'tests.models.user',
+    'tests.models.account_type',
+    'tests.models.account',
+    'tests.models.transaction',
+    'tests.views.utils',
+    'tests.views.account_type',
+    'tests.views.account',
+    'tests.views.transaction',
     'tests.trx_import_tests',
 ]
 

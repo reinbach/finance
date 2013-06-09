@@ -7,7 +7,7 @@ import config
 
 from finance import db_session, utils
 from finance.forms.account_type import AccountTypeForm
-from finance.models import AccountType
+from finance.models.account_type import AccountType
 from finance.stats import STATS
 
 class AccountTypeAPI(MethodView):

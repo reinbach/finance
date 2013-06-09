@@ -2,7 +2,7 @@ import csv
 
 from decimal import Decimal
 
-from finance.models import Transaction
+from finance.models.transaction import Transaction
 
 class TransactionsImport():
     """Import transactions from csv file

@@ -12,4 +12,3 @@ class AccountForm(BaseForm):
         [validators.Required()]
     )
     description = TextField('Description', [validators.Length(min=0, max=250)])
-

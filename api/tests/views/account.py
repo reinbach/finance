@@ -1,7 +1,8 @@
 import json
 
-from finance.models import Account, AccountType, db_session
-from view_tests import BaseViewTestCase
+from finance.models.account import Account, db_session
+from finance.models.account_type import AccountType
+from utils import BaseViewTestCase
 
 class AccountViewTestCase(BaseViewTestCase):
 

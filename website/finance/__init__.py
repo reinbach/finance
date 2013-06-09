@@ -4,6 +4,7 @@ from werkzeug.exceptions import NotFound
 from werkzeug.wrappers import Request, Response
 from werkzeug.wsgi import SharedDataMiddleware, wrap_file
 
+
 class Website(object):
 
     def dispatch_request(self, environ, request):
