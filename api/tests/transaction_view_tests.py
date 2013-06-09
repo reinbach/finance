@@ -10,6 +10,7 @@ class TransactionViewTestCase(BaseViewTestCase):
         super(TransactionViewTestCase, self).setUp()
         self.account_type = AccountType('Income')
         db_session.add(self.account_type)
+        db_session.commit()
         self.account1 = Account('TRX_Salary', self.account_type.account_type_id, "Show me the money")
         self.account2 = Account('TRX_Checking', self.account_type.account_type_id, "Mine mine mine")
         db_session.add(self.account1)
@@ -27,10 +28,10 @@ class TransactionViewTestCase(BaseViewTestCase):
         db_session.commit()
 
     def tearDown(self):
-        db_session.delete(self.account_type)
+        db_session.delete(self.transaction)
         db_session.delete(self.account1)
         db_session.delete(self.account2)
-        db_session.delete(self.transaction)
+        db_session.delete(self.account_type)
         super(TransactionViewTestCase, self).tearDown()
 
     def test_view_auth_required(self):

@@ -21,7 +21,7 @@ class AccountModelTestCase(unittest.TestCase):
     def test_account_repr(self):
         """Ensure __repr__ function works"""
         a = Account('Bonus', self.account_type.account_type_id, "Show me the money")
-        self.assertTrue(a)
+        self.assertEqual(repr(a), '<Account: Bonus [Income]>')
 
     def test_account_add(self):
         """Test adding an account normaly"""

@@ -73,6 +73,7 @@ class Account(object):
         self.name = name
         self.account_type_id = account_type_id
         self.description = description
+        self.account_type = AccountType.query.get(self.account_type_id)
 
     def __repr__(self):
         return '<Account: {name} [{account_type}]>'.format(
