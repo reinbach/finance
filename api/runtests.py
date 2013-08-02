@@ -4,38 +4,18 @@ import unittest
 
 import config
 
-sys.path.append(os.path.abspath(__file__))
+sys.path.append(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), 'finance')
+)
 
-test_modules = [
-    'tests.models.user',
-    'tests.models.account_type',
-    'tests.models.account',
-    'tests.models.transaction',
-    'tests.views.base',
-    'tests.views.account_type',
-    'tests.views.account',
-    'tests.views.transaction',
-    'tests.trx_import_tests',
-]
-
-suites = []
-
-def runTests():
-    for test_mod in test_modules:
-        _tmp = __import__(test_mod, globals(), locals(), ['test_cases'], -1)
-        for test_case in _tmp.test_cases:
-            suites.append(
-                unittest.TestLoader().loadTestsFromTestCase(test_case)
-            )
-
-    alltests = unittest.TestSuite(suites)
-    runner = unittest.TextTestRunner()
-    runner.run(alltests)
+tests = unittest.TestLoader().discover(start_dir="tests")
+suite = unittest.TestSuite(tests)
+runner = unittest.TextTestRunner()
 
 def main():
-    from finance import database
+    import database
     database.init_db()
-    runTests()
+    runner.run(suite)
     database.drop_db()
 
 if __name__ == "__main__":

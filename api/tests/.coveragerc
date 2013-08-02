@@ -1,0 +1,13 @@
+[run]
+branch = True
+source = finance
+omit = **/tests/**
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # don't complain if non-runnable code isn't run:
+    if __name__ == .__main__.:
+
+[html]
+directory = tests/coverage

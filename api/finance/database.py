@@ -10,6 +10,7 @@ def get_conn_param():
         db_name = config.DATABASE.get('DB_NAME_TESTING')
     else:
         db_name = config.DATABASE.get('DB_NAME')
+
     conn_param = "{db_backend}://{db_user}:{db_pass}@{db_host}/{db_name}".format(
         db_backend=config.DATABASE.get('DB_BACKEND', 'postgresql'),
         db_user=config.DATABASE.get('DB_USER', ''),

@@ -23,6 +23,7 @@ pip-log.txt
 .coverage
 .tox
 nosetests.xml
+*/tests/coverage
 
 # Translations
 *.mo
@@ -31,9 +32,3 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
-
-# project specific files
-currentenv.py
-
-.coveragerc
-htmlcov

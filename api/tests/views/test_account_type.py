@@ -1,7 +1,7 @@
 import json
 
-from base import BaseViewTestCase
 from finance.models.account_type import AccountType, db_session
+from tests.views.test_base import BaseViewTestCase
 
 class AccountTypeViewTestCase(BaseViewTestCase):
 
