@@ -1,17 +1,12 @@
-import unittest
-
 from sqlalchemy.exc import IntegrityError
 
 from finance.models.user import User, db
 
 
-class UserModelTestCase(unittest.TestCase):
+class UserModelTestCase():
 
-    def setUp(self):
-        #self.app = finance.app.test_client()
-        pass
-
-    def tearDown(self):
+    @classmethod
+    def teardown_class(self):
         db.session.remove()
 
     def test_user_repr(self):

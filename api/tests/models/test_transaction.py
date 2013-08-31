@@ -1,15 +1,15 @@
 import datetime
 import json
-import unittest
 
 from finance.models.account import Account, db
 from finance.models.account_type import AccountType
 from finance.models.transaction import Transaction
 
 
-class TransactionModelTestCase(unittest.TestCase):
+class TransactionModelTestCase():
 
-    def setUp(self):
+    @classmethod
+    def setup_class(self):
         self.account_type = AccountType('Income')
         db.session.add(self.account_type)
         db.session.commit()
@@ -19,7 +19,8 @@ class TransactionModelTestCase(unittest.TestCase):
         db.session.add(self.account2)
         db.session.commit()
 
-    def tearDown(self):
+    @classmethod
+    def teardown_class(self):
         db.session.delete(self.account_type)
         db.session.delete(self.account1)
         db.session.delete(self.account2)

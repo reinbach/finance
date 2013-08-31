@@ -1,14 +1,14 @@
 import json
-import unittest
 
 from sqlalchemy.exc import IntegrityError
 
 from finance.models.account_type import AccountType, db
 
 
-class AccountTypeModelTestCase(unittest.TestCase):
+class AccountTypeModelTestCase():
 
-    def tearDown(self):
+    @classmethod
+    def teardown_class(self):
         db.session.remove()
 
     def test_account_type_repr(self):
