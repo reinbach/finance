@@ -2,15 +2,15 @@ from sqlalchemy import Table, Column, Integer, String
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from finance import db_session
-from finance.database import metadata
+from finance import db
+
 
 class User(object):
     """User
 
     The users that can access the system
     """
-    query = db_session.query_property()
+    query = db.session.query_property()
 
     def __init__(self, username, password):
         self.username = username
@@ -27,7 +27,7 @@ class User(object):
 
 users = Table(
     'users',
-    metadata,
+    db.metadata,
     Column('user_id', Integer, primary_key=True),
     Column('username', String(50), unique=True),
     Column('password_hash', String(100))

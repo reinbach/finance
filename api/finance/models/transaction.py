@@ -1,7 +1,6 @@
 from sqlalchemy import Table, Column, Date, Float, ForeignKey, Integer, String
 
-from finance import db_session
-from finance.database import metadata
+from finance import db
 
 
 class Transaction(object):
@@ -10,7 +9,7 @@ class Transaction(object):
     Record of the transaction
     """
 
-    query = db_session.query_property()
+    query = db.session.query_property()
 
     def __init__(
         self,
@@ -29,7 +28,8 @@ class Transaction(object):
         self.description = description
 
     def __repr__(self):
-        #TODO determine account debit and then show amount in negative or positive
+        #TODO determine account debit and then show amount in
+        # negative or positive
         # or think of a better short description of transaction to show
         return '<Transaction: {summary} {amount}>'.format(
             summary=self.summary,
@@ -62,7 +62,7 @@ class Transaction(object):
 
 transactions = Table(
     'transactions',
-    metadata,
+    db.metadata,
     Column('transaction_id', Integer, primary_key=True),
     Column('account_debit_id', Integer, ForeignKey('accounts.account_id')),
     Column('account_credit_id', Integer, ForeignKey('accounts.account_id')),

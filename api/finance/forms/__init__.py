@@ -3,6 +3,7 @@ import json
 from wtforms import Form, TextField, validators
 from werkzeug.datastructures import MultiDict
 
+
 class BaseForm(Form):
     """Base Form Class
 
@@ -15,6 +16,7 @@ class BaseForm(Form):
     def __init__(self, data):
         data = MultiDict(json.loads(data))
         super(BaseForm, self).__init__(data)
+
 
 class UserForm(BaseForm):
     username = TextField('Username', [validators.Required()])

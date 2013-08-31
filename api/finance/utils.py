@@ -6,6 +6,7 @@ from functools import wraps, update_wrapper
 
 from flask import current_app, jsonify, make_response, request
 
+
 class Auth(object):
     """Simple handler for auth tokens"""
     auth_tokens = {}
@@ -52,6 +53,7 @@ def check_auth(username, password):
         return True
     return False
 
+
 def authenticate():
     """Sends 401 response that enables basic auth"""
     message = {'message': 'Authenticate.'}
@@ -59,6 +61,7 @@ def authenticate():
     res.status_code = 401
     res.headers['WWW-Authenticate'] = 'Basic realm="Login Required"'
     return res
+
 
 def requires_auth(f):
     """Checks whether user is logged in or raises error 401
@@ -83,6 +86,7 @@ def requires_auth(f):
         return f(*args, **kwargs)
     return decorator
 
+
 def register_api(app, view, endpoint, url, pk='id', pk_type='int'):
     view_func = view.as_view(endpoint)
 
@@ -90,18 +94,19 @@ def register_api(app, view, endpoint, url, pk='id', pk_type='int'):
         url,
         defaults={pk: None},
         view_func=view_func,
-        methods=['GET',]
+        methods=['GET', ]
     )
     app.add_url_rule(
         url,
         view_func=view_func,
-        methods=['POST',]
+        methods=['POST', ]
     )
     app.add_url_rule(
         "{url}/<{pk_type}:{pk}>".format(url=url, pk_type=pk_type, pk=pk),
         view_func=view_func,
         methods=['GET', 'PUT', 'DELETE']
     )
+
 
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,

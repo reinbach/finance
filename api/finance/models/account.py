@@ -1,7 +1,6 @@
 from sqlalchemy import Table, Column, ForeignKey, Integer, String
 
-from finance import db_session
-from finance.database import metadata
+from finance import db
 from finance.models.account_type import AccountType
 
 
@@ -12,7 +11,7 @@ class Account(object):
     eg: Income, expense, assets and liabilities
     """
 
-    query = db_session.query_property()
+    query = db.session.query_property()
 
     def __init__(self, name=None, account_type_id=None, description=None):
         self.name = name
@@ -71,9 +70,10 @@ class Account(object):
 
 accounts = Table(
     'accounts',
-    metadata,
+    db.metadata,
     Column('account_id', Integer, primary_key=True),
     Column('name', String(50), unique=True),
-    Column('account_type_id', Integer, ForeignKey('account_types.account_type_id')),
+    Column('account_type_id', Integer,
+           ForeignKey('account_types.account_type_id')),
     Column('description', String(250)),
 )

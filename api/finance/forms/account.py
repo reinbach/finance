@@ -2,6 +2,7 @@ from wtforms import IntegerField, TextField, validators
 
 from finance.forms import BaseForm
 
+
 class AccountForm(BaseForm):
     name = TextField(
         'Name',

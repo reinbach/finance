@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from finance.models.transaction import Transaction
 
+
 class TransactionsImport():
     """Import transactions from csv file
 
@@ -57,7 +58,8 @@ class TransactionsImport():
 
     def get_account(self, summary):
         """Look for other side of transaction based on description"""
-        res =  Transaction().query.filter(Transaction.summary == summary).first()
+        res = Transaction().query.filter(
+            Transaction.summary == summary).first()
 
         if res is None:
             return None

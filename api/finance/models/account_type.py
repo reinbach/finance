@@ -1,13 +1,12 @@
 from sqlalchemy import Table, Column, Integer, String
 
-from finance import db_session
-from finance.database import metadata
+from finance import db
 
 
 class AccountType(object):
     """Account Type"""
 
-    query = db_session.query_property()
+    query = db.session.query_property()
 
     def __init__(self, name=None):
         self.name = name
@@ -25,7 +24,7 @@ class AccountType(object):
 
 account_types = Table(
     'account_types',
-    metadata,
+    db.metadata,
     Column('account_type_id', Integer, primary_key=True),
     Column('name', String(20), unique=True),
 )

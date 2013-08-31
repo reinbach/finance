@@ -1,6 +1,8 @@
-from wtforms import DateField, DecimalField, IntegerField, TextField, validators
+from wtforms import (DateField, DecimalField, IntegerField, TextField,
+                     validators)
 
 from finance.forms import BaseForm
+
 
 class DateLocaleField(DateField):
     """Overload DateField to handle locale format, if applicable"""
@@ -12,6 +14,7 @@ class DateLocaleField(DateField):
 
         valuelist = [scrub_date(x) for x in valuelist]
         return super(DateLocaleField, self).process_formdata(valuelist)
+
 
 class TransactionForm(BaseForm):
     debit = IntegerField('Debit', [validators.Required()])

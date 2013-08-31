@@ -5,10 +5,11 @@ from flask.views import MethodView
 
 import config
 
-from finance import db_session, utils
+from finance import app, utils
 from finance.forms.transaction import TransactionForm
 from finance.models.transaction import Transaction
 from finance.stats import STATS
+
 
 class TransactionAPI(MethodView):
     """Transaction Views"""
@@ -53,8 +54,8 @@ class TransactionAPI(MethodView):
                     form.date.data,
                     form.description.data
                 )
-                db_session.add(trx)
-                db_session.commit()
+                app.db.session.add(trx)
+                app.db.session.commit()
                 STATS.success += 1
                 return jsonify({
                     'message': 'Successfully added Transaction',
@@ -72,8 +73,8 @@ class TransactionAPI(MethodView):
             if trx is None:
                 STATS.notfound += 1
                 return abort(404)
-            db_session.delete(trx)
-            db_session.commit()
+            app.db.session.delete(trx)
+            app.db.session.commit()
             STATS.success += 1
             return jsonify({"message": "Successfully deleted transaction"})
 
@@ -93,8 +94,8 @@ class TransactionAPI(MethodView):
                 trx.summary_id = form.summary.data
                 trx.date = form.date.data
                 trx.description = form.description.data
-                db_session.add(trx)
-                db_session.commit()
+                app.db.session.add(trx)
+                app.db.session.commit()
                 STATS.success += 1
                 return jsonify({
                     'message': 'Successfully updated Transaction'

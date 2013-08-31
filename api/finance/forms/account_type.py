@@ -3,6 +3,7 @@ from wtforms import TextField, validators
 from finance.forms import BaseForm
 from finance.models.account_type import AccountType
 
+
 class AccountTypeForm(BaseForm):
     name = TextField(
         'Name',
@@ -17,7 +18,8 @@ class AccountTypeForm(BaseForm):
 
     def validate_name(self, field):
         acct_type = AccountType.query.filter(
-            AccountType.name == field.data, AccountType.account_type_id != self.account_type_id
+            AccountType.name == field.data,
+            AccountType.account_type_id != self.account_type_id
         ).first()
         if acct_type:
             raise validators.ValidationError('Name needs to be unique.')
