@@ -1,6 +1,6 @@
 import json
 
-from finance.models.account import Account, db_session
+from finance.models.account import Account, db
 from finance.models.account_type import AccountType
 from tests.views.test_base import BaseViewTestCase
 
@@ -10,16 +10,16 @@ class AccountViewTestCase(BaseViewTestCase):
     def setUp(self):
         super(AccountViewTestCase, self).setUp()
         self.account_type = AccountType('Expense')
-        db_session.add(self.account_type)
-        db_session.commit()
+        db.session.add(self.account_type)
+        db.session.commit()
         self.account = Account('Insurance', self.account_type.account_type_id,
                                "Safety Net")
-        db_session.add(self.account)
-        db_session.commit()
+        db.session.add(self.account)
+        db.session.commit()
 
     def tearDown(self):
-        db_session.delete(self.account_type)
-        db_session.delete(self.account)
+        db.session.delete(self.account_type)
+        db.session.delete(self.account)
         super(AccountViewTestCase, self).tearDown()
 
     def test_view_auth_required(self):
@@ -124,8 +124,8 @@ class AccountViewTestCase(BaseViewTestCase):
             self.account_type.account_type_id,
             "Party like it's 1999'"
         )
-        db_session.add(account1)
-        db_session.commit()
+        db.session.add(account1)
+        db.session.commit()
         rv = self.open_with_auth(
             "/accounts/%s" % account1.account_id,
             "DELETE",
@@ -214,7 +214,3 @@ class AccountViewTestCase(BaseViewTestCase):
             )
         )
         self.assertEqual(404, rv.status_code)
-
-test_cases = [
-    AccountViewTestCase
-]

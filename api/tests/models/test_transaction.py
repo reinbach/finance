@@ -2,7 +2,7 @@ import datetime
 import json
 import unittest
 
-from finance.models.account import Account, db_session
+from finance.models.account import Account, db
 from finance.models.account_type import AccountType
 from finance.models.transaction import Transaction
 
@@ -11,20 +11,20 @@ class TransactionModelTestCase(unittest.TestCase):
 
     def setUp(self):
         self.account_type = AccountType('Income')
-        db_session.add(self.account_type)
-        db_session.commit()
+        db.session.add(self.account_type)
+        db.session.commit()
         self.account1 = Account("Test1", self.account_type.account_type_id)
         self.account2 = Account("Test2", self.account_type.account_type_id)
-        db_session.add(self.account1)
-        db_session.add(self.account2)
-        db_session.commit()
+        db.session.add(self.account1)
+        db.session.add(self.account2)
+        db.session.commit()
 
     def tearDown(self):
-        db_session.delete(self.account_type)
-        db_session.delete(self.account1)
-        db_session.delete(self.account2)
-        db_session.commit()
-        db_session.remove()
+        db.session.delete(self.account_type)
+        db.session.delete(self.account1)
+        db.session.delete(self.account2)
+        db.session.commit()
+        db.session.remove()
 
     def test_user_repr(self):
         """Ensure __repr__ function works"""
@@ -49,8 +49,8 @@ class TransactionModelTestCase(unittest.TestCase):
             "January's Salary"
         )
 
-        db_session.add(t)
-        db_session.commit()
+        db.session.add(t)
+        db.session.commit()
 
         t2 = Transaction.query.filter(Transaction.amount == t.amount).first()
         self.assertEqual(t2.account_debit_id, t.account_debit_id)
@@ -72,7 +72,7 @@ class TransactionModelTestCase(unittest.TestCase):
             "January's Salary'"
         )
 
-        db_session.add(t1)
+        db.session.add(t1)
 
         t2 = Transaction(
             self.account2.account_id,
@@ -83,8 +83,8 @@ class TransactionModelTestCase(unittest.TestCase):
             "Taxes for January'"
         )
 
-        db_session.add(t2)
-        db_session.commit()
+        db.session.add(t2)
+        db.session.commit()
 
         self.assertEqual(self.account1.get_balance(), t1.amount - t2.amount)
         self.assertEqual(self.account2.get_balance(), t2.amount - t1.amount)
@@ -100,7 +100,7 @@ class TransactionModelTestCase(unittest.TestCase):
             "January's Salary'"
         )
 
-        db_session.add(t1)
+        db.session.add(t1)
 
         t2 = Transaction(
             self.account1.account_id,
@@ -111,8 +111,8 @@ class TransactionModelTestCase(unittest.TestCase):
             "February's Salary'"
         )
 
-        db_session.add(t2)
-        db_session.commit()
+        db.session.add(t2)
+        db.session.commit()
 
         self.assertEqual(self.account1.get_balance(), t1.amount + t2.amount)
         self.assertEqual(self.account2.get_balance(), -t1.amount - t2.amount)
@@ -130,7 +130,7 @@ class TransactionModelTestCase(unittest.TestCase):
             "January's Salary'"
         )
 
-        db_session.add(t1)
+        db.session.add(t1)
 
         t2 = Transaction(
             self.account2.account_id,
@@ -141,8 +141,8 @@ class TransactionModelTestCase(unittest.TestCase):
             "Taxes for January'"
         )
 
-        db_session.add(t2)
-        db_session.commit()
+        db.session.add(t2)
+        db.session.commit()
 
         self.assertIn(t1, self.account1.transactions())
         self.assertIn(t2, self.account1.transactions())
@@ -166,15 +166,11 @@ class TransactionModelTestCase(unittest.TestCase):
         self.assertEqual(dict, type(t.jsonify()))
         self.assertTrue(json.dumps(t.jsonify()))
 
-        db_session.add(t)
-        db_session.commit()
+        db.session.add(t)
+        db.session.commit()
 
         t_json = t.jsonify()
         self.assertEqual(dict, type(t_json))
         self.assertTrue(json.dumps(t_json))
         self.assertEqual(self.account1.jsonify(), t_json.get('debit'))
         self.assertEqual(self.account2.jsonify(), t_json.get('credit'))
-
-test_cases = [
-    TransactionModelTestCase
-]

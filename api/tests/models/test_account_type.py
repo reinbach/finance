@@ -3,13 +3,13 @@ import unittest
 
 from sqlalchemy.exc import IntegrityError
 
-from finance.models.account_type import AccountType, db_session
+from finance.models.account_type import AccountType, db
 
 
 class AccountTypeModelTestCase(unittest.TestCase):
 
     def tearDown(self):
-        db_session.remove()
+        db.session.remove()
 
     def test_account_type_repr(self):
         at = AccountType('Expenses')
@@ -20,8 +20,8 @@ class AccountTypeModelTestCase(unittest.TestCase):
         at = AccountType('Random')
         self.assertEqual(at.name, 'Random')
 
-        db_session.add(at)
-        db_session.commit()
+        db.session.add(at)
+        db.session.commit()
 
         at2 = AccountType.query.filter(AccountType.name == at.name).first()
         self.assertEqual(at2.name, at.name)
@@ -30,23 +30,19 @@ class AccountTypeModelTestCase(unittest.TestCase):
     def test_account_type_name_unique(self):
         """Test that account type name uniqueness is maintained"""
         at = AccountType('Interest Income')
-        db_session.add(at)
-        db_session.commit()
+        db.session.add(at)
+        db.session.commit()
 
         with self.assertRaisesRegexp(
             IntegrityError,
             'violates unique constraint "account_types_name_key"'
         ):
             at2 = AccountType("Interest Income")
-            db_session.add(at2)
-            db_session.commit()
+            db.session.add(at2)
+            db.session.commit()
 
     def test_account_type_jsonify(self):
         """Test the jsonify method"""
         at = AccountType('Income')
         self.assertEqual(dict, type(at.jsonify()))
         self.assertTrue(json.dumps(at.jsonify()))
-
-test_cases = [
-    AccountTypeModelTestCase,
-]

@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from finance.models.account import Account, db_session
+from finance.models.account import Account, db
 from finance.models.account_type import AccountType
 from finance.models.transaction import Transaction
 from tests.views.test_base import BaseViewTestCase
@@ -12,17 +12,17 @@ class TransactionViewTestCase(BaseViewTestCase):
     def setUp(self):
         super(TransactionViewTestCase, self).setUp()
         self.account_type = AccountType('Income')
-        db_session.add(self.account_type)
-        db_session.commit()
+        db.session.add(self.account_type)
+        db.session.commit()
         self.account1 = Account('TRX_Salary',
                                 self.account_type.account_type_id,
                                 "Show me the money")
         self.account2 = Account('TRX_Checking',
                                 self.account_type.account_type_id,
                                 "Mine mine mine")
-        db_session.add(self.account1)
-        db_session.add(self.account2)
-        db_session.commit()
+        db.session.add(self.account1)
+        db.session.add(self.account2)
+        db.session.commit()
         self.transaction = Transaction(
             self.account1.account_id,
             self.account2.account_id,
@@ -31,14 +31,14 @@ class TransactionViewTestCase(BaseViewTestCase):
             datetime.date.today(),
             'January'
         )
-        db_session.add(self.transaction)
-        db_session.commit()
+        db.session.add(self.transaction)
+        db.session.commit()
 
     def tearDown(self):
-        db_session.delete(self.transaction)
-        db_session.delete(self.account1)
-        db_session.delete(self.account2)
-        db_session.delete(self.account_type)
+        db.session.delete(self.transaction)
+        db.session.delete(self.account1)
+        db.session.delete(self.account2)
+        db.session.delete(self.account_type)
         super(TransactionViewTestCase, self).tearDown()
 
     def test_view_auth_required(self):
@@ -229,8 +229,8 @@ class TransactionViewTestCase(BaseViewTestCase):
             'Bonus',
             datetime.date.today().strftime("%Y-%m-%d")
         )
-        db_session.add(transaction1)
-        db_session.commit()
+        db.session.add(transaction1)
+        db.session.commit()
         rv = self.open_with_auth(
             "/transactions/%s" % transaction1.transaction_id,
             "DELETE",
@@ -328,8 +328,3 @@ class TransactionViewTestCase(BaseViewTestCase):
             )
         )
         self.assertEqual(404, rv.status_code)
-
-
-test_cases = [
-    TransactionViewTestCase
-]

@@ -4,7 +4,7 @@ import unittest
 
 import finance
 
-from finance.models.user import User, db_session
+from finance.models.user import User, db
 
 
 class BaseViewTestCase(unittest.TestCase):
@@ -13,14 +13,14 @@ class BaseViewTestCase(unittest.TestCase):
         self.username = 'admin'
         self.password = 'secret'
         self.user = User(self.username, self.password)
-        db_session.add(self.user)
-        db_session.commit()
+        db.session.add(self.user)
+        db.session.commit()
         self.app = finance.app.test_client()
 
     def tearDown(self):
-        db_session.delete(self.user)
-        db_session.commit()
-        db_session.remove()
+        db.session.delete(self.user)
+        db.session.commit()
+        db.session.remove()
 
     def open_with_auth(self, url, method, username, password, data=None):
         return self.app.open(
@@ -129,7 +129,3 @@ class GeneralViewTestCase(BaseViewTestCase):
             }
         )
         self.assertEqual(401, rv.status_code)
-
-test_cases = [
-    GeneralViewTestCase
-]

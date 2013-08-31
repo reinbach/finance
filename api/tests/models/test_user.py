@@ -2,7 +2,7 @@ import unittest
 
 from sqlalchemy.exc import IntegrityError
 
-from finance.models.user import User, db_session
+from finance.models.user import User, db
 
 
 class UserModelTestCase(unittest.TestCase):
@@ -12,7 +12,7 @@ class UserModelTestCase(unittest.TestCase):
         pass
 
     def tearDown(self):
-        db_session.remove()
+        db.session.remove()
 
     def test_user_repr(self):
         """Ensure __repr__ function works"""
@@ -24,8 +24,8 @@ class UserModelTestCase(unittest.TestCase):
         u = User('test', 'secret')
         self.assertEqual(u.username, "test")
 
-        db_session.add(u)
-        db_session.commit()
+        db.session.add(u)
+        db.session.commit()
 
         u2 = User.query.filter(User.username == u.username).first()
         self.assertEqual(u2.username, u.username)
@@ -35,16 +35,16 @@ class UserModelTestCase(unittest.TestCase):
     def test_user_name_unique(self):
         """Test user name uniqueness is maintained"""
         u = User('test_unique', 'secret')
-        db_session.add(u)
-        db_session.commit()
+        db.session.add(u)
+        db.session.commit()
 
         with self.assertRaisesRegexp(
             IntegrityError,
             'violates unique constraint "users_username_key"'
         ):
             u2 = User('test_unique', 'secret')
-            db_session.add(u2)
-            db_session.commit()
+            db.session.add(u2)
+            db.session.commit()
 
     def test_user_password(self):
         """Test user password is hashed"""
@@ -55,7 +55,3 @@ class UserModelTestCase(unittest.TestCase):
             u.password
         self.assertTrue(u.password_hash)
         self.assertNotEqual(u.password_hash, password)
-
-test_cases = [
-    UserModelTestCase
-]
