@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from finance.utils import crossdomain
 
+
 class TestCrossDomain(TestCase):
     def test_init_origin(self):
         c = crossdomain(origin=['example.com', 'www.example.com'])

@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 from finance.models.user import User, db_session
 
+
 class UserModelTestCase(unittest.TestCase):
 
     def setUp(self):

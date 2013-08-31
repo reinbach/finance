@@ -3,6 +3,7 @@ import json
 from finance.models.account_type import AccountType, db_session
 from tests.views.test_base import BaseViewTestCase
 
+
 class AccountTypeViewTestCase(BaseViewTestCase):
 
     def setUp(self):
@@ -81,7 +82,8 @@ class AccountTypeViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         acct_type_get = json.loads(rv.data)
         self.assertEqual(name, acct_type_get.get('name'))
-        self.assertEqual(acct_type.get('account_type_id'), acct_type_get.get('account_type_id'))
+        self.assertEqual(acct_type.get('account_type_id'),
+                         acct_type_get.get('account_type_id'))
 
     def test_view_add_fail_invalid(self):
         """Test adding an invalid account type"""

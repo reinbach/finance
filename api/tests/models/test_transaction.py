@@ -6,6 +6,7 @@ from finance.models.account import Account, db_session
 from finance.models.account_type import AccountType
 from finance.models.transaction import Transaction
 
+
 class TransactionModelTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -145,10 +146,12 @@ class TransactionModelTestCase(unittest.TestCase):
 
         self.assertIn(t1, self.account1.transactions())
         self.assertIn(t2, self.account1.transactions())
-        self.assertEqual(acct1_trx_count + 2, len(self.account1.transactions()))
+        self.assertEqual(acct1_trx_count + 2,
+                         len(self.account1.transactions()))
         self.assertIn(t1, self.account2.transactions())
         self.assertIn(t2, self.account2.transactions())
-        self.assertEqual(acct2_trx_count + 2, len(self.account2.transactions()))
+        self.assertEqual(acct2_trx_count + 2,
+                         len(self.account2.transactions()))
 
     def test_transaction_jsonify(self):
         """Test the jsonify method"""

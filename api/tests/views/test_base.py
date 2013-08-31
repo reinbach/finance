@@ -6,6 +6,7 @@ import finance
 
 from finance.models.user import User, db_session
 
+
 class BaseViewTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -57,6 +58,7 @@ class BaseViewTestCase(unittest.TestCase):
             follow_redirects=True
         )
 
+
 class GeneralViewTestCase(BaseViewTestCase):
 
     def test_version(self):
@@ -106,7 +108,8 @@ class GeneralViewTestCase(BaseViewTestCase):
             content_type='application/json'
         )
         self.assertEqual(400, rv.status_code)
-        self.assertEqual({u'password': [u'This field is required.']}, json.loads(rv.data))
+        self.assertEqual({u'password': [u'This field is required.']},
+                         json.loads(rv.data))
 
     def test_logout(self):
         """Test logging out"""

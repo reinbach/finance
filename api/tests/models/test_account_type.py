@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 
 from finance.models.account_type import AccountType, db_session
 
+
 class AccountTypeModelTestCase(unittest.TestCase):
 
     def tearDown(self):

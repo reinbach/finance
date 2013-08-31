@@ -4,6 +4,7 @@ from finance.models.account import Account, db_session
 from finance.models.account_type import AccountType
 from tests.views.test_base import BaseViewTestCase
 
+
 class AccountViewTestCase(BaseViewTestCase):
 
     def setUp(self):
@@ -11,7 +12,8 @@ class AccountViewTestCase(BaseViewTestCase):
         self.account_type = AccountType('Expense')
         db_session.add(self.account_type)
         db_session.commit()
-        self.account = Account('Insurance', self.account_type.account_type_id, "Safety Net")
+        self.account = Account('Insurance', self.account_type.account_type_id,
+                               "Safety Net")
         db_session.add(self.account)
         db_session.commit()
 
@@ -91,7 +93,8 @@ class AccountViewTestCase(BaseViewTestCase):
         acct_get = json.loads(rv.data)
         self.assertEqual(name, acct_get.get('name'))
         self.assertEqual(account_type_json, acct_get.get('account_type'))
-        self.assertEqual(account_type_json.get('account_type_id'), acct_get.get('account_type_id'))
+        self.assertEqual(account_type_json.get('account_type_id'),
+                         acct_get.get('account_type_id'))
         self.assertEqual(description, acct_get.get('description'))
         self.assertEqual(acct.get('account_id'), acct_get.get('account_id'))
 

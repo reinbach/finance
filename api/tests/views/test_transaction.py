@@ -6,6 +6,7 @@ from finance.models.account_type import AccountType
 from finance.models.transaction import Transaction
 from tests.views.test_base import BaseViewTestCase
 
+
 class TransactionViewTestCase(BaseViewTestCase):
 
     def setUp(self):
@@ -13,8 +14,12 @@ class TransactionViewTestCase(BaseViewTestCase):
         self.account_type = AccountType('Income')
         db_session.add(self.account_type)
         db_session.commit()
-        self.account1 = Account('TRX_Salary', self.account_type.account_type_id, "Show me the money")
-        self.account2 = Account('TRX_Checking', self.account_type.account_type_id, "Mine mine mine")
+        self.account1 = Account('TRX_Salary',
+                                self.account_type.account_type_id,
+                                "Show me the money")
+        self.account2 = Account('TRX_Checking',
+                                self.account_type.account_type_id,
+                                "Mine mine mine")
         db_session.add(self.account1)
         db_session.add(self.account2)
         db_session.commit()
@@ -101,7 +106,6 @@ class TransactionViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         self.assertIn('Success', rv.data)
 
-
         trx = json.loads(rv.data)
         rv = self.open_with_auth(
             "/transactions/%s" % trx.get('transaction_id'),
@@ -113,17 +117,20 @@ class TransactionViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         trx_get = json.loads(rv.data)
         # need to update account balances with this trx
-        debit_json['balance'] += amount;
-        credit_json['balance'] -= amount;
+        debit_json['balance'] += amount
+        credit_json['balance'] -= amount
         self.assertEqual(debit_json, trx_get.get('debit'))
-        self.assertEqual(debit_json.get('account_id'), trx_get.get('account_debit_id'))
+        self.assertEqual(debit_json.get('account_id'),
+                         trx_get.get('account_debit_id'))
         self.assertEqual(credit_json, trx_get.get('credit'))
-        self.assertEqual(credit_json.get('account_id'), trx_get.get('account_credit_id'))
+        self.assertEqual(credit_json.get('account_id'),
+                         trx_get.get('account_credit_id'))
         self.assertEqual(summary, trx_get.get('summary'))
         self.assertEqual(amount, trx_get.get('amount'))
         self.assertEqual(date, trx_get.get('date'))
         self.assertEqual(description, trx_get.get('description'))
-        self.assertEqual(trx.get('transaction_id'), trx_get.get('transaction_id'))
+        self.assertEqual(trx.get('transaction_id'),
+                         trx_get.get('transaction_id'))
 
     def test_view_add_locale_date(self):
         """Test adding a transaction using a locale date value"""
@@ -161,17 +168,20 @@ class TransactionViewTestCase(BaseViewTestCase):
         self.assertEqual(200, rv.status_code)
         trx_get = json.loads(rv.data)
         # need to update account balances with this trx
-        debit_json['balance'] += amount;
-        credit_json['balance'] -= amount;
+        debit_json['balance'] += amount
+        credit_json['balance'] -= amount
         self.assertEqual(debit_json, trx_get.get('debit'))
-        self.assertEqual(debit_json.get('account_id'), trx_get.get('account_debit_id'))
+        self.assertEqual(debit_json.get('account_id'),
+                         trx_get.get('account_debit_id'))
         self.assertEqual(credit_json, trx_get.get('credit'))
-        self.assertEqual(credit_json.get('account_id'), trx_get.get('account_credit_id'))
+        self.assertEqual(credit_json.get('account_id'),
+                         trx_get.get('account_credit_id'))
         self.assertEqual(summary, trx_get.get('summary'))
         self.assertEqual(amount, trx_get.get('amount'))
         self.assertEqual(date[:10], trx_get.get('date'))
         self.assertEqual(description, trx_get.get('description'))
-        self.assertEqual(trx.get('transaction_id'), trx_get.get('transaction_id'))
+        self.assertEqual(trx.get('transaction_id'),
+                         trx_get.get('transaction_id'))
 
     def test_view_add_fail(self):
         """Test adding an invalid transaction"""
