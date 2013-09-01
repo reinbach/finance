@@ -3,7 +3,8 @@ import pytest
 
 from sqlalchemy.exc import IntegrityError
 
-from finance.models.account import Account, db
+from finance import db
+from finance.models.account import Account
 from finance.models.account_type import AccountType
 
 
