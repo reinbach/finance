@@ -5,6 +5,7 @@ from finance import db
 from finance.models.account import Account
 from finance.models.account_type import AccountType
 from finance.models.transaction import Transaction
+from finance.models.user import User
 
 db.init_db()
 
@@ -12,6 +13,21 @@ db.init_db()
 @pytest.fixture
 def filename():
     return 'tests/trx_import_file_sample.csv'
+
+
+def setup_user():
+    username = 'admin'
+    password = 'secret'
+    user = User(username, password)
+    db.session.add(user)
+    db.session.commit()
+    return user, username, password
+
+
+def delete_user(user):
+    db.session.delete(user)
+    db.session.commit()
+    db.session.remove()
 
 
 def setup_account_types():

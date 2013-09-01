@@ -6,10 +6,9 @@ from finance.models.account_type import AccountType
 from finance.models.transaction import Transaction
 
 
-class TransactionModelTestCase():
+class TestTransactionModel():
 
-    @classmethod
-    def setup_class(self):
+    def setup_method(self, method):
         self.account_type = AccountType('Income')
         db.session.add(self.account_type)
         db.session.commit()
@@ -19,8 +18,7 @@ class TransactionModelTestCase():
         db.session.add(self.account2)
         db.session.commit()
 
-    @classmethod
-    def teardown_class(self):
+    def teardown_method(self, method):
         db.session.delete(self.account_type)
         db.session.delete(self.account1)
         db.session.delete(self.account2)
@@ -37,7 +35,7 @@ class TransactionModelTestCase():
             datetime.date.today(),
             "January's Salary"
         )
-        self.assertTrue(t)
+        assert bool(t) is True
 
     def test_transaction_add(self):
         """Test adding a transaction normaly"""
@@ -54,13 +52,13 @@ class TransactionModelTestCase():
         db.session.commit()
 
         t2 = Transaction.query.filter(Transaction.amount == t.amount).first()
-        self.assertEqual(t2.account_debit_id, t.account_debit_id)
-        self.assertEqual(t2.account_credit_id, t.account_credit_id)
-        self.assertEqual(t2.amount, t.amount)
-        self.assertEqual(t2.summary, t.summary)
-        self.assertEqual(t2.description, t.description)
-        self.assertEqual(t2.date, t.date)
-        self.assertTrue(t2.transaction_id)
+        assert t2.account_debit_id == t.account_debit_id
+        assert t2.account_credit_id == t.account_credit_id
+        assert t2.amount == t.amount
+        assert t2.summary == t.summary
+        assert t2.description == t.description
+        assert t2.date == t.date
+        assert bool(t2.transaction_id) is True
 
     def test_account_balance(self):
         """Test that balance on account calculates correctly"""
@@ -87,8 +85,8 @@ class TransactionModelTestCase():
         db.session.add(t2)
         db.session.commit()
 
-        self.assertEqual(self.account1.get_balance(), t1.amount - t2.amount)
-        self.assertEqual(self.account2.get_balance(), t2.amount - t1.amount)
+        assert self.account1.get_balance() == t1.amount - t2.amount
+        assert self.account2.get_balance() == t2.amount - t1.amount
 
     def test_account_balance_onesided(self):
         """Test that balance on account calculates correctly"""
@@ -115,8 +113,8 @@ class TransactionModelTestCase():
         db.session.add(t2)
         db.session.commit()
 
-        self.assertEqual(self.account1.get_balance(), t1.amount + t2.amount)
-        self.assertEqual(self.account2.get_balance(), -t1.amount - t2.amount)
+        assert self.account1.get_balance() == t1.amount + t2.amount
+        assert self.account2.get_balance() == -t1.amount - t2.amount
 
     def test_account_transactions(self):
         """Test getting a list of transactions for an account"""
@@ -145,14 +143,12 @@ class TransactionModelTestCase():
         db.session.add(t2)
         db.session.commit()
 
-        self.assertIn(t1, self.account1.transactions())
-        self.assertIn(t2, self.account1.transactions())
-        self.assertEqual(acct1_trx_count + 2,
-                         len(self.account1.transactions()))
-        self.assertIn(t1, self.account2.transactions())
-        self.assertIn(t2, self.account2.transactions())
-        self.assertEqual(acct2_trx_count + 2,
-                         len(self.account2.transactions()))
+        assert t1 in self.account1.transactions()
+        assert t2 in self.account1.transactions()
+        assert acct1_trx_count + 2 == len(self.account1.transactions())
+        assert t1 in self.account2.transactions()
+        assert t2 in self.account2.transactions()
+        assert acct2_trx_count + 2 == len(self.account2.transactions())
 
     def test_transaction_jsonify(self):
         """Test the jsonify method"""
@@ -164,14 +160,14 @@ class TransactionModelTestCase():
             datetime.date.today(),
             "January's Salary'"
         )
-        self.assertEqual(dict, type(t.jsonify()))
-        self.assertTrue(json.dumps(t.jsonify()))
+        assert dict == type(t.jsonify())
+        assert bool(json.dumps(t.jsonify())) is True
 
         db.session.add(t)
         db.session.commit()
 
         t_json = t.jsonify()
-        self.assertEqual(dict, type(t_json))
-        self.assertTrue(json.dumps(t_json))
-        self.assertEqual(self.account1.jsonify(), t_json.get('debit'))
-        self.assertEqual(self.account2.jsonify(), t_json.get('credit'))
+        assert dict == type(t_json)
+        assert bool(json.dumps(t_json)) is True
+        assert self.account1.jsonify() == t_json.get('debit')
+        assert self.account2.jsonify() == t_json.get('credit')

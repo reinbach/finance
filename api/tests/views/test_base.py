@@ -1,26 +1,12 @@
 import base64
 import json
-import unittest
 
 import finance
 
-from finance.models.user import User, db
+from tests.fixtures import setup_user, delete_user
 
 
-class BaseViewTestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.username = 'admin'
-        self.password = 'secret'
-        self.user = User(self.username, self.password)
-        db.session.add(self.user)
-        db.session.commit()
-        self.app = finance.app.test_client()
-
-    def tearDown(self):
-        db.session.delete(self.user)
-        db.session.commit()
-        db.session.remove()
+class BaseViewTestCase():
 
     def open_with_auth(self, url, method, username, password, data=None):
         return self.app.open(
@@ -59,21 +45,30 @@ class BaseViewTestCase(unittest.TestCase):
         )
 
 
-class GeneralViewTestCase(BaseViewTestCase):
+class TestGeneralView(BaseViewTestCase):
+
+    @classmethod
+    def setup_class(self):
+        self.user, self.username, self.password = setup_user()
+        self.app = finance.app.test_client()
+
+    @classmethod
+    def teardown_class(self):
+        delete_user(self.user)
 
     def test_version(self):
         """Test version number"""
         rv = self.app.get("/")
-        self.assertEqual(200, rv.status_code)
-        self.assertIn('version', json.loads(rv.data))
+        assert 200 == rv.status_code
+        assert 'version' in json.loads(rv.data)
 
     def test_login(self):
         """Test logging in """
         rv = self.login(self.username, self.password)
-        self.assertEqual(200, rv.status_code)
+        assert 200 == rv.status_code
         res = json.loads(rv.data)
-        self.assertIn("Success", res.get('message'))
-        self.assertTrue('auth_token' in res)
+        assert "Success" in res.get('message')
+        assert 'auth_token' in res
 
         rv = self.app.open(
             "/accounts",
@@ -82,7 +77,7 @@ class GeneralViewTestCase(BaseViewTestCase):
                 'AuthToken': res.get('auth_token')
             }
         )
-        self.assertEqual(200, rv.status_code)
+        assert 200 == rv.status_code
 
         rv = self.app.open(
             "/accounts",
@@ -91,13 +86,13 @@ class GeneralViewTestCase(BaseViewTestCase):
                 'AuthToken': 'random'
             }
         )
-        self.assertEqual(401, rv.status_code)
+        assert 401 == rv.status_code
 
     def test_login_fail(self):
         """Test logging in with invalid credentials"""
         rv = self.login('boo', 'hoo')
-        self.assertEqual(400, rv.status_code)
-        self.assertIn('Invalid', json.loads(rv.data).get('message'))
+        assert 400 == rv.status_code
+        assert 'Invalid' in json.loads(rv.data).get('message')
 
     def test_login_invalid(self):
         """Test logging in with invalid form post"""
@@ -107,19 +102,20 @@ class GeneralViewTestCase(BaseViewTestCase):
             follow_redirects=True,
             content_type='application/json'
         )
-        self.assertEqual(400, rv.status_code)
-        self.assertEqual({u'password': [u'This field is required.']},
-                         json.loads(rv.data))
+        assert 400 == rv.status_code
+        assert {
+            u'password': [u'This field is required.']
+        } == json.loads(rv.data)
 
     def test_logout(self):
         """Test logging out"""
         rv = self.login(self.username, self.password)
-        self.assertEqual(200, rv.status_code)
+        assert 200 == rv.status_code
         auth_token = json.loads(rv.data).get('auth_token')
 
         rv = self.logout(auth_token)
-        self.assertEqual(200, rv.status_code)
-        self.assertIn('Success', json.loads(rv.data).get('message'))
+        assert 200 == rv.status_code
+        assert 'Success' in json.loads(rv.data).get('message')
 
         rv = self.app.open(
             "/accounts",
@@ -128,4 +124,4 @@ class GeneralViewTestCase(BaseViewTestCase):
                 'AuthToken': auth_token
             }
         )
-        self.assertEqual(401, rv.status_code)
+        assert 401 == rv.status_code

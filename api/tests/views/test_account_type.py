@@ -1,25 +1,28 @@
 import json
 
-from finance.models.account_type import AccountType, db
+from finance import app, db
+from finance.models.account_type import AccountType
+from tests.fixtures import setup_user, delete_user
 from tests.views.test_base import BaseViewTestCase
 
 
-class AccountTypeViewTestCase(BaseViewTestCase):
+class TestAccountTypeView(BaseViewTestCase):
 
-    def setUp(self):
-        super(AccountTypeViewTestCase, self).setUp()
+    def setup_method(self, method):
+        self.user, self.username, self.password = setup_user()
+        self.app = app.test_client()
         self.account_type = AccountType('Expense')
         db.session.add(self.account_type)
         db.session.commit()
 
-    def tearDown(self):
+    def teardown_method(self, method):
+        delete_user(self.user)
         db.session.delete(self.account_type)
-        super(AccountTypeViewTestCase, self).tearDown()
 
     def test_view_auth_required(self):
         """Test that authentication is required"""
         rv = self.app.get("/account/types")
-        self.assertEqual(401, rv.status_code)
+        assert 401 == rv.status_code
 
     def test_view_all(self):
         """Test viewing all account types"""
@@ -29,10 +32,10 @@ class AccountTypeViewTestCase(BaseViewTestCase):
             self.username,
             self.password
         )
-        self.assertEqual(200, rv.status_code)
+        assert 200 == rv.status_code
         data = json.loads(rv.data)
         acct_type = self.account_type.jsonify()
-        self.assertIn(acct_type, data)
+        assert acct_type in data
 
     def test_view_account_type(self):
         """Test viewing a single account type"""
@@ -42,8 +45,8 @@ class AccountTypeViewTestCase(BaseViewTestCase):
             self.username,
             self.password
         )
-        self.assertEqual(200, rv.status_code)
-        self.assertEqual(self.account_type.jsonify(), json.loads(rv.data))
+        assert 200 == rv.status_code
+        assert self.account_type.jsonify() == json.loads(rv.data)
 
     def test_view_account_type_404(self):
         """Test viewing a non-existant account type"""
@@ -53,8 +56,8 @@ class AccountTypeViewTestCase(BaseViewTestCase):
             self.username,
             self.password
         )
-        self.assertEqual(404, rv.status_code)
-        self.assertIn("404 Not Found", rv.data)
+        assert 404 == rv.status_code
+        assert "404 Not Found" in rv.data
 
     def test_view_add(self):
         """Test adding an account type"""
@@ -68,8 +71,8 @@ class AccountTypeViewTestCase(BaseViewTestCase):
                 name=name,
             )
         )
-        self.assertEqual(200, rv.status_code)
-        self.assertIn('Success', rv.data)
+        assert 200 == rv.status_code
+        assert 'Success' in rv.data
 
         acct_type = json.loads(rv.data)
         rv = self.open_with_auth(
@@ -79,11 +82,11 @@ class AccountTypeViewTestCase(BaseViewTestCase):
             self.password,
         )
 
-        self.assertEqual(200, rv.status_code)
+        assert 200 == rv.status_code
         acct_type_get = json.loads(rv.data)
-        self.assertEqual(name, acct_type_get.get('name'))
-        self.assertEqual(acct_type.get('account_type_id'),
-                         acct_type_get.get('account_type_id'))
+        assert name == acct_type_get.get('name')
+        assert acct_type.get('account_type_id') == \
+            acct_type_get.get('account_type_id')
 
     def test_view_add_fail_invalid(self):
         """Test adding an invalid account type"""
@@ -97,8 +100,8 @@ class AccountTypeViewTestCase(BaseViewTestCase):
                 name=name,
             )
         )
-        self.assertEqual(400, rv.status_code)
-        self.assertIn('errors', rv.data)
+        assert 400 == rv.status_code
+        assert 'errors' in rv.data
 
     def test_view_add_fail_unique(self):
         """Test adding a duplicate account type"""
@@ -112,8 +115,8 @@ class AccountTypeViewTestCase(BaseViewTestCase):
                 name=name,
             )
         )
-        self.assertEqual(400, rv.status_code)
-        self.assertIn('errors', rv.data)
+        assert 400 == rv.status_code
+        assert 'errors' in rv.data
 
     def test_view_delete(self):
         """Test deleting account"""
@@ -128,7 +131,7 @@ class AccountTypeViewTestCase(BaseViewTestCase):
             self.username,
             self.password
         )
-        self.assertEqual(200, rv.status_code)
+        assert 200 == rv.status_code
 
         # attempt to get the account
         rv = self.open_with_auth(
@@ -137,7 +140,7 @@ class AccountTypeViewTestCase(BaseViewTestCase):
             self.username,
             self.password
         )
-        self.assertEqual(404, rv.status_code)
+        assert 404 == rv.status_code
 
     def test_view_delete_fail(self):
         """Test deleting a non existant account type"""
@@ -147,7 +150,7 @@ class AccountTypeViewTestCase(BaseViewTestCase):
             self.username,
             self.password
         )
-        self.assertEqual(404, rv.status_code)
+        assert 404 == rv.status_code
 
     def test_view_update(self):
         """Test updating an account type"""
@@ -162,8 +165,8 @@ class AccountTypeViewTestCase(BaseViewTestCase):
                 name=name,
             )
         )
-        self.assertEqual(200, rv.status_code)
-        self.assertIn('Success', rv.data)
+        assert 200 == rv.status_code
+        assert 'Success' in rv.data
 
         rv = self.open_with_auth(
             "/account/types/%s" % account_type_id,
@@ -172,9 +175,9 @@ class AccountTypeViewTestCase(BaseViewTestCase):
             self.password,
         )
 
-        self.assertEqual(200, rv.status_code)
+        assert 200 == rv.status_code
         acct_type_get = json.loads(rv.data)
-        self.assertEqual(name, acct_type_get.get('name'))
+        assert name == acct_type_get.get('name')
 
     def test_view_update_nochange(self):
         """Test updating an account type with same name value"""
@@ -188,8 +191,8 @@ class AccountTypeViewTestCase(BaseViewTestCase):
                 name=self.account_type.name,
             )
         )
-        self.assertEqual(200, rv.status_code)
-        self.assertIn('Success', rv.data)
+        assert 200 == rv.status_code
+        assert 'Success' in rv.data
 
     def test_view_update_fail_invalid_id(self):
         """Test updating an account type with invalid id"""
@@ -203,4 +206,4 @@ class AccountTypeViewTestCase(BaseViewTestCase):
                 name='Invalid',
             )
         )
-        self.assertEqual(404, rv.status_code)
+        assert 404 == rv.status_code
