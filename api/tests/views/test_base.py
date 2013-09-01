@@ -1,8 +1,7 @@
 import base64
 import json
 
-import finance
-
+from finance import app
 from tests.fixtures import setup_user, delete_user
 
 
@@ -50,7 +49,7 @@ class TestGeneralView(BaseViewTestCase):
     @classmethod
     def setup_class(self):
         self.user, self.username, self.password = setup_user()
-        self.app = finance.app.test_client()
+        self.app = app.test_client()
 
     @classmethod
     def teardown_class(self):

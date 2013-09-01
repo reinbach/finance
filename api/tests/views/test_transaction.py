@@ -221,6 +221,16 @@ class TestTransactionView(BaseViewTestCase):
         assert len(acct_trx_list) == 1
         assert self.account1.transactions()[0].jsonify() in acct_trx_list
 
+    def test_view_account_transactions_invalid_account(self):
+        """Test viewing transactions for an invalid account"""
+        rv = self.open_with_auth(
+            '/accounts/transactions/99',
+            'GET',
+            self.username,
+            self.password
+        )
+        assert rv.status_code == 404
+
     def test_view_delete(self):
         """Test deleting transaction"""
         transaction1 = Transaction(
@@ -290,6 +300,26 @@ class TestTransactionView(BaseViewTestCase):
         assert 200 == rv.status_code
         trx_get = json.loads(rv.data)
         assert description == trx_get.get('description')
+
+    def test_view_update_invalid(self):
+        """Test updating an transaction with invalid data"""
+        description = 'Something witty here'
+        transaction_id = self.transaction.transaction_id
+        rv = self.open_with_auth(
+            "/transactions/%s" % transaction_id,
+            "PUT",
+            self.username,
+            self.password,
+            data=dict(
+                credit=self.transaction.account_credit_id,
+                amount=self.transaction.amount,
+                summary=self.transaction.summary,
+                date=self.transaction.date.strftime("%Y-%m-%d"),
+                description=description,
+            )
+        )
+        assert 400 == rv.status_code
+        assert 'error' in rv.data
 
     def test_view_update_nochange(self):
         """Test updating an transaction with same values"""

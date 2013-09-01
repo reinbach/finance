@@ -186,6 +186,24 @@ class TestAccountView(BaseViewTestCase):
         acct_get = json.loads(rv.data)
         assert name == acct_get.get('name')
 
+    def test_view_update_nonvalid(self):
+        """Test updating an account with invalid form data"""
+        name = ""
+        account_id = self.account.account_id
+        rv = self.open_with_auth(
+            "/accounts/%s" % account_id,
+            'PUT',
+            self.username,
+            self.password,
+            data=dict(
+                name=name,
+                account_type_id=self.account.account_type_id,
+                description=self.account.description,
+            )
+        )
+        assert 400 == rv.status_code
+        assert 'errors' in rv.data
+
     def test_view_update_nochange(self):
         """Test updating an account with same values"""
         account_id = self.account.account_id

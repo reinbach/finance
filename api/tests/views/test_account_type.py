@@ -179,6 +179,22 @@ class TestAccountTypeView(BaseViewTestCase):
         acct_type_get = json.loads(rv.data)
         assert name == acct_type_get.get('name')
 
+    def test_view_update_invalid(self):
+        """Test updating an account type with invalid data"""
+        name = ''
+        account_type_id = self.account_type.account_type_id
+        rv = self.open_with_auth(
+            "/account/types/%s" % account_type_id,
+            "PUT",
+            self.username,
+            self.password,
+            data=dict(
+                name=name,
+            )
+        )
+        assert 400 == rv.status_code
+        assert 'error' in rv.data
+
     def test_view_update_nochange(self):
         """Test updating an account type with same name value"""
         account_type_id = self.account_type.account_type_id
