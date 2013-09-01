@@ -10,7 +10,7 @@ class TestUserModel():
     def test_user_repr(self):
         """Ensure __repr__ function works"""
         u = User('test', 'secret')
-        assert bool(u) is True
+        assert repr(u) == "<User: test>"
 
     def test_user_add(self):
         """Test adding a user normally"""

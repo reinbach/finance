@@ -35,7 +35,7 @@ class TestTransactionModel():
             datetime.date.today(),
             "January's Salary"
         )
-        assert bool(t) is True
+        assert repr(t) == "<Transaction: ACME, Inc. 1>"
 
     def test_transaction_add(self):
         """Test adding a transaction normaly"""

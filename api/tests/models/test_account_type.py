@@ -10,7 +10,7 @@ class TestAccountTypeModel():
 
     def test_account_type_repr(self):
         at = AccountType('Expenses')
-        assert bool(at) is True
+        assert repr(at) == "<AccountType: Expenses>"
 
     def test_account_type_add(self):
         """Test adding an account type normally"""
