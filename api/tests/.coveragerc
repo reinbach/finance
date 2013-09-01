@@ -1,7 +1,6 @@
 [run]
 branch = True
 source = finance
-omit = **/tests/**
 
 [report]
 # Regexes for lines to exclude from consideration
