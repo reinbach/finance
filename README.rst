@@ -10,8 +10,8 @@ Application to handle finances by;
 Objective
 ---------
 
-Tracking charges/expenses on credit cards and checking accounts. Determine which savings accounts cover
-the charges/expenses
+Tracking charges/expenses on credit cards and checking accounts.
+Determine which savings accounts cover the charges/expenses
 
 
 Install
@@ -37,4 +37,5 @@ Add admin user;
    db.session.add(u)
    db.session.commit()
 
-This is a little long winded at the moment, need to create wrappers to simplify this a lot more.
+This is a little long winded at the moment, need to create wrappers
+to simplify this a lot more.

@@ -4,7 +4,6 @@ TO DO
 API
 ---
 
-- convert to pytest
 - simple setup/init of database and admin user
 - import datafiles
 

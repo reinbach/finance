@@ -1,14 +1,9 @@
 #!/usr/bin/env python
+from pip.req import parse_requirements
 from setuptools import setup
 
-requires = [
-    'Flask==0.10.1',
-    'WTForms==1.0.2',
-    'SQLAlchemy==0.8.0b2',
-    'psycopg2==2.4.5',
-    'scales==1.0.3',
-    'Fabric==1.5.1',
-]
+install_reqs = parse_requirements('requirements.txt')
+reqs = [str(r.req) for r in install_reqs]
 
 setup(
     name='finance',
@@ -17,5 +12,5 @@ setup(
     author='Greg Reinbach',
     author_email='greg@reinbach.com',
     url='https://github.com/reinbach/finance',
-    install_requires=requires,
+    install_requires=reqs,
 )
