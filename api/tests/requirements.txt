@@ -1,2 +1,4 @@
 pytest==2.3.5
 pytest-cov==1.6
+pep8==2.0
+flake8==2.0
