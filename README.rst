@@ -22,20 +22,15 @@ API
 
 Initialize the database;
 
-.. code-block:: python
+.. code-block:: bash
 
-  from finance.database import DB
-  DB().init_db()
+  python install.py initdb
 
 Add admin user;
 
-.. code-block:: python
+.. code-block:: bash
 
-   from finance.models.user import User, DB
-   db = DB()
-   u = User('admin', 'secret')
-   db.session.add(u)
-   db.session.commit()
+   python install.py user [<username> [<password>]]
 
-This is a little long winded at the moment, need to create wrappers
-to simplify this a lot more.
+If no username, password provided then it will default to using 'admin' for
+username and 'secret' for password

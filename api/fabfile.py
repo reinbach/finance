@@ -8,17 +8,12 @@ env.app_dir = env.sites_dir + env.app
 env.repo = "https://github.com/reinbach/api_finance"
 env.nginx_conf_dir = "/opt/nginx/conf/sites/"
 
-USE_DB = True
-
 
 def init_db():
-    if USE_DB:
-        run("source {app_dir}/bin/activate && python manage.py syncdb".format(
-            app_dir=env.app_dir))
-        run("source {app_dir}/bin/activate && python manage.py migrate".format(
-            app_dir=env.app_dir))
-    run("""source {d}/bin/activate &&
-        python manage.py collectstatic -v0 --noinput""".format(d=env.app_dir))
+    run("source {app_dir}/bin/activate && python install.py initdb".format(
+        app_dir=env.app_dir))
+    run("""source {app_dir}/bin/activate && python install.py
+        user admin secret""".format(app_dir=env.app_dir))
 
 
 def build_app():

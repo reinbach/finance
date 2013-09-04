@@ -1,10 +1,11 @@
 TO DO
 =====
 
+- add sphinx docs
+
 API
 ---
 
-- simple setup/init of database and admin user
 - import datafiles
 
 
@@ -12,6 +13,7 @@ WebSite
 -------
 
 - upload datafile
+- add reports
 
 
 Android
