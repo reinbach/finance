@@ -6,12 +6,12 @@ TO DO
 API
 ---
 
-- import datafiles
 
 
 WebSite
 -------
 
+- remove jquery and bootstrap js
 - upload datafile
 - add reports
 
