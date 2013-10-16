@@ -1,21 +1,24 @@
 import sys
 
-from finance.database import DB
 from finance.models.user import User
-
-db = DB()
-
+from finance.models.mapper import set_model_mapping
+from finance import db
 
 def create_db(args):
-    db.init_db()
+    print("Creating database...")
+    set_model_mapping()
+    db.metadata.create_all(bind=db.get_engine())
+    print("done.")
 
 
 def create_user(args):
+    print("Creating user...")
     username = args[0] if len(args) > 0 else 'admin'
     password = args[1] if len(args) > 1 else 'secret'
     u = User(username, password)
     db.session.add(u)
     db.session.commit()
+    print("done.")
 
 
 COMMANDS = {

@@ -44,20 +44,11 @@ class DB():
         )
         return db_session
 
-    def init_db(self):
-        # import all modules here that might define models so
-        # that they will be registered properly on the metadata.
-        # Otherwise you will have to import them first before
-        # calling init_db()
-        import models  # noqa
-        self.drop_db()
-        self.metadata.create_all(bind=self.get_engine())
+    # def drop_db(self):
+    #     """Drop all tables in the models
 
-    def drop_db(self):
-        """Drop all tables in the models
-
-        Only allow this for testing purposes
-        """
-        if hasattr(config, 'TESTING') and config.TESTING:
-            import models  # noqa
-            self.metadata.drop_all(bind=self.get_engine())
+    #     Only allow this for testing purposes
+    #     """
+    #     if hasattr(config, 'TESTING') and config.TESTING:
+    #         from models import *  # noqa
+    #         self.metadata.drop_all(bind=self.get_engine())
