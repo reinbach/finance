@@ -24,13 +24,13 @@ Initialize the database;
 
 .. code-block:: bash
 
-  python install.py initdb
+  python commands.py initdb
 
 Add admin user;
 
 .. code-block:: bash
 
-   python install.py user [<username> [<password>]]
+   python commands.py user [<username> [<password>]]
 
-If no username, password provided then it will default to using 'admin' for
-username and 'secret' for password
+The default for username and password 'admin' for username and
+'secret' for password
