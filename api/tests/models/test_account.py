@@ -23,13 +23,13 @@ class TestAccountModel():
 
     def test_account_repr(self):
         """Ensure __repr__ function works"""
-        a = Account('Bonus', self.account_type.account_type_id,
+        a = Account('Bonus', self.account_type,
                     "Show me the money")
         assert repr(a) == '<Account: Bonus [Income]>'
 
     def test_account_add(self):
         """Test adding an account normaly"""
-        a = Account("Salary", self.account_type.account_type_id,
+        a = Account("Salary", self.account_type,
                     "Show me the money")
         assert a.name == "Salary"
 
@@ -40,17 +40,17 @@ class TestAccountModel():
         assert a2.name == a.name
         assert a2.account_type == a.account_type
         assert a2.description == a.description
-        assert bool(a2.account_id) is True
+        assert bool(a2.pk) is True
 
     def test_account_name_unique(self):
         """Test that account name uniqueness is maintained"""
-        a = Account("Interest", self.account_type.account_type_id,
+        a = Account("Interest", self.account_type,
                     "Compound it baby")
         db.session.add(a)
         db.session.commit()
 
         with pytest.raises(IntegrityError):
-            a2 = Account("Interest", self.account_type.account_type_id,
+            a2 = Account("Interest", self.account_type,
                          "No, don't charge me'")
             db.session.add(a2)
             db.session.commit()
@@ -58,7 +58,7 @@ class TestAccountModel():
 
     def test_account_jsonify(self):
         """Test the jsonify method"""
-        a = Account("Interest", self.account_type.account_type_id,
+        a = Account("Interest", self.account_type,
                     "Compound it baby")
         assert dict == type(a.jsonify())
         assert bool(json.dumps(a.jsonify())) is True

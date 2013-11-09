@@ -12,8 +12,8 @@ class TestTransactionModel():
         self.account_type = AccountType('Income')
         db.session.add(self.account_type)
         db.session.commit()
-        self.account1 = Account("Test1", self.account_type.account_type_id)
-        self.account2 = Account("Test2", self.account_type.account_type_id)
+        self.account1 = Account("Test1", self.account_type)
+        self.account2 = Account("Test2", self.account_type)
         db.session.add(self.account1)
         db.session.add(self.account2)
         db.session.commit()
@@ -28,8 +28,8 @@ class TestTransactionModel():
     def test_user_repr(self):
         """Ensure __repr__ function works"""
         t = Transaction(
-            self.account1.account_id,
-            self.account2.account_id,
+            self.account1,
+            self.account2,
             1,
             "ACME, Inc.",
             datetime.date.today(),
@@ -40,8 +40,8 @@ class TestTransactionModel():
     def test_transaction_add(self):
         """Test adding a transaction normaly"""
         t = Transaction(
-            self.account1.account_id,
-            self.account2.account_id,
+            self.account1,
+            self.account2,
             1,
             "ACME, Inc.",
             datetime.date.today(),
@@ -58,13 +58,13 @@ class TestTransactionModel():
         assert t2.summary == t.summary
         assert t2.description == t.description
         assert t2.date == t.date
-        assert bool(t2.transaction_id) is True
+        assert bool(t2.pk) is True
 
     def test_account_balance(self):
         """Test that balance on account calculates correctly"""
         t1 = Transaction(
-            self.account1.account_id,
-            self.account2.account_id,
+            self.account1,
+            self.account2,
             10,
             'ACME, Inc.',
             datetime.date.today(),
@@ -74,8 +74,8 @@ class TestTransactionModel():
         db.session.add(t1)
 
         t2 = Transaction(
-            self.account2.account_id,
-            self.account1.account_id,
+            self.account2,
+            self.account1,
             5,
             'IRS',
             datetime.date.today(),
@@ -91,8 +91,8 @@ class TestTransactionModel():
     def test_account_balance_onesided(self):
         """Test that balance on account calculates correctly"""
         t1 = Transaction(
-            self.account1.account_id,
-            self.account2.account_id,
+            self.account1,
+            self.account2,
             10,
             'ACME, Inc.',
             datetime.date.today(),
@@ -102,8 +102,8 @@ class TestTransactionModel():
         db.session.add(t1)
 
         t2 = Transaction(
-            self.account1.account_id,
-            self.account2.account_id,
+            self.account1,
+            self.account2,
             10,
             'ACME, Inc.',
             datetime.date.today(),
@@ -121,8 +121,8 @@ class TestTransactionModel():
         acct1_trx_count = len(self.account1.transactions())
         acct2_trx_count = len(self.account2.transactions())
         t1 = Transaction(
-            self.account1.account_id,
-            self.account2.account_id,
+            self.account1,
+            self.account2,
             10,
             'ACME, Inc.',
             datetime.date.today(),
@@ -132,8 +132,8 @@ class TestTransactionModel():
         db.session.add(t1)
 
         t2 = Transaction(
-            self.account2.account_id,
-            self.account1.account_id,
+            self.account2,
+            self.account1,
             5,
             'IRS',
             datetime.date.today(),
@@ -153,8 +153,8 @@ class TestTransactionModel():
     def test_transaction_jsonify(self):
         """Test the jsonify method"""
         t = Transaction(
-            self.account1.account_id,
-            self.account2.account_id,
+            self.account1,
+            self.account2,
             10,
             'ACME, Inc.',
             datetime.date.today(),

@@ -1,13 +1,12 @@
 import sys
 
-from finance.models.user import User
-from finance.models.mapper import set_model_mapping
 from finance import db
+from finance.models.user import User
+
 
 def create_db(args):
     print("Creating database...")
-    set_model_mapping()
-    db.metadata.create_all(bind=db.get_engine())
+    db.create_all()
     print("done.")
 
 

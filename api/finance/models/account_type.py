@@ -1,12 +1,11 @@
-from sqlalchemy import Table, Column, Integer, String
-
 from finance import db
 
 
-class AccountType(object):
+class AccountType(db.Model):
     """Account Type"""
 
-    query = db.session.query_property()
+    pk = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), unique=True)
 
     def __init__(self, name=None):
         self.name = name
@@ -18,13 +17,6 @@ class AccountType(object):
 
     def jsonify(self):
         return {
-            'account_type_id': self.account_type_id,
+            'account_type_id': self.pk,
             'name': self.name,
         }
-
-account_types = Table(
-    'account_types',
-    db.metadata,
-    Column('account_type_id', Integer, primary_key=True),
-    Column('name', String(20), unique=True),
-)

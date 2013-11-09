@@ -1,27 +1,40 @@
-from sqlalchemy import Table, Column, Date, Float, ForeignKey, Integer, String
-
 from finance import db
+from finance.models.account import Account
 
 
-class Transaction(object):
+class Transaction(db.Model):
     """Transaction
 
     Record of the transaction
     """
 
-    query = db.session.query_property()
+    pk = db.Column(db.Integer, primary_key=True)
+    account_debit_id = db.Column(db.Integer, db.ForeignKey('account.pk'))
+    account_debit = db.relationship(Account,
+                                    foreign_keys=[account_debit_id],
+                                    backref=db.backref('debits',
+                                                       lazy='dynamic'))
+    account_credit_id = db.Column(db.Integer, db.ForeignKey('account.pk'))
+    account_credit = db.relationship(Account,
+                                     foreign_keys=[account_credit_id],
+                                     backref=db.backref('credits',
+                                                        lazy='dynamic'))
+    amount = db.Column(db.Float(precision=2))
+    summary = db.Column(db.String(50))
+    description = db.Column(db.String(250))
+    date = db.Column(db.Date)
 
     def __init__(
         self,
-        account_debit_id=None,
-        account_credit_id=None,
+        account_debit=None,
+        account_credit=None,
         amount=None,
         summary=None,
         date=None,
         description=None
     ):
-        self.account_debit_id = account_debit_id
-        self.account_credit_id = account_credit_id
+        self.account_debit = account_debit
+        self.account_credit = account_credit
         self.amount = amount
         self.summary = summary
         self.date = date
@@ -38,36 +51,23 @@ class Transaction(object):
 
     def jsonify(self):
         res = {
-            'transaction_id': self.transaction_id,
-            'account_debit_id': self.account_debit_id,
-            'account_credit_id': self.account_credit_id,
+            'transaction_id': self.pk,
+            'account_debit_id': self.account_debit.pk,
+            'account_credit_id': self.account_credit.pk,
             'amount': self.amount,
             'summary': self.summary,
             'description': self.description,
             'date': self.date.strftime("%Y-%m-%d")
         }
 
-        if self.debit is not None:
-            res['debit'] = self.debit.jsonify()
+        if self.account_debit is not None:
+            res['debit'] = self.account_debit.jsonify()
 
-        if self.credit is not None:
-            res['credit'] = self.credit.jsonify()
+        if self.account_credit is not None:
+            res['credit'] = self.account_credit.jsonify()
 
         # balance may be set as a running total for an account
         if hasattr(self, 'balance'):
             res['balance'] = self.balance
 
         return res
-
-
-transactions = Table(
-    'transactions',
-    db.metadata,
-    Column('transaction_id', Integer, primary_key=True),
-    Column('account_debit_id', Integer, ForeignKey('accounts.account_id')),
-    Column('account_credit_id', Integer, ForeignKey('accounts.account_id')),
-    Column('amount', Float(precision=2)),
-    Column('summary', String(50)),
-    Column('description', String(250)),
-    Column('date', Date),
-)
