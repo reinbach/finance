@@ -7,8 +7,6 @@ from finance.models.account_type import AccountType
 from finance.models.transaction import Transaction
 from finance.models.user import User
 
-db.init_db()
-
 
 @pytest.fixture
 def filename():
@@ -45,10 +43,9 @@ def setup_account_types():
 
 def setup_accounts(account_types):
     # setup accounts
-    acct_bank = Account("Bank", account_types['assets'].account_type_id)
-    acct_expense = Account("Expense1",
-                           account_types['expense'].account_type_id)
-    acct_income = Account("Income1", account_types['income'].account_type_id)
+    acct_bank = Account("Bank", account_types['assets'])
+    acct_expense = Account("Expense1", account_types['expense'])
+    acct_income = Account("Income1", account_types['income'])
     db.session.add(acct_bank)
     db.session.add(acct_expense)
     db.session.add(acct_income)
@@ -60,15 +57,15 @@ def setup_accounts(account_types):
 def setup_transactions(accounts):
     # setup transactions
     trx1 = Transaction(
-        accounts['bank'].account_id,
-        accounts['expense'].account_id,
+        accounts['bank'],
+        accounts['expense'],
         5,
         'Interest Expense',
         datetime.date(2013, 2, 19)
     )
     trx2 = Transaction(
-        accounts['income'].account_id,
-        accounts['bank'].account_id,
+        accounts['income'],
+        accounts['bank'],
         5,
         'Interest Income',
         datetime.date(2013, 2, 19)

@@ -18,6 +18,7 @@ class TestAccountTypeView(BaseViewTestCase):
     def teardown_method(self, method):
         delete_user(self.user)
         db.session.delete(self.account_type)
+        db.session.commit()
 
     def test_view_auth_required(self):
         """Test that authentication is required"""

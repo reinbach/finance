@@ -2,6 +2,7 @@ from wtforms import (DateField, DecimalField, IntegerField, TextField,
                      validators)
 
 from finance.forms import BaseForm
+from finance.models.account import Account
 
 
 class DateLocaleField(DateField):
@@ -16,9 +17,18 @@ class DateLocaleField(DateField):
         return super(DateLocaleField, self).process_formdata(valuelist)
 
 
+def validate_account(form, field):
+    try:
+        field.account = Account.query.get(field.data)
+    except:
+        raise validators.ValidationError(
+            "{0} is an invalid account".format(field.name)
+        )
+
+
 class TransactionForm(BaseForm):
-    debit = IntegerField('Debit', [validators.Required()])
-    credit = IntegerField('Credit', [validators.Required()])
+    debit = IntegerField('Debit', [validators.Required(), validate_account])
+    credit = IntegerField('Credit', [validators.Required(), validate_account])
     amount = DecimalField(
         'Amount',
         [validators.NumberRange(min=0), validators.Required()]

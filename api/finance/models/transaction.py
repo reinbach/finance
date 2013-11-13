@@ -8,13 +8,15 @@ class Transaction(db.Model):
     Record of the transaction
     """
 
-    pk = db.Column(db.Integer, primary_key=True)
-    account_debit_id = db.Column(db.Integer, db.ForeignKey('account.pk'))
+    transaction_id = db.Column(db.Integer, primary_key=True)
+    account_debit_id = db.Column(db.Integer,
+                                 db.ForeignKey('account.account_id'))
     account_debit = db.relationship(Account,
                                     foreign_keys=[account_debit_id],
                                     backref=db.backref('debits',
                                                        lazy='dynamic'))
-    account_credit_id = db.Column(db.Integer, db.ForeignKey('account.pk'))
+    account_credit_id = db.Column(db.Integer,
+                                  db.ForeignKey('account.account_id'))
     account_credit = db.relationship(Account,
                                      foreign_keys=[account_credit_id],
                                      backref=db.backref('credits',
@@ -51,9 +53,9 @@ class Transaction(db.Model):
 
     def jsonify(self):
         res = {
-            'transaction_id': self.pk,
-            'account_debit_id': self.account_debit.pk,
-            'account_credit_id': self.account_credit.pk,
+            'transaction_id': self.transaction_id,
+            'account_debit_id': self.account_debit.account_id,
+            'account_credit_id': self.account_credit.account_id,
             'amount': self.amount,
             'summary': self.summary,
             'description': self.description,

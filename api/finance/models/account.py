@@ -9,10 +9,11 @@ class Account(db.Model):
     eg: Income, expense, assets and liabilities
     """
 
-    pk = db.Column(db.Integer, primary_key=True)
+    account_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
     description = db.Column(db.String(250))
-    account_type_id = db.Column(db.Integer, db.ForeignKey('account_type.pk'))
+    account_type_id = db.Column(db.Integer,
+                                db.ForeignKey('account_type.account_type_id'))
     account_type = db.relationship(AccountType,
                                    backref=db.backref('accounts',
                                                       lazy='dynamic'))
@@ -29,10 +30,14 @@ class Account(db.Model):
         )
 
     def jsonify(self):
+        if self.account_type is None:
+            account_type_id = None
+        else:
+            account_type_id = self.account_type.account_type_id
         res = {
-            'account_id': self.pk,
+            'account_id': self.account_id,
             'name': self.name,
-            'account_type_id': self.account_type.pk,
+            'account_type_id': account_type_id,
             'description': self.description,
             'balance': self.get_balance(),
         }
@@ -64,7 +69,7 @@ class Account(db.Model):
         balance = 0
         for trx in trx_list:
             # remove duplicate information
-            if self.pk == trx.account_debit.pk:
+            if self.account_id == trx.account_debit.account_id:
                 balance += trx.amount
             else:
                 balance -= trx.amount

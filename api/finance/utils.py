@@ -92,7 +92,7 @@ def register_api(app, view, endpoint, url, pk='id', pk_type='int'):
 
     app.add_url_rule(
         url,
-        defaults={pk: None},
+        defaults={"{0}".format(pk): None},
         view_func=view_func,
         methods=['GET', ]
     )

@@ -5,7 +5,7 @@ from flask.views import MethodView
 
 import config
 
-from finance import app, utils
+from finance import utils, db
 from finance.forms.account import AccountForm
 from finance.models.account import Account
 from finance.stats import STATS
@@ -46,11 +46,11 @@ class AccountAPI(MethodView):
             if form.validate():
                 acct = Account(
                     form.name.data,
-                    form.account_type_id.data,
+                    form.acct_type,
                     form.description.data
                 )
-                app.db.session.add(acct)
-                app.db.session.commit()
+                db.session.add(acct)
+                db.session.commit()
                 STATS.success += 1
                 return jsonify({
                     'message': 'Successfully added Account',
@@ -68,8 +68,8 @@ class AccountAPI(MethodView):
             if acct is None:
                 STATS.notfound += 1
                 return abort(404)
-            app.db.session.delete(acct)
-            app.db.session.commit()
+            db.session.delete(acct)
+            db.session.commit()
             STATS.success += 1
             return jsonify({"message": "Successfully deleted Account"})
 
@@ -86,8 +86,8 @@ class AccountAPI(MethodView):
                 acct.name = form.name.data
                 acct.account_type_id = form.account_type_id.data
                 acct.description = form.description.data
-                app.db.session.add(acct)
-                app.db.session.commit()
+                db.session.add(acct)
+                db.session.commit()
                 STATS.success += 1
                 return jsonify({
                     'message': 'Successfully updated Account'

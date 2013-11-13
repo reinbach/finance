@@ -18,17 +18,17 @@ class TestTransactionView(BaseViewTestCase):
         db.session.add(self.account_type)
         db.session.commit()
         self.account1 = Account('TRX_Salary',
-                                self.account_type.account_type_id,
+                                self.account_type,
                                 "Show me the money")
         self.account2 = Account('TRX_Checking',
-                                self.account_type.account_type_id,
+                                self.account_type,
                                 "Mine mine mine")
         db.session.add(self.account1)
         db.session.add(self.account2)
         db.session.commit()
         self.transaction = Transaction(
-            self.account1.account_id,
-            self.account2.account_id,
+            self.account1,
+            self.account2,
             10000,
             'Employer',
             datetime.date.today(),
@@ -38,11 +38,12 @@ class TestTransactionView(BaseViewTestCase):
         db.session.commit()
 
     def teardown_method(self, method):
-        delete_user(self.user)
         db.session.delete(self.transaction)
         db.session.delete(self.account1)
         db.session.delete(self.account2)
         db.session.delete(self.account_type)
+        db.session.commit()
+        delete_user(self.user)
 
     def test_view_auth_required(self):
         """Test that authentication is required"""
@@ -51,6 +52,7 @@ class TestTransactionView(BaseViewTestCase):
 
     def test_view_all(self):
         """Test viewing all transactions"""
+        trx = self.transaction.jsonify()
         rv = self.open_with_auth(
             "/transactions",
             'GET',
@@ -59,11 +61,11 @@ class TestTransactionView(BaseViewTestCase):
         )
         assert 200 == rv.status_code
         data = json.loads(rv.data)
-        trx = self.transaction.jsonify()
         assert trx in data
 
     def test_view_transaction(self):
         """Test viewing a single transaction"""
+        trx = self.transaction.jsonify()
         rv = self.open_with_auth(
             "/transactions/%s" % self.transaction.transaction_id,
             "GET",
@@ -71,7 +73,7 @@ class TestTransactionView(BaseViewTestCase):
             self.password
         )
         assert 200 == rv.status_code
-        assert self.transaction.jsonify() == json.loads(rv.data)
+        assert trx == json.loads(rv.data)
 
     def test_view_transaction_404(self):
         """Test viewing a non-existant transaction"""
@@ -211,6 +213,7 @@ class TestTransactionView(BaseViewTestCase):
 
     def test_view_account_transactions(self):
         """Test viewing transactions for an account"""
+        trxs = self.account1.transactions()[0].jsonify()
         rv = self.open_with_auth(
             '/accounts/transactions/%s' % self.account1.account_id,
             'GET',
@@ -219,7 +222,7 @@ class TestTransactionView(BaseViewTestCase):
         )
         acct_trx_list = json.loads(rv.data)
         assert len(acct_trx_list) == 1
-        assert self.account1.transactions()[0].jsonify() in acct_trx_list
+        assert trxs in acct_trx_list
 
     def test_view_account_transactions_invalid_account(self):
         """Test viewing transactions for an invalid account"""
@@ -234,11 +237,11 @@ class TestTransactionView(BaseViewTestCase):
     def test_view_delete(self):
         """Test deleting transaction"""
         transaction1 = Transaction(
-            self.account1.account_id,
-            self.account2.account_id,
+            self.account1,
+            self.account2,
             100.00,
             'Bonus',
-            datetime.date.today().strftime("%Y-%m-%d")
+            datetime.date.today()
         )
         db.session.add(transaction1)
         db.session.commit()

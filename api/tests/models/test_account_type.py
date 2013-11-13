@@ -21,7 +21,7 @@ class TestAccountTypeModel():
 
         at2 = AccountType.query.filter(AccountType.name == at.name).first()
         assert at2.name == at.name
-        assert bool(at2.pk) is True
+        assert bool(at2.account_type_id) is True
 
     def test_account_type_name_unique(self):
         """Test that account type name uniqueness is maintained"""

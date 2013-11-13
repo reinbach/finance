@@ -4,7 +4,7 @@ from finance import db
 class AccountType(db.Model):
     """Account Type"""
 
-    pk = db.Column(db.Integer, primary_key=True)
+    account_type_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=True)
 
     def __init__(self, name=None):
@@ -17,6 +17,6 @@ class AccountType(db.Model):
 
     def jsonify(self):
         return {
-            'account_type_id': self.pk,
+            'account_type_id': self.account_type_id,
             'name': self.name,
         }

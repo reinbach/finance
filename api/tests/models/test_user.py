@@ -21,7 +21,7 @@ class TestUserModel():
 
         u2 = User.query.filter(User.username == u.username).first()
         assert u2.username == u.username
-        assert bool(u2.pk) is True
+        assert bool(u2.user_id) is True
         assert u2.password_hash == u.password_hash
 
     def test_user_name_unique(self):

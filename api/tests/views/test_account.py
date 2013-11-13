@@ -15,16 +15,16 @@ class TestAccountView(BaseViewTestCase):
         self.account_type = AccountType('Expense')
         db.session.add(self.account_type)
         db.session.commit()
-        self.account = Account('Insurance', self.account_type.account_type_id,
+        self.account = Account('Insurance', self.account_type,
                                "Safety Net")
         db.session.add(self.account)
         db.session.commit()
 
     def teardown_method(self, method):
-        delete_user(self.user)
         db.session.delete(self.account_type)
         db.session.delete(self.account)
         db.session.commit()
+        delete_user(self.user)
 
     def test_view_auth_required(self):
         """Test that authentication is required"""
@@ -125,7 +125,7 @@ class TestAccountView(BaseViewTestCase):
         """Test deleting account"""
         account1 = Account(
             'Entertainment',
-            self.account_type.account_type_id,
+            self.account_type,
             "Party like it's 1999'"
         )
         db.session.add(account1)

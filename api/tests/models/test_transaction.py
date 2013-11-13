@@ -58,7 +58,7 @@ class TestTransactionModel():
         assert t2.summary == t.summary
         assert t2.description == t.description
         assert t2.date == t.date
-        assert bool(t2.pk) is True
+        assert bool(t2.transaction_id) is True
 
     def test_account_balance(self):
         """Test that balance on account calculates correctly"""

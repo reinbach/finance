@@ -2,7 +2,6 @@ from flask import jsonify, request
 
 from finance import app, config, utils
 from finance.forms import UserForm
-from finance.models.mapper import set_model_mapping
 from finance.views.account import AccountAPI, transactions
 from finance.views.account_type import AccountTypeAPI
 from finance.views.transaction import TransactionAPI
@@ -19,7 +18,6 @@ app.add_url_rule(
 )
 utils.register_api(app, TransactionAPI, 'transaction_api', '/transactions',
                    pk='transaction_id')
-set_model_mapping()
 
 
 @app.route("/")
@@ -52,8 +50,3 @@ def login():
 def logout():
     app.auth.remove_token(request.headers.get('AuthToken'))
     return jsonify({'message': 'Successfully logged out.'})
-
-
-@app.teardown_request
-def shutdown_session(exception=None):
-    app.db.session.remove()
