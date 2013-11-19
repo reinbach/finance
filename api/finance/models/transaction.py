@@ -52,10 +52,12 @@ class Transaction(db.Model):
         )
 
     def jsonify(self):
+        debit = getattr(self.account_debit, 'account_id', None)
+        credit = getattr(self.account_credit, 'account_id', None)
         res = {
             'transaction_id': self.transaction_id,
-            'account_debit_id': self.account_debit.account_id,
-            'account_credit_id': self.account_credit.account_id,
+            'account_debit_id': debit,
+            'account_credit_id': credit,
             'amount': self.amount,
             'summary': self.summary,
             'description': self.description,

@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 from decimal import Decimal
 
@@ -64,14 +65,14 @@ class TransactionsImport():
         if res is None:
             return None
 
-        if res.debit.account_id == self.main_account_id:
-            return res.credit.account_id
-        return res.debit.account_id
+        if res.account_debit_id == self.main_account_id:
+            return res.account_credit_id
+        return res.account_debit_id
 
     def is_duplicate(self, trx):
         """Check whether transaction is a possible duplicate"""
-        return bool(Transaction().query.filter(
+        return bool(Transaction.query.filter(
             Transaction.summary == trx['summary'],
             Transaction.amount == trx['amount'],
-            Transaction.date == trx['date']
+            Transaction.date == datetime.datetime.strptime(trx['date'], "%m/%d/%Y").strftime("%Y-%m-%d")
         ).first())

@@ -8,6 +8,7 @@ from finance.models.transaction import Transaction
 
 class TestTransactionModel():
 
+    @classmethod
     def setup_method(self, method):
         self.account_type = AccountType('Income')
         db.session.add(self.account_type)
@@ -18,6 +19,7 @@ class TestTransactionModel():
         db.session.add(self.account2)
         db.session.commit()
 
+    @classmethod
     def teardown_method(self, method):
         db.session.delete(self.account_type)
         db.session.delete(self.account1)
