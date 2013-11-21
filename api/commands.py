@@ -1,7 +1,7 @@
 import sys
 
 from finance import db
-from finance.models.user import User
+from finance.models.auth import AuthUser
 
 
 def create_db(args):
@@ -14,7 +14,7 @@ def create_user(args):
     print("Creating user...")
     username = args[0] if len(args) > 0 else 'admin'
     password = args[1] if len(args) > 1 else 'secret'
-    u = User(username, password)
+    u = AuthUser(username, password)
     db.session.add(u)
     db.session.commit()
     print("done.")

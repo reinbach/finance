@@ -47,8 +47,8 @@ class Auth(object):
 
 def check_auth(username, password):
     """Check is username password combination is valid"""
-    from models.user import User
-    u = User.query.filter(User.username == username).first()
+    from models.auth import AuthUser
+    u = AuthUser.query.filter(AuthUser.username == username).first()
     if u is not None and u.check_password(password):
         return True
     return False

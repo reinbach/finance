@@ -2,7 +2,7 @@ from finance import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(db.Model):
+class AuthUser(db.Model):
     """User
 
     The users that can access the system

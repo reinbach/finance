@@ -4,8 +4,8 @@ import pytest
 from finance import db
 from finance.models.account import Account
 from finance.models.account_type import AccountType
+from finance.models.auth import AuthUser
 from finance.models.transaction import Transaction
-from finance.models.user import User
 
 
 @pytest.fixture
@@ -16,7 +16,7 @@ def filename():
 def setup_user():
     username = 'admin'
     password = 'secret'
-    user = User(username, password)
+    user = AuthUser(username, password)
     db.session.add(user)
     db.session.commit()
     return user, username, password
