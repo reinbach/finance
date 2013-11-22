@@ -2,7 +2,6 @@ import sys
 
 from finance import db
 from finance.models.auth import AuthUser
-from finance.models.account import Account
 from finance.models.account_type import AccountType
 
 

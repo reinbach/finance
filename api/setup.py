@@ -4,7 +4,8 @@ import os
 from pip.req import parse_requirements
 from setuptools import setup
 
-install_reqs = parse_requirements(os.path.join(os.path.abspath(__file__), 'requirements.txt'))
+install_reqs = parse_requirements(os.path.join(os.path.abspath(__file__),
+                                               'requirements.txt'))
 reqs = [str(r.req) for r in install_reqs]
 
 setup(

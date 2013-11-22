@@ -74,5 +74,7 @@ class TransactionsImport():
         return bool(Transaction.query.filter(
             Transaction.summary == trx['summary'],
             Transaction.amount == trx['amount'],
-            Transaction.date == datetime.datetime.strptime(trx['date'], "%m/%d/%Y").strftime("%Y-%m-%d")
+            Transaction.date == datetime.datetime.strptime(
+                trx['date'], "%m/%d/%Y"
+            ).strftime("%Y-%m-%d")
         ).first())

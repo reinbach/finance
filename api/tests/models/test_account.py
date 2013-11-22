@@ -13,14 +13,17 @@ from finance.models.transaction import Transaction
 @pytest.fixture
 def account_type(request):
     at = AccountType('Income')
+    db.session.add(at)
+    db.session.commit()
+
     def fin():
         db.session.rollback()
         db.session.delete(at)
         db.session.commit()
         db.session.remove()
-    db.session.add(at)
-    db.session.commit()
+
     request.addfinalizer(fin)
+
     return at
 
 
