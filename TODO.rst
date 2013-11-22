@@ -6,9 +6,6 @@ TO DO
 API
 ---
 
-- command to load default data
- -- Account Types (Asset, Expense, Income, Liability)
-
 
 WebSite
 -------
