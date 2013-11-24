@@ -106,16 +106,7 @@ angular.module('financeApp.directives', []).
                 onDone: '&',
                 onError: '&'
             },
-            template: '<div>' +
-                '<input type="file" style="opacity:0" />' +
-                '<label class="btn btn-success" ng-click="choose()">' +
-                '  {{ chooseFileButtonText }}</label>' +
-                '<div class="well file-names">{{ uploadFileName }}</div>' +
-                '<a href="#/accounts" class="btn">Cancel</a> ' +
-                '<button class="upload-button btn btn-primary" ' +
-                '  ng-show="showUploadButton" ng-click="upload()">' +
-                '    {{ uploadFileButtonText }}</button>' +
-                '</div>',
+            templateUrl: 'partials/file_upload.html',
             compile: function compile(tElement, tAttrs, transclude) {
                 var fileInput = angular.element(tElement.children()[0]);
                 var fileLabel = angular.element(tElement.children()[1]);
