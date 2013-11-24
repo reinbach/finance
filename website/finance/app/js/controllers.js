@@ -193,3 +193,11 @@ function FinanceCtrlTransactionsEdit($scope, $location, $routeParams, Transactio
     };
 }
 FinanceCtrlTransactionsEdit.$inject = ['$scope', '$location', '$routeParams', 'Transaction', 'Account'];
+
+function FinanceCtrlTransactionsUpload($scope, $location, Transaction, Account) {
+    $scope.action = 'Upload'
+    $scope.upload = function() {
+        console.log("upload that file")
+    };
+}
+FinanceCtrlTransactionsUpload.$inject = ['$scope', '$location', 'Transaction', 'Account'];

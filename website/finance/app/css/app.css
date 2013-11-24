@@ -26,3 +26,8 @@ input.ng-invalid.ng-dirty {
 .help-inline.error {
     color: #E9322D;
 }
+
+.file-names {
+    border: 1px dashed #e3e3e3;
+    margin-top: 20px;
+}

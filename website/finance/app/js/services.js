@@ -40,4 +40,3 @@ angular.module('financeApp.services', ['ngResource', 'ngCookies']).
             'update': { method: 'PUT'},
         });
     }]);
-

@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="span12">
+    <div class="page-header">
+      <h1>{{ action }} Transactions</h1>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span4">
+    <div class="alert alert-error" ng-show="response">
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <span ng-model="response">{{ response }}</span>
+    </div>
+    <form name="transactionUploadForm" novalidate accept-charset="utf-8">
+      <fieldset>
+        <finance-upload
+           choose-file-button-text="Click to Select File"
+           upload-file-button-text="Upload Transactions"
+           upload-file-name="No File Selected">
+        </finance-upload>
+      </fieldset>
+    </form>
+  </div>
+</div>
