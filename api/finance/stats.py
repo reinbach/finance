@@ -28,5 +28,6 @@ STATS = scales.collection(
     scales.PmfStat('add_transaction'),
     scales.PmfStat('delete_transaction'),
     scales.PmfStat('update_transaction'),
+    scales.PmfStat('upload_transactions'),
 
 )

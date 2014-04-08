@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 
 from finance import app, db
 from finance.models.account import Account
@@ -362,3 +363,72 @@ class TestTransactionView(BaseViewTestCase):
             )
         )
         assert 404 == rv.status_code
+
+
+class TestTransactionImport(BaseViewTestCase):
+    def setup_method(self, method):
+        self.user, self.username, self.password = setup_user()
+        self.app = app.test_client()
+
+        # account types
+        self.acct_type_assets = AccountType('Assets')
+        self.acct_type_expenses = AccountType('Expenses')
+        self.acct_type_income = AccountType('Income')
+        db.session.add(self.acct_type_assets)
+        db.session.add(self.acct_type_expenses)
+        db.session.add(self.acct_type_income)
+        db.session.commit()
+
+        # accounts
+        self.acct_bank = Account('Bank', self.acct_type_assets, 'Checking')
+        self.acct_groceries = Account('Groceries', self.acct_type_expenses,
+                                      'Gotta Eat')
+        self.acct_salary = Account('IMP_Salary', self.acct_type_income,
+                                   'Working for the man')
+        db.session.add(self.acct_bank)
+        db.session.add(self.acct_groceries)
+        db.session.add(self.acct_salary)
+        db.session.commit()
+
+        # sample file
+        self.trx_file = "{0}trx_import_file_sample.csv".format(
+            os.path.join(os.path.dirname(__file__), "../"))
+
+    def teardown_method(self, method):
+        db.session.delete(self.acct_salary)
+        db.session.delete(self.acct_groceries)
+        db.session.delete(self.acct_bank)
+        db.session.delete(self.acct_type_income)
+        db.session.delete(self.acct_type_expenses)
+        db.session.delete(self.acct_type_assets)
+        db.session.commit()
+        delete_user(self.user)
+
+    def test_method(self):
+        """Test that get method does not work"""
+        rv = self.app.open("/transactions/import", method="GET")
+        assert 405 == rv.status_code
+
+    def test_auth_required(self):
+        """Test that authentication is required"""
+        rv = self.app.open("/transactions/import", method="POST", data={},
+                           content_type='multipart/form-data')
+        assert 401 == rv.status_code
+
+    # def test_post(self):
+    #     rv = self.app.open(
+    #         "/transactions/import",
+    #         method="POST",
+    #         headers=self.get_headers(self.username, self.password),
+    #         data=dict(
+    #             main_account_id=self.acct_bank.account_id,
+    #             transactions_file=self.trx_file
+    #         ),
+    #         follow_redirects=True,
+    #         content_type='multipart/form-data'
+    #     )
+    #     assert 200 == rv.status_code
+
+    #     trx = json.loads(rv.data)
+    #     print(trx)
+    #     assert len(trx) == 9

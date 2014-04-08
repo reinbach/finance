@@ -6,16 +6,18 @@ from tests.fixtures import setup_user, delete_user
 
 
 class BaseViewTestCase():
+    def get_headers(self, username, password):
+        return {
+            'Authorization': 'Basic ' + base64.b64encode(
+                username + ":" + password
+            )
+        }
 
     def open_with_auth(self, url, method, username, password, data=None):
         return self.app.open(
             url,
             method=method,
-            headers={
-                'Authorization': 'Basic ' + base64.b64encode(
-                    username + ":" + password
-                )
-            },
+            headers=self.get_headers(username, password),
             data=json.dumps(data),
             follow_redirects=True,
             content_type='application/json'

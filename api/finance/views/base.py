@@ -4,7 +4,7 @@ from finance import app, config, utils
 from finance.forms import UserForm
 from finance.views.account import AccountAPI, transactions
 from finance.views.account_type import AccountTypeAPI
-from finance.views.transaction import TransactionAPI
+from finance.views.transaction import TransactionAPI, transactions_import
 
 
 utils.register_api(app, AccountTypeAPI, 'account_type_api', '/account/types',
@@ -18,6 +18,11 @@ app.add_url_rule(
 )
 utils.register_api(app, TransactionAPI, 'transaction_api', '/transactions',
                    pk='transaction_id')
+app.add_url_rule(
+    '/transactions/import',
+    view_func=transactions_import,
+    methods=['POST', ]
+)
 
 
 @app.route("/")

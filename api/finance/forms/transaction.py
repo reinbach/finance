@@ -1,7 +1,7 @@
 from wtforms import (DateField, DecimalField, IntegerField, TextField,
-                     validators)
+                     validators, FileField)
 
-from finance.forms import BaseForm
+from finance.forms import BaseForm, Form
 from finance.models.account import Account
 
 
@@ -39,3 +39,10 @@ class TransactionForm(BaseForm):
     )
     date = DateLocaleField('Date', [validators.Required()])
     description = TextField('Description', [validators.Length(min=0, max=250)])
+
+
+class TransactionsImportForm(Form):
+    main_account_id = IntegerField('Account',
+                                   [validators.Required(), validate_account])
+    transactions_file = FileField(u"Transaction File",
+                                  [validators.regexp(u'\.csv$')])

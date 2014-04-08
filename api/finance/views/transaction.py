@@ -2,13 +2,15 @@ import json
 
 from flask import abort, jsonify, request, Response
 from flask.views import MethodView
+from werkzeug.datastructures import MultiDict
 
 import config
 
 from finance import utils, db
-from finance.forms.transaction import TransactionForm
+from finance.forms.transaction import TransactionForm, TransactionsImportForm
 from finance.models.transaction import Transaction
 from finance.stats import STATS
+from finance.trx_import import TransactionsImport
 
 
 class TransactionAPI(MethodView):
@@ -104,3 +106,22 @@ class TransactionAPI(MethodView):
             resp = jsonify({'errors': form.errors})
             resp.status_code = 400
             return resp
+
+
+@utils.requires_auth
+@utils.crossdomain(origin='*', headers=config.HEADERS_ALLOWED)
+def transactions_import():
+    """Import transactions"""
+    with STATS.upload_transactions.time():
+        form = TransactionsImportForm(MultiDict(request.data))
+        if form.validate():
+            importer = TransactionsImport(form.account.data,
+                                          form.transactions_file.data)
+            transaction_list = []
+            for trx in importer.parse_file():
+                transaction_list.append(trx.jsonify())
+            STATS.success += 1
+            return jsonify(trx)
+        resp = jsonify(form.errors)
+        resp.status_code = 400
+        return resp
