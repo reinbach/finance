@@ -14,7 +14,8 @@ function financeCtrl($scope, $rootScope, $http, tokenHandler, api_url) {
         $http.get(api_url.replace('\\', '') + '/logout');
     }
 }
-financeCtrl.$inject = ['$scope', '$rootScope', '$http', 'tokenHandler', 'api_url'];
+financeCtrl.$inject = ['$scope', '$rootScope', '$http', 'tokenHandler',
+                       'api_url'];
 
 
 function FinanceCtrlLogin(scope, http, location, tokenHandler, api_url) {
@@ -33,7 +34,8 @@ function FinanceCtrlLogin(scope, http, location, tokenHandler, api_url) {
             });
     }
 }
-FinanceCtrlLogin.$inject = ['$scope', '$http', '$location', 'tokenHandler', 'api_url'];
+FinanceCtrlLogin.$inject = ['$scope', '$http', '$location', 'tokenHandler',
+                            'api_url'];
 
 
 function FinanceCtrlAccounts($scope, Account) {
@@ -68,10 +70,12 @@ function FinanceCtrlAccountsAdd($scope, $location, Account, AccountType) {
         );
     };
 }
-FinanceCtrlAccountsAdd.$inject = ['$scope', '$location', 'Account', 'AccountType'];
+FinanceCtrlAccountsAdd.$inject = ['$scope', '$location', 'Account',
+                                  'AccountType'];
 
 
-function FinanceCtrlAccountsEdit($scope, $location, $routeParams, Account, AccountType) {
+function FinanceCtrlAccountsEdit($scope, $location, $routeParams, Account,
+                                 AccountType) {
     $scope.action = 'Edit'
     $scope.account_types = AccountType.query();
     var newAccount = new Account();
@@ -93,10 +97,12 @@ function FinanceCtrlAccountsEdit($scope, $location, $routeParams, Account, Accou
         );
     };
 }
-FinanceCtrlAccountsEdit.$inject = ['$scope', '$location', '$routeParams', 'Account', 'AccountType'];
+FinanceCtrlAccountsEdit.$inject = ['$scope', '$location', '$routeParams',
+                                   'Account','AccountType'];
 
 
-function FinanceCtrlAccountsView($scope, $routeParams, $http, Account, api_url) {
+function FinanceCtrlAccountsView($scope, $routeParams, $http, Account,
+                                 api_url) {
     $scope.transactions = [];
     var account = new Account();
     account.$get(
@@ -110,7 +116,8 @@ function FinanceCtrlAccountsView($scope, $routeParams, $http, Account, api_url) 
         }
     );
 }
-FinanceCtrlAccountsView.$inject = ['$scope', '$routeParams', '$http', 'Account', 'api_url'];
+FinanceCtrlAccountsView.$inject = ['$scope', '$routeParams', '$http',
+                                   'Account','api_url'];
 
 
 function FinanceCtrlAccountTypes($scope, AccountType) {
@@ -165,10 +172,12 @@ function FinanceCtrlTransactionsAdd($scope, $location, Transaction, Account) {
         );
     };
 }
-FinanceCtrlTransactionsAdd.$inject = ['$scope', '$location', 'Transaction', 'Account'];
+FinanceCtrlTransactionsAdd.$inject = ['$scope', '$location', 'Transaction',
+                                      'Account'];
 
 
-function FinanceCtrlTransactionsEdit($scope, $location, $routeParams, Transaction, Account) {
+function FinanceCtrlTransactionsEdit($scope, $location, $routeParams,
+                                     Transaction, Account) {
     $scope.action = 'Edit'
     $scope.accounts = Account.query();
     var newTransaction = new Transaction();
@@ -192,12 +201,15 @@ function FinanceCtrlTransactionsEdit($scope, $location, $routeParams, Transactio
         );
     };
 }
-FinanceCtrlTransactionsEdit.$inject = ['$scope', '$location', '$routeParams', 'Transaction', 'Account'];
+FinanceCtrlTransactionsEdit.$inject = ['$scope', '$location', '$routeParams',
+                                       'Transaction', 'Account'];
 
-function FinanceCtrlTransactionsUpload($scope, $location, Transaction, Account) {
+function FinanceCtrlTransactionsUpload($scope, $location, Transaction,
+                                       Account) {
     $scope.action = 'Upload'
     $scope.upload = function() {
         console.log("upload that file")
     };
 }
-FinanceCtrlTransactionsUpload.$inject = ['$scope', '$location', 'Transaction', 'Account'];
+FinanceCtrlTransactionsUpload.$inject = ['$scope', '$location', 'Transaction',
+                                         'Account'];
