@@ -8,7 +8,7 @@ DB = None
 def pytest_configure():
     global DB
     DB, finance.app.config['DATABASE'] = tempfile.mkstemp()
-    finance.app.config['DATABASE_URI'] = 'sqlite:///{0}'.format(
+    finance.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{0}'.format(
         finance.app.config['DATABASE']
     )
     finance.app.config['TESTING'] = True
