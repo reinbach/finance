@@ -15,6 +15,10 @@
     </div>
     <form name="transactionUploadForm" novalidate accept-charset="utf-8">
       <fieldset>
+        <label>Account</label>
+        <select required ng-options="account.account_id as account.name for (key, account) in accounts | filter:query">
+          <option value="">- select account -</option>
+        </select>
         <finance-upload
            choose-file-button-text="Click to Select File"
            upload-file-button-text="Upload Transactions"

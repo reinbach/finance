@@ -5,38 +5,56 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('financeApp.services', ['ngResource', 'ngCookies']).
-    value('version', '0.1').
-    factory('tokenHandler', ['$http', '$cookies', function($http, $cookies) {
-        var tokenHandler = {};
-        var token = $cookies.authToken || "none";
+var financeServices = angular.module('financeServices',
+                                     ['ngResource', 'ngCookies']);
 
-        tokenHandler.set = function(newToken) {
-            token = newToken;
-            $cookies.authToken = newToken;
-            $http.defaults.headers.common['AuthToken'] = newToken;
-        };
+financeServices.value('version', '0.1');
 
-        tokenHandler.get = function() {
-            return token;
-        }
+financeServices.factory(
+    'tokenHandler',
+    ['$http', '$cookies',
+     function($http, $cookies) {
+         var tokenHandler = {};
+         var token = $cookies.authToken || "none";
 
-        if (token != "none") {
-            tokenHandler.set(token);
-        }
+         tokenHandler.set = function(newToken) {
+             token = newToken;
+             $cookies.authToken = newToken;
+             $http.defaults.headers.common['AuthToken'] = newToken;
+         };
 
-        return tokenHandler;
-    }]).
-    factory('Account', ['$resource', 'api_url',  function($resource, api_url) {
-        return $resource(api_url + '/accounts/:accountId', {}, {
-            'update': { method: 'PUT'},
-        });
-    }]).
-    factory('AccountType', ['$resource', 'api_url',  function($resource, api_url) {
-        return $resource(api_url + '/account/types/:accountTypeId', {});
-    }]).
-    factory('Transaction', ['$resource', 'api_url',  function($resource, api_url) {
-        return $resource(api_url + '/transactions/:transactionId', {}, {
-            'update': { method: 'PUT'},
-        });
-    }]);
+         tokenHandler.get = function() {
+             return token;
+         }
+
+         if (token != "none") {
+             tokenHandler.set(token);
+         }
+
+         return tokenHandler;
+     }]);
+
+financeServices.factory(
+    'Account',
+    ['$resource', 'api_url',
+     function($resource, api_url) {
+         return $resource(api_url + '/accounts/:accountId', {}, {
+             'update': { method: 'PUT'},
+         });
+     }]);
+
+financeServices.factory(
+    'AccountType',
+    ['$resource', 'api_url',
+     function($resource, api_url) {
+         return $resource(api_url + '/account/types/:accountTypeId', {});
+     }]);
+
+financeServices.factory(
+    'Transaction',
+    ['$resource', 'api_url',
+     function($resource, api_url) {
+         return $resource(api_url + '/transactions/:transactionId', {}, {
+             'update': { method: 'PUT'},
+         });
+     }]);

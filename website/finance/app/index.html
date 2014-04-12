@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="financeApp" ng-controller="financeCtrl">
+<html lang="en" ng-app="financeApp" ng-controller="financeControllers">
 <head>
   <meta charset="utf-8">
   <title>Finance App</title>
@@ -7,12 +7,22 @@
   <link rel="stylesheet" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" href="css/angular-ui.min.css"/>
   <link rel="stylesheet" href="css/app.css"/>
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/angular/angular-route.min.js"></script>
+  <script src="lib/angular/angular-resource.min.js"></script>
+  <script src="lib/angular/angular-cookies.min.js"></script>
+  <script src="lib/angular-ui/ui-bootstrap-tpls-0.10.0.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-	<a class="brand" href="/">Finance App</a>
+        <a class="brand" href="/">Finance App</a>
         <ul class="nav" ng-hide="secure">
           <li>
             <a class="dropdown-toggle" href="#/accounts">Accounts <b class="caret"></b></a>
@@ -48,29 +58,16 @@
 
   <div class="container">
     <section id="main">
-      <div ng-view></div>
+      <div ng-view class="view-animate"></div>
     </section>
   </div>
 
   <footer class="footer">
     <div class="container">
-      <p>Simplifing my finances!</p>
-      <p>&copy; 2013 <a href="http://www.reinbach.com">reinbach.com</a></p>
+      <p>Simplifing finances!</p>
+      <p>&copy; 2014 <a href="http://www.reinbach.com">reinbach.com</a></p>
       <p>Source code available @ <a href="https://github.com/reinbach/finance">https://github.com/reinbach/finance</a></p>
     </div>
   </footer>
-
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
-  -->
-  <script src="lib/angular/angular.min.js"></script>
-  <script src="lib/angular/angular-resource.min.js"></script>
-  <script src="lib/angular/angular-cookies.min.js"></script>
-  <script src="lib/angular-ui/ui-bootstrap-tpls-0.5.0.min.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/services.js"></script>
-  <script src="js/controllers.js"></script>
-  <script src="js/filters.js"></script>
-  <script src="js/directives.js"></script>
 </body>
 </html>
