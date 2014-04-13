@@ -16,12 +16,12 @@ financeApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/login', {
             templateUrl: 'partials/login.html',
-            controller: 'FinanceLoginCtrl',
-            secure: true
+            controller: 'FinanceLoginCtrl'
         }).
         when('/accounts', {
             templateUrl: 'partials/accounts.html',
-            controller: 'FinanceAccountsCtrl'
+            controller: 'FinanceAccountsCtrl',
+            secure: true
         }).
         when('/accounts/add', {
             templateUrl: 'partials/accounts_add.html',

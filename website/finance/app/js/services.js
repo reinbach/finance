@@ -20,7 +20,7 @@ financeServices.factory(
          tokenHandler.set = function(newToken) {
              token = newToken;
              $cookies.authToken = newToken;
-             $http.defaults.headers.common['AuthToken'] = newToken;
+             $http.defaults.headers.common.AuthToken = newToken;
          };
 
          tokenHandler.get = function() {

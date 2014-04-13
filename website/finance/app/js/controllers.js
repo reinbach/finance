@@ -2,17 +2,15 @@
 
 /* controllers */
 
-var financeControllers = angular.module('financeControllers', []);
+var financeControllers = angular.module('financeControllers', ['ngRoute']);
 
 financeControllers.controller(
     'financeControllers',
     ['$scope', '$rootScope', 'tokenHandler', '$http', 'api_url',
      function($scope, $rootScope, tokenHandler, $http, api_url) {
          $rootScope.$on('$routeChangeSuccess', function(event, routeData) {
-             if (routeData.$route) {
-                 //test
-                 console.log(routeData.$route.secure);
-                 $scope.secure = routeData.$route.secure;
+             if (routeData.$$route) {
+                 $scope.secure = routeData.$$route.secure;
              }
          });
 
