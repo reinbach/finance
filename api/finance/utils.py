@@ -37,7 +37,11 @@ class Auth(object):
         return False
 
     def remove_token(self, token):
-        self.auth_tokens.pop(token)
+        try:
+            self.auth_tokens.pop(token)
+        except KeyError:
+            # appears we don't actually have an auth token
+            pass
         # need to periodically clean out auth tokens that
         # have expired
         for token, expiration in self.auth_tokens.iteritems():
